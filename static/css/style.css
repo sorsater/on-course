@@ -1,0 +1,35 @@
+/* custom styles */
+
+body {
+  margin: 0px;
+  background-color: black;
+}
+.container {
+  height: 100vh;
+  color: #fff;
+}
+
+#left {
+  background-color: #333;
+  float: left;
+  width: 75%;
+  height: 100%;
+}
+
+#left div {
+  padding: 10px;
+}
+
+#search input {
+  width: 80%;
+  height: 30px;
+  font-size: 20px;
+  color: #aaa;
+}
+
+#right {
+  background-color: #666;
+  float: left;
+  width: 25%;
+  height: 100%;
+}
