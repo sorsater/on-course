@@ -28,7 +28,22 @@
         <div id="courses">
 
           <div id="search">
-            <input type="text" name="" value="Sök kurs">
+            <input id="potatis" type="text" name="" value="Sök kurs">
+          </div>
+
+          <div id="courses">
+            <table>
+              <tr>
+                <th>Kurskod</th>
+                <th>Kursnamn</th>
+              </tr>
+              {% for kurs in kurser %}
+                <tr>
+                  <td><a href="{{ kurs.link }}">{{ kurs.code }}</a></td>
+                  <td>{{ kurs.name }}</td>
+                </tr>
+              {% endfor %}
+            </table>
           </div>
 
         </div>

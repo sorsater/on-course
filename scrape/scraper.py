@@ -10,8 +10,8 @@ def get_courses(url):
     table = soup.find('table').find('table')
     rows = table.find_all('tr')
 
-    courses = {}
-    course_schedule_dic = {}
+    courses = set()
+    schedule = {}
     for row in rows[3:]:
         tds = row.find_all('td')
         # Course
@@ -21,7 +21,7 @@ def get_courses(url):
                 kurskod = a.string
                 link = a['href']
                 name, level, vof, block, hp = [td.string.strip() for td in tds[2:]]
-                courses[kurskod] = [name, level, hp.replace('*', '')]
+                courses.add( (kurskod, name, level, hp.replace('*', ''), link) )
 
                 # Both periods
                 if '*' in hp:
@@ -30,20 +30,20 @@ def get_courses(url):
                     period = current_period[0] + current_period[-1]
 
                 if current_period[-1] == '2' and '*' in hp:
-                    course_schedule_dic[kurskod+period][3] = block
+                    schedule[kurskod+period][3] = block
                 else:
-                    course_schedule_dic[kurskod+period] = [kurskod, period, block, '']
+                    schedule[kurskod+period] = [kurskod, period, block, '']
 
         # HT/VTh
         else:
             a = tds[1].find('span')
             if a:
                 current_period = a.string
-    course_schedule = []
-    for code in course_schedule_dic:
-        course_schedule.append(course_schedule_dic[code])
 
-    return courses, course_schedule
+    courses = list(courses)
+    schedule = [schedule[key] for key in schedule]
+
+    return courses, schedule
 
 def get_utbildningar(url):
     x = urllib.request.urlopen(url)
@@ -94,7 +94,5 @@ def main():
                 print('\t\t',end='')
                 print(m)
         print()
-
-courses, course_schedule = get_courses(url_datateknik7)
-for c in course_schedule:
-    print(c)
+def scrape_plate():
+    return get_courses(url_datateknik7)
