@@ -9,3 +9,6 @@ instance/
 
 # mac stuff:
 *.DS_Store
+
+# DB
+*.db
