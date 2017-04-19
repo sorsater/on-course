@@ -8,6 +8,9 @@ url_datateknik7 = 'http://kdb-5.liu.se/liu/lith/studiehandboken/action.lasso?&-r
 
 # Read all courses from the URL
 def get_courses(url):
+    print()
+    print()
+    print("HEJSAN :) ")
     x = urllib.request.urlopen(url)
     soup = BeautifulSoup(x.read(), 'html.parser')
     table = soup.find('table').find('table')
@@ -15,7 +18,6 @@ def get_courses(url):
 
     courses = set()
     schedule = {}
-    schedule_id = 1
     for row in rows[3:]:
         tds = row.find_all('td')
         # Course
@@ -24,7 +26,12 @@ def get_courses(url):
             if a:
                 kurskod = a.string
                 link = a['href']
-                name, level, vof, block, hp = [td.string.strip() for td in tds[2:]]
+                #print(tds[2:])
+                #for jjj in tds[2:]:
+                #    print(jjj)
+                #    print(jjj.string)
+                #    print(jjj.string.strip())
+                name, level, vof, block, hp = ['-' if not td.string else td.string.strip() for td in tds[2:]]
                 courses.add( (kurskod, name, level, hp.replace('*', ''), link) )
 
                 # Both periods
@@ -36,8 +43,7 @@ def get_courses(url):
                 if current_period[-1] == '2' and '*' in hp:
                     schedule[kurskod+period][3] = block
                 else:
-                    schedule[kurskod+period] = [schedule_id, kurskod, period, block, '']
-                    schedule_id += 1
+                    schedule[kurskod+period] = [kurskod, period, block, '']
 
         # HT/VTh
         else:
@@ -91,12 +97,21 @@ def get_utbildningar(url):
 
 # Get all links and their names
 def get_fields(url):
+    print()
+    print(url)
+    print()
     x = urllib.request.urlopen(url)
     soup = BeautifulSoup(x.read(), 'html.parser')
+    links = soup.find_all('a')
     fields = soup.find_all('p')[4]
     tack = str(fields).replace('<p>', '</p><p>')
     soup = BeautifulSoup(tack, 'html.parser')
     ps = soup.find_all('p')
+
+    termin_7_9 = ""
+    for link in links:
+        if link.string and '7-9' in link.string:
+            termin_7_9 = link['href']
 
     fields = {}
     for p in ps:
@@ -107,31 +122,22 @@ def get_fields(url):
         masters = [[a.string, a['href']] for a in p.find_all('a')]
         fields[field] = masters
 
-    return fields
+    return fields, termin_7_9
 
-# Read all educations
-# Not used anymore
-def scrape_main_subject():
-    utbildningar = get_utbildningar(url_utbildningar)
-    for u,d in utbildningar.items():
-        utbildningar[u]['fields'] = get_fields(d['href'])
+# Read courses and schedule for datateknik, need to be extended to all programs
+def scrape_courses(urls):
+    all_courses = []
+    all_schedules = []
+    for url in urls:
+        print("URL :) ")
+        print(url)
+        if url:
+            courses, schedule = get_courses(url)
+            all_courses += courses
+            all_schedules += schedule
 
-    for u, d in utbildningar.items():
-        print(u)
-        print(d['href'])
-        for field, masters in d['fields'].items():
-            print('\t'+field)
-            for m in masters:
-                print('\t\t',end='')
-                print(m[0])
-                # Link
-                print('\t\t\t' + m[1])
-        print()
-    return utbildningar
-
-# Read courses and schedule for datateknik
-def scrape_courses():
-    return get_courses(url_datateknik7)
+    return all_courses, all_schedules
+    #return get_courses(url_datateknik7)
 
 # Read programs, fields, masters. Converted to list
 def scrape_programs():
@@ -139,9 +145,12 @@ def scrape_programs():
     # The educations
     programs = []
     field_ID = 1
+
+    urls_all_courses = []
     for key, value in utbildningar.items():
         programs.append((value['ID'], key, value['href']))
-        utbildningar[key]['fields'] = get_fields(value['href'])
+        utbildningar[key]['fields'], all_courses = get_fields(value['href'])
+        urls_all_courses.append(all_courses)
 
     fields = []
     profiles = []
@@ -160,6 +169,8 @@ def scrape_programs():
     print("Reading all profiles")
     course_profile = []
     course_profile_cnt = 1
+
+    return programs, fields, profiles, course_profile, urls_all_courses
     for i, (master_ID, master_name, field_ID, master_link) in enumerate(profiles):
         progressbar((i+1)/len(profiles))
         courses = get_profile_courses(master_link)
@@ -168,18 +179,11 @@ def scrape_programs():
             course_profile.append( (course_profile_cnt, course[0], master_ID, course[1]))
             course_profile_cnt += 1
     print()
-    return programs, fields, profiles, course_profile
+    return programs, fields, profiles, course_profile, urls_all_courses
 
+# Get all content
+def scrape_content():
+    programs, fields, profiles, course_profile, urls_all_courses = scrape_programs()
+    courses, schedule = scrape_courses(urls_all_courses)
 
-
-
-
-
-
-
-
-
-
-
-
-
+    return courses, schedule, programs, fields, profiles, course_profile

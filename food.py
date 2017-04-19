@@ -1,9 +1,11 @@
 import sqlite3
-from scrape.scraper import scrape_courses, scrape_programs
+from scrape.scraper import scrape_content
 
-print("Scraping content")
-courses, schedule = scrape_courses()
-programs, fields, profiles, course_profile = scrape_programs()
+print("Scraping plates")
+#courses, schedule = scrape_courses()
+#programs, fields, profiles, course_profile = scrape_programs()
+
+courses, schedule, programs, fields, profiles, course_profile = scrape_content()
 
 print("Inserting to db")
 conn = sqlite3.connect('plate.db')
