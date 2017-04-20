@@ -5,7 +5,11 @@
     <title>Flask React</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel= "stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
-    <!-- styles -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- scripts -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
   </head>
   <body>
     {% block body %}{% endblock %}

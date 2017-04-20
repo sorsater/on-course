@@ -3,13 +3,15 @@ db = SQLAlchemy()
 
 # Kurser, ett entry per kurs, TANA09, TDDD27...
 class Courses(db.Model):
-    code = db.Column(db.String(20), primary_key=True)
+    ID = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(20))
     name = db.Column(db.String(80), unique=True)
     level = db.Column(db.String(10))
     hp = db.Column(db.Integer)
     link = db.Column(db.String(500), unique=True)
 
-    def __init__(self, code, name, level, hp, link):
+    def __init__(self, ID, code, name, level, hp, link):
+        self.ID = ID
         self.code = code
         self.name = name
         self.level = level
@@ -98,4 +100,3 @@ class Course_profiles(db.Model):
 
     def __repr__(self):
         return '<Course_profiles {}>'.format(self.ID)
-

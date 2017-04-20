@@ -11,7 +11,7 @@ db.create_all()
 
 @app.route('/')
 def index():
-    kurser = Courses.query.all()
+    kurser = Courses.query.order_by(Courses.code)
     return render_template('index.html', kurser=kurser)
 
 if __name__ == '__main__':

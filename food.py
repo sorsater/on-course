@@ -12,7 +12,7 @@ conn = sqlite3.connect('plate.db')
 c = conn.cursor()
 
 try:
-    c.executemany('INSERT INTO Courses VALUES (?,?,?,?,?)', courses)
+    c.executemany('INSERT OR IGNORE INTO Courses VALUES (?,?,?,?,?,?)', courses)
     conn.commit()
     print("Success: insert values to: 'Courses'")
 except Exception as e:

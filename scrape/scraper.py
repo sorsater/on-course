@@ -8,9 +8,6 @@ url_datateknik7 = 'http://kdb-5.liu.se/liu/lith/studiehandboken/action.lasso?&-r
 
 # Read all courses from the URL
 def get_courses(url):
-    print()
-    print()
-    print("HEJSAN :) ")
     x = urllib.request.urlopen(url)
     soup = BeautifulSoup(x.read(), 'html.parser')
     table = soup.find('table').find('table')
@@ -51,6 +48,7 @@ def get_courses(url):
             if a:
                 current_period = a.string
 
+    courses = [list(c) for c in courses]
     courses = list(courses)
     schedule = [schedule[key] for key in schedule]
 
@@ -97,9 +95,6 @@ def get_utbildningar(url):
 
 # Get all links and their names
 def get_fields(url):
-    print()
-    print(url)
-    print()
     x = urllib.request.urlopen(url)
     soup = BeautifulSoup(x.read(), 'html.parser')
     links = soup.find_all('a')
@@ -129,12 +124,16 @@ def scrape_courses(urls):
     all_courses = []
     all_schedules = []
     for url in urls:
-        print("URL :) ")
-        print(url)
         if url:
             courses, schedule = get_courses(url)
             all_courses += courses
             all_schedules += schedule
+
+    all_schedules = [[i] + x for i, x in enumerate(all_schedules)]
+
+    #all_courses = list(set(all_courses))
+    all_courses = [[i] + x for i, x in enumerate(all_courses)]
+
 
     return all_courses, all_schedules
     #return get_courses(url_datateknik7)

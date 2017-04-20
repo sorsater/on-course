@@ -2,34 +2,48 @@
 
 body {
   margin: 0px;
-  background-color: black;
+  background-color: #444;
 }
 .container {
-  height: 100vh;
+  height: auto;
+  width: 100%;
   color: #fff;
-}
 
+}
+table {
+  table-layout: fixed; width: 100%;
+  border-spacing: 0px;
+}
 #left {
   background-color: #333;
-  float: left;
-  width: 75%;
-  height: 100%;
 }
 
 #left div {
   padding: 10px;
 }
 
-#search input {
+#search {
   width: 80%;
   height: 30px;
-  font-size: 20px;
-  color: #aaa;
+  font-size: 30px;
+  color: #222;
 }
 
 #right {
   background-color: #666;
-  float: left;
-  width: 25%;
   height: 100%;
+}
+
+#right div {
+  height: 100%;
+}
+
+a {
+  color: white;
+	font-family: monospace;
+	font-size: 15px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 26.4px;
 }

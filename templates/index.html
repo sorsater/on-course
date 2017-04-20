@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% block body %}
     <div class="container">
-      <div id="left">
+      <table>
+        <colgroup>
+  <col style="width:80%">
+  <col style="width:20%">
+</colgroup>
+      <tr>
+      <td id="left">
+
         <div id="bio">
           <h2>Datateknik 🖥</h2>
             <table>
@@ -25,32 +32,95 @@
             </table>
         </div>
 
-        <div id="courses">
-
-          <div id="search">
-            <input id="potatis" type="text" name="" value="Sök kurs">
-          </div>
-
           <div id="courses">
-            <table>
+            <!-- <table>
               <tr>
                 <th>Kurskod</th>
                 <th>Kursnamn</th>
               </tr>
               {% for kurs in kurser %}
                 <tr>
-                  <td><a href="{{ kurs.link }}">{{ kurs.code }}</a></td>
-                  <td>{{ kurs.name }}</td>
+                  <td><a href="http://kdb-5.liu.se/liu/lith/studiehandboken/{{ kurs.link }}">{{ kurs.code }}</a></td>
+                  <td>{{ kurs.name, kurs.hp, kurs.level }}</td>
                 </tr>
               {% endfor %}
-            </table>
-          </div>
+            </table> -->
 
         </div>
 
-      </div>
-      <div id="right">
-        då
-      </div>
+    </td>
+
+    <td id="right">
+
+        <div id="calendar">
+          hejdå
+        </div>
+
+    </td>
+  </tr>
+</table>
     </div>
+
+
+
+
+
+
+<!-- scripts -->
+
+<script type="text/jsx">
+/** @jsx React.DOM */
+
+var DynamicSearch = React.createClass({
+
+  // sets initial state
+  getInitialState: function(){
+    return { searchString: '' };
+  },
+
+  // sets state, triggers render method
+  handleChange: function(event){
+    // grab value form input box
+    this.setState({searchString:event.target.value});
+    console.log("scope updated!");
+  },
+
+  render: function() {
+
+    var countries = this.props.items;
+    var searchString = this.state.searchString.trim().toLowerCase();
+
+    // filter countries list by value from input box
+    if(searchString.length > 0){
+      countries = countries.filter(function(country){
+        return (country.code+country.name).toLowerCase().match( searchString );
+      });
+    }
+
+    return (
+      <div>
+        <input id="search" type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Vad får det lov att vara? 😋" />
+        <ul>
+          { countries.map(function(country){ return <li><a href="#">{country.code}</a> {country.name}</li> }) }
+        </ul>
+      </div>
+    )
+  }
+
+});
+
+// list of countries, defined with JavaScript object literals
+var countries = [
+  {% for kurs in kurser %}
+    {"code": "{{ kurs.code }}",  "name": "{{ kurs.name }}"},
+  {% endfor %}
+];
+
+ReactDOM.render(
+  <DynamicSearch items={ countries } />,
+  document.getElementById('courses')
+);
+</script>
+
+
 {% endblock %}
