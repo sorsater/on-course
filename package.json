@@ -1,0 +1,22 @@
+{
+  "name": "tddd27",
+  "version": "1.0.0",
+  "description": "Project in the course TDDD27",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.ida.liu.se:ludno249/TDDD272017_project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bower": "^1.8.0"
+  },
+  "dependencies": {}
+}

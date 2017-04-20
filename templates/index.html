@@ -33,19 +33,6 @@
         </div>
 
           <div id="courses">
-            <!-- <table>
-              <tr>
-                <th>Kurskod</th>
-                <th>Kursnamn</th>
-              </tr>
-              {% for kurs in kurser %}
-                <tr>
-                  <td><a href="http://kdb-5.liu.se/liu/lith/studiehandboken/{{ kurs.link }}">{{ kurs.code }}</a></td>
-                  <td>{{ kurs.name, kurs.hp, kurs.level }}</td>
-                </tr>
-              {% endfor %}
-            </table> -->
-
         </div>
 
     </td>
@@ -70,6 +57,7 @@
 
 <script type="text/jsx">
 /** @jsx React.DOM */
+
 
 var DynamicSearch = React.createClass({
 
@@ -100,9 +88,19 @@ var DynamicSearch = React.createClass({
     return (
       <div>
         <input id="search" type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Vad får det lov att vara? 😋" />
-        <ul>
-          { countries.map(function(country){ return <li><a href="#">{country.code}</a> {country.name}</li> }) }
-        </ul>
+        <table>
+
+          { countries.map(function(country){ return (
+              <tr>
+                <td><a href="#">{country.code}</a></td>
+                <td>{country.hp}</td>
+                <td>{country.level}</td>
+                <td>{country.name}</td>
+              </tr>)
+            })
+          }
+
+        </table>
       </div>
     )
   }
@@ -112,7 +110,13 @@ var DynamicSearch = React.createClass({
 // list of countries, defined with JavaScript object literals
 var countries = [
   {% for kurs in kurser %}
-    {"code": "{{ kurs.code }}",  "name": "{{ kurs.name }}"},
+    {
+      "code": "{{ kurs.code }}",
+      "hp": "{{ kurs.hp }}",
+      "level": "{{ kurs.level }}",
+      "name": "{{ kurs.name }}"
+    },
+
   {% endfor %}
 ];
 

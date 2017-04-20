@@ -2,20 +2,21 @@
 <html>
   <head lang="en">
     <meta charset="UTF-8">
-    <title>Flask React</title>
+    <title>Course</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel= "stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bower_components/fixed-data-table/dist/fixed-data-table.css')}}">
+
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <!-- scripts -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.js"></script>
+    <script src="{{ url_for('static', filename='bower_components/react/react.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower_components/react/react-dom.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower_components/fixed-data-table/dist/fixed-data-table.js') }}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
   </head>
   <body>
     {% block body %}{% endblock %}
   </body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
 </html>

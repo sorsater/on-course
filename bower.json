@@ -1,0 +1,21 @@
+{
+  "name": "tddd27",
+  "authors": [
+    "Ludvig Noring <ludno249@student.liu.se>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "^15.5.4",
+    "bootstrap": "^3.3.7"
+  }
+}

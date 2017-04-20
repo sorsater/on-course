@@ -1,6 +1,9 @@
 from flask import Flask, render_template
 from plate import db, Courses, Programs, Schedule, Fields, Profiles, Course_profiles
 
+from flask import jsonify
+from flask import json
+
 import random
 
 app = Flask(__name__)
