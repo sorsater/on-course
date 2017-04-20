@@ -5,7 +5,7 @@ print("Scraping plates")
 #courses, schedule = scrape_courses()
 #programs, fields, profiles, course_profile = scrape_programs()
 
-courses, schedule, programs, fields, profiles, course_profile = scrape_content()
+courses, schedule, program_courses, programs, fields, profiles, course_profile = scrape_content()
 
 print("Inserting to db")
 conn = sqlite3.connect('plate.db')
@@ -58,5 +58,14 @@ try:
 except Exception as e:
     print(e)
     print("Failure: insert values to: 'CourseProfiles'")
+
+try:
+    c.executemany('INSERT INTO Program_courses VALUES (?,?,?)', program_courses)
+    conn.commit()
+    print("Success: insert values to: 'ProgramCourses'")
+except Exception as e:
+    print(e)
+    print("Failure: insert values to: 'ProgramCourses'")
+
 
 conn.close()

@@ -7,7 +7,7 @@ url_utbildningar = 'http://www.lith.liu.se/sh/civing/'
 url_datateknik7 = 'http://kdb-5.liu.se/liu/lith/studiehandboken/action.lasso?&-response=lot_response.lasso&-op=eq&kp_budget_year=2017&-op=eq&kp_programkod=D&-op=eq&kp_programprofil=D&-op=gt&kp_termin=6'
 
 # Read all courses from the URL
-def get_courses(url):
+def get_courses(url, programID):
     x = urllib.request.urlopen(url)
     soup = BeautifulSoup(x.read(), 'html.parser')
     table = soup.find('table').find('table')
@@ -15,6 +15,7 @@ def get_courses(url):
 
     courses = set()
     schedule = {}
+    program_courses = set()
     for row in rows[3:]:
         tds = row.find_all('td')
         # Course
@@ -23,13 +24,9 @@ def get_courses(url):
             if a:
                 kurskod = a.string
                 link = a['href']
-                #print(tds[2:])
-                #for jjj in tds[2:]:
-                #    print(jjj)
-                #    print(jjj.string)
-                #    print(jjj.string.strip())
                 name, level, vof, block, hp = ['-' if not td.string else td.string.strip() for td in tds[2:]]
                 courses.add( (kurskod, name, level, hp.replace('*', ''), link) )
+                program_courses.add( (kurskod, programID) )
 
                 # Both periods
                 if '*' in hp:
@@ -50,9 +47,13 @@ def get_courses(url):
 
     courses = [list(c) for c in courses]
     courses = list(courses)
+
+    program_courses = [list(c) for c in program_courses]
+    program_courses = list(program_courses)
+
     schedule = [schedule[key] for key in schedule]
 
-    return courses, schedule
+    return courses, schedule, program_courses
 
 # For each masters profile
 def get_profile_courses(url):
@@ -121,22 +122,26 @@ def get_fields(url):
 
 # Read courses and schedule for datateknik, need to be extended to all programs
 def scrape_courses(urls):
+
+    print("Reading all 7-9 courses")
     all_courses = []
     all_schedules = []
-    for url in urls:
+    all_program_courses = []
+    for i, (url, programID) in enumerate(urls):
+        progressbar((i+1)/len(urls))
         if url:
-            courses, schedule = get_courses(url)
+            courses, schedule, program_courses = get_courses(url, programID)
             all_courses += courses
             all_schedules += schedule
-
+            all_program_courses += program_courses
+    print()
     all_schedules = [[i] + x for i, x in enumerate(all_schedules)]
 
-    #all_courses = list(set(all_courses))
     all_courses = [[i] + x for i, x in enumerate(all_courses)]
 
+    all_program_courses = [[i] + x for i, x in enumerate(all_program_courses)]
 
-    return all_courses, all_schedules
-    #return get_courses(url_datateknik7)
+    return all_courses, all_schedules, all_program_courses
 
 # Read programs, fields, masters. Converted to list
 def scrape_programs():
@@ -149,7 +154,7 @@ def scrape_programs():
     for key, value in utbildningar.items():
         programs.append((value['ID'], key, value['href']))
         utbildningar[key]['fields'], all_courses = get_fields(value['href'])
-        urls_all_courses.append(all_courses)
+        urls_all_courses.append([all_courses, value['ID']])
 
     fields = []
     profiles = []
@@ -169,7 +174,7 @@ def scrape_programs():
     course_profile = []
     course_profile_cnt = 1
 
-    return programs, fields, profiles, course_profile, urls_all_courses
+    #return programs, fields, profiles, course_profile, urls_all_courses
     for i, (master_ID, master_name, field_ID, master_link) in enumerate(profiles):
         progressbar((i+1)/len(profiles))
         courses = get_profile_courses(master_link)
@@ -183,6 +188,6 @@ def scrape_programs():
 # Get all content
 def scrape_content():
     programs, fields, profiles, course_profile, urls_all_courses = scrape_programs()
-    courses, schedule = scrape_courses(urls_all_courses)
+    courses, schedule, program_courses = scrape_courses(urls_all_courses)
 
-    return courses, schedule, programs, fields, profiles, course_profile
+    return courses, schedule, program_courses, programs, fields, profiles, course_profile
