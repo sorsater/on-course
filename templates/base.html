@@ -2,21 +2,29 @@
 <html>
   <head lang="en">
     <meta charset="UTF-8">
-    <title>Course</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Course</title>
+
     <link rel= "stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='bower_components/fixed-data-table/dist/fixed-data-table.css')}}">
-
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <!-- scripts -->
+
+    <!-- React -->
     <script src="{{ url_for('static', filename='bower_components/react/react.js') }}"></script>
     <script src="{{ url_for('static', filename='bower_components/react/react-dom.js') }}"></script>
-    <script src="{{ url_for('static', filename='bower_components/fixed-data-table/dist/fixed-data-table.js') }}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+    <!-- Facebook login -->
+    <script src="{{ url_for('static', filename='javascript/fb.js') }}"></script>
+
+
+
   </head>
   <body>
+    {% include "header.html" %}
+
     {% block body %}{% endblock %}
+
+    {% include "footer.html" %}
   </body>
 
 </html>

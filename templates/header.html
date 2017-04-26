@@ -1,0 +1,30 @@
+<div id="FBLogin">asdfd</div>
+
+<script type="text/jsx">
+
+class FButton extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (<button onClick={this.onClick}>
+            FBLogin
+           </button>)
+  }
+
+  onClick(ev) {
+    alert('Hej');
+    console.log(ev);
+    checkLogin(function(x) {
+      console.log(x);
+    })
+  }
+
+};
+
+  ReactDOM.render(
+    (<FButton/>),
+    document.getElementById('FBLogin')
+  );
+</script>

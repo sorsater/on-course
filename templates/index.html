@@ -59,56 +59,57 @@
 /** @jsx React.DOM */
 
 
-var DynamicSearch = React.createClass({
-
-  // sets initial state
-  getInitialState: function(){
-    return { searchString: '' };
-  },
+// var DynamicSearch = React.createClass({
+class DynamicSearch extends React.Component{
+  constructor(props){
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {searchString: ''};
+  }
 
   // sets state, triggers render method
-  handleChange: function(event){
+  handleChange(event){
     // grab value form input box
     this.setState({searchString:event.target.value});
     console.log("scope updated!");
-  },
+  }
 
-  render: function() {
+  render() {
 
-    var countries = this.props.items;
+    var courses = this.props.items;
     var searchString = this.state.searchString.trim().toLowerCase();
 
-    // filter countries list by value from input box
+    // filter courses list by value from input box
     if(searchString.length > 0){
-      countries = countries.filter(function(country){
-        return (country.code+country.name).toLowerCase().match( searchString );
+      courses = courses.filter(function(course){
+        return (course.code+course.name).toLowerCase().match( searchString );
       });
     }
 
     return (
       <div>
         <input id="search" type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Vad får det lov att vara? 😋" />
-        <table>
+        <table><tbody>
 
-          { countries.map(function(country){ return (
-              <tr>
-                <td><a href="#">{country.code}</a></td>
-                <td>{country.hp}</td>
-                <td>{country.level}</td>
-                <td>{country.name}</td>
+          { courses.map(function(course){ return (
+              <tr key={course.code}>
+                <td><a href="#">{course.code}</a></td>
+                <td>{course.hp}</td>
+                <td>{course.level}</td>
+                <td>{course.name}</td>
               </tr>)
             })
           }
 
-        </table>
+        </tbody></table>
       </div>
     )
   }
 
-});
+};
 
-// list of countries, defined with JavaScript object literals
-var countries = [
+// list of courses, defined with JavaScript object literals
+var courses = [
   {% for kurs in kurser %}
     {
       "code": "{{ kurs.code }}",
@@ -121,7 +122,7 @@ var countries = [
 ];
 
 ReactDOM.render(
-  <DynamicSearch items={ countries } />,
+  <DynamicSearch items={ courses } />,
   document.getElementById('courses')
 );
 </script>
