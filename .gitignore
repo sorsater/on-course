@@ -12,3 +12,5 @@ instance/
 
 # DB
 *.db
+
+secrets.py

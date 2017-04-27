@@ -1,6 +1,14 @@
-<div id="FBLogin">asdfd</div>
+<div id="FBLogin">
+  {% if current_user.is_authenticated %}
+    Hi {{ current_user.nickname }}!
+    <a href="/logout">logga ut</a>
+  {% else %}
+  <a href="/authorize/facebook">F</a>
+  {% endif %}
 
-<script type="text/jsx">
+
+</div>
+<!-- <script type="text/jsx">
 
 class FButton extends React.Component {
   constructor(props) {
@@ -14,7 +22,6 @@ class FButton extends React.Component {
   }
 
   onClick(ev) {
-    alert('Hej');
     console.log(ev);
     checkLogin(function(x) {
       console.log(x);
@@ -27,4 +34,4 @@ class FButton extends React.Component {
     (<FButton/>),
     document.getElementById('FBLogin')
   );
-</script>
+</script> -->
