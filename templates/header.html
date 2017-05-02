@@ -3,11 +3,12 @@
     Hi {{ current_user.nickname }}!
     <a href="/logout">logga ut</a>
   {% else %}
-  <a href="/authorize/facebook">F</a>
+  <a href="/authorize/facebook"><button>Facebook</button></a>
   {% endif %}
 
 
 </div>
+
 <!-- <script type="text/jsx">
 
 class FButton extends React.Component {
