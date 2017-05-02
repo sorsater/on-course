@@ -13,4 +13,9 @@ instance/
 # DB
 *.db
 
+# Facebook secret key
 secrets.py
+
+# Package folder
+node_modules
+static/bower_components
