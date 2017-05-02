@@ -64,8 +64,9 @@ def load_user(id):
 
 @app.route('/')
 def index():
-    kurser = Courses.query.order_by(Courses.code)
-    return render_template('index.html', kurser=kurser)
+    courses = Courses.query.order_by(Courses.code)
+    profiles = Profiles.query.filter(Profiles.fieldID == 8)
+    return render_template('index.html', courses=courses, profiles=profiles)
 
 @app.route('/test')
 def hello():

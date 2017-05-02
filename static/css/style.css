@@ -18,6 +18,35 @@ table {
   background-color: #333;
 }
 
+.grey{
+  background-color: #333;
+}
+
+.gray{
+  background-color: #ddd;
+}
+
+.white{
+  color: #fff;
+}
+
+#floatingSchedule {
+    position: absolute;
+    top: 50px;
+    left: 200px;
+    z-index: 10;
+}
+
+.noborder {
+  border: 0px solid black;
+}
+
+.profileElement {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 #left div {
   padding: 10px;
 }

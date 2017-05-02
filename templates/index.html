@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-    <div class="container">
+    <div id="container">
       <table>
         <colgroup>
   <col style="width:80%">
@@ -38,9 +38,8 @@
     </td>
 
     <td id="right">
-
         <div id="calendar">
-          hejdå
+          <div id="courseSchedule"></div>
         </div>
 
     </td>
@@ -48,84 +47,336 @@
 </table>
     </div>
 
-
-
-
-
-
 <!-- scripts -->
 
 <script type="text/jsx">
 /** @jsx React.DOM */
 
+// begin teset
+class ProductCategoryRow extends React.Component {
+  render() {
+    return (<tr><th colSpan="2">{this.props.category}</th></tr>);
+  }
+}
 
-// var DynamicSearch = React.createClass({
-class DynamicSearch extends React.Component{
+class ProductRow extends React.Component {
+  render() {
+    var name = this.props.product.name;
+    return (
+      <tr>
+        <td>{this.props.product.price}</td>
+        <td>{name}</td>
+        <td>{this.props.product.category}</td>
+      </tr>
+    );
+  }
+}
+
+class ProductTable extends React.Component {
+  render() {
+    var rows = [];
+    var lastCategory = null;
+    this.props.products.forEach((product) => {
+      rows.push(<ProductRow product={product} key={product.name} />);
+    });
+    var tableStyle = {width: '100%'};
+    var tTdStyle = {width: '40%'};
+    var normalTdStyle = {width: '8%'};
+
+    return (
+      <table style={tableStyle}>
+        <thead>
+          <tr>
+            <th style={normalTdStyle}> </th>
+            <th style={tTdStyle}>HT1</th>
+            <th style={tTdStyle}>HT2</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </table>
+    );
+  }
+}
+
+
+class FilterableProductTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterText: '',
+      inStockOnly: false
+    };
+
+    this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
+  }
+
+  handleFilterTextInput(filterText) {
+    this.setState({
+      filterText: filterText
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <ProductTable
+          products={this.props.products}
+          filterText={this.state.filterText}
+        />
+      </div>
+    );
+  }
+}
+
+var PRODUCTS = [
+  {category: 'Sporting Goods', price: '1', stocked: true, name: 'Football'},
+  {category: 'Sporting Goods', price: '1', stocked: true, name: 'Baseball'},
+  {category: 'Sporting Goods', price: '2', stocked: false, name: 'Basketball'},
+  {category: 'Electronics', price: '3', stocked: true, name: 'iPod Touch'},
+  {category: 'Electronics', price: '3', stocked: false, name: 'iPhone 5'},
+  {category: 'Electronics', price: '4', stocked: true, name: 'Nexus 7'}
+];
+
+//ReactDOM.render(
+//  <FilterableProductTable products={PRODUCTS} />,
+//  document.getElementById('coursedSchedule')
+//);
+// end test
+
+function courseClick(course){
+    console.log("Course clicked: " + course.code);
+    console.log(course);
+    shoppingCart.push(course);
+    console.log(shoppingCart);
+    var pos = document.getElementById('ht1b1');
+    pos.innerHTML += course.code;
+};
+
+class CourseRow extends React.Component{
+  addCourse() {
+   this.props.onClick(this.props.course.code);
+  }
+  render() {
+    var nameTdStyle = {width: '70%', color: 'white'};
+    var normalTdStyle = {width: '8%', color: 'white'};
+
+    return (
+      <tr onClick={this.addCourse.bind(this)}>
+        <td style={normalTdStyle}><a href="#">{this.props.course.code}</a></td>
+        <td style={normalTdStyle}>{this.props.course.hp}</td>
+        <td style={normalTdStyle}>{this.props.course.level}</td>
+        <td style={nameTdStyle}>{this.props.course.name}</td>
+      </tr>)
+  }
+}
+
+class ProfileRow extends React.Component{
+  render() {
+    return (
+      <div className="col-sm-3 gray profileElement">
+        <input type="checkbox" name="ai" checked/>{this.props.profile.name}
+      </div>
+    )
+  }
+}
+
+class CourseViewer extends React.Component{
   constructor(props){
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {searchString: ''};
+    this.addCourse = this.addCourse.bind(this);
+    this.state = {searchString: '', courseList: []};
   }
 
   // sets state, triggers render method
   handleChange(event){
     // grab value form input box
     this.setState({searchString:event.target.value});
-    console.log("scope updated!");
+  }
+
+  // Adding course to the list
+  addCourse(code) {
+    console.log('clicking course', code);
+    this.state.courseList.push(code)
+    console.log(this.state.courseList)
   }
 
   render() {
 
-    var courses = this.props.items;
+    var courses = this.props.courses;
     var searchString = this.state.searchString.trim().toLowerCase();
 
     // filter courses list by value from input box
     if(searchString.length > 0){
       courses = courses.filter(function(course){
-        return (course.code+course.name).toLowerCase().match( searchString );
+        return (course.code + course.name).toLowerCase().match( searchString );
       });
     }
+    var courseRows = []
+    courses.forEach((course) => {
+      courseRows.push(<CourseRow key={course.code} course={course} handler={this.addCourse} onClick={this.addCourse.bind(this)}/>);
+    })
+
+    var tableStyle = {width: '100%'};
+    var divStyle = {padding: '20px'};
 
     return (
-      <div>
-        <input id="search" type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Vad får det lov att vara? 😋" />
-        <table><tbody>
-
-          { courses.map(function(course){ return (
-              <tr key={course.code}>
-                <td><a href="#">{course.code}</a></td>
-                <td>{course.hp}</td>
-                <td>{course.level}</td>
-                <td>{course.name}</td>
-              </tr>)
-            })
-          }
-
+      <div style={divStyle}>
+        <input id="search" type="text"
+              value={this.state.searchString}
+              onChange={this.handleChange}
+              placeholder="Vad får det lov att vara? 😋"
+        />
+        <table style={tableStyle}>
+        <tbody>
+        {courseRows}
         </tbody></table>
+      </div>
+    )
+  }
+};
+
+class ProfileSelector extends React.Component{
+  render() {
+    var profileRows = [];
+    var profiles = this.props.profiles
+
+    profiles.forEach((profile) => {
+      profileRows.push(<ProfileRow key={profile.id} profile={profile}/>);
+    });
+
+    console.log(profileRows)
+
+    var potatis = {color: 'red'};
+    return (
+      <div className="row white">
+        {profileRows}
       </div>
     )
   }
 
 };
 
+class MainPage extends React.Component{
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    var tableStyleLeft = {width: '70%'}
+    var tableStyleRight = {width: '30%'};
+
+    return (
+      <div className="row row-eq-height container-fluid">
+        <div className="col-sm-8 grey">
+          <ProfileSelector
+            profiles={this.props.profiles}
+          />
+          <CourseViewer
+            courses={this.props.courses}
+          />
+        </div>
+        <div className="col-sm-4 gray">
+            <div className="row">
+              <div className="col-sm-3 gray noborder">
+                Block
+              </div>
+              <div className="col-sm-3 gray noborder">
+                HT1
+              </div>
+              <div className="col-sm-3 gray noborder">
+                HT2
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-3 gray noborder">
+                1
+              </div>
+              <div className="col-sm-3 gray noborder">
+                TDDD27
+              </div>
+              <div className="col-sm-3 gray noborder">
+                TDDE01
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-3 gray noborder">
+                2
+              </div>
+              <div className="col-sm-3 gray noborder">
+                TATA24
+              </div>
+              <div className="col-sm-3 gray noborder">
+                TDDD83
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-3 gray noborder">
+                3
+              </div>
+              <div className="col-sm-3 gray noborder">
+                TAEN33
+              </div>
+              <div className="col-sm-3 gray noborder">
+
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-3 gray noborder">
+                4
+              </div>
+              <div className="col-sm-3 gray noborder">
+
+              </div>
+              <div className="col-sm-3 gray noborder">
+                TAMS27
+              </div>
+            </div>
+        </div>
+      </div>
+    )
+  }
+}
+
 // list of courses, defined with JavaScript object literals
 var courses = [
-  {% for kurs in kurser %}
+  {% for course in courses %}
     {
-      "code": "{{ kurs.code }}",
-      "hp": "{{ kurs.hp }}",
-      "level": "{{ kurs.level }}",
-      "name": "{{ kurs.name }}"
+      "code": "{{ course.code }}",
+      "hp": "{{ course.hp }}",
+      "level": "{{ course.level }}",
+      "name": "{{ course.name }}"
     },
+  {% endfor %}
+];
 
+var profiles = [
+  {% for prof in profiles %}
+    {
+      "id": "{{ prof.ID }}",
+      "name": "{{ prof.name }}",
+      "fieldID": "{{ prof.fieldID }}",
+      "link": "{{ prof.link }}",
+    },
+  {% endfor %}
+];
+
+
+var courseSchedule = [
+  {% for cs in schedule %}
+    {
+      "id": "{{ cs.ID }}",
+      "code": "{{ cs.code }}",
+      "period": "{{ cs.period }}",
+      "block1": "{{ cs.block1 }}",
+      "block2": "{{ cs.block2 }}",
+    },
   {% endfor %}
 ];
 
 ReactDOM.render(
-  <DynamicSearch items={ courses } />,
-  document.getElementById('courses')
+  <MainPage courses={ courses } profiles={profiles}/>,
+  document.getElementById('container')
 );
 </script>
-
 
 {% endblock %}
