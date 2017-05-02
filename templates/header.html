@@ -1,5 +1,6 @@
 <div id="FBLogin">
   {% if current_user.is_authenticated %}
+    <img src="http://graph.facebook.com/{{ current_user.social_id.split('$')[1] }}/picture?type=square">
     Hi {{ current_user.nickname }}!
     <a href="/logout">logga ut</a>
   {% else %}
