@@ -26,6 +26,14 @@ table {
   background-color: #ddd;
 }
 
+.course-row {
+  background-color: #333;
+  color: #fff;
+  padding: 0px;
+  border: none;
+  font-size: 16px;
+}
+
 .white{
   color: #fff;
 }

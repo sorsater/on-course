@@ -1,50 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
     <div id="container">
-      <table>
-        <colgroup>
-  <col style="width:80%">
-  <col style="width:20%">
-</colgroup>
-      <tr>
-      <td id="left">
-
-        <div id="bio">
-          <h2>Datateknik 🖥</h2>
-            <table>
-              <tr>
-                  <td><input type="checkbox" name="ai" checked>AI</td>
-                  <td><input type="checkbox" name="ss" checked>Datorsystem</td>
-                  <td><input type="checkbox" name="sp" checked>Elektro</td>
-                  <td><input type="checkbox" name="med" checked>Medicin</td>
-                  <td><input type="checkbox" name="ai" checked>Programmering Algo</td>
-                  <td><input type="checkbox" name="ss" checked>Storskalig Mjukvar</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" name="ai" checked>Signal & Bild</td>
-                  <td><input type="checkbox" name="ss" checked>Spel</td>
-                  <td><input type="checkbox" name="ai" checked>System On Chip</td>
-                  <td><input type="checkbox" name="ss" checked>Systemtek</td>
-                  <td><input type="checkbox" name="ai" checked>Säkra system</td>
-                  <td><input type="checkbox" name="ss" checked>Kina</td>
-              </tr>
-
-            </table>
-        </div>
-
-          <div id="courses">
-        </div>
-
-    </td>
-
-    <td id="right">
-        <div id="calendar">
-          <div id="courseSchedule"></div>
-        </div>
-
-    </td>
-  </tr>
-</table>
     </div>
 
 <!-- scripts -->
@@ -161,20 +117,32 @@ class CourseRow extends React.Component{
     var normalTdStyle = {width: '8%', color: 'white'};
 
     return (
-      <tr onClick={this.addCourse.bind(this)}>
-        <td style={normalTdStyle}><a href="#">{this.props.course.code}</a></td>
-        <td style={normalTdStyle}>{this.props.course.hp}</td>
-        <td style={normalTdStyle}>{this.props.course.level}</td>
-        <td style={nameTdStyle}>{this.props.course.name}</td>
-      </tr>)
+      <div className="row row-eq-height course-row" onClick={this.addCourse.bind(this)}>
+        <div className="col-sm-2 course-row">
+          <a href="#">{this.props.course.code}</a>
+        </div>
+        <div className="col-sm-1 course-row">
+          {this.props.course.hp}
+        </div>
+        <div className="col-sm-1 course-row">
+          {this.props.course.level}
+        </div>
+        <div className="col-sm-8 course-row">
+          {this.props.course.name}
+        </div>
+      </div>
+    )
   }
 }
 
 class ProfileRow extends React.Component{
+  profileCheckbox() {
+    this.props.onClick(this.props.profile.id);
+  }
   render() {
     return (
-      <div className="col-sm-3 gray profileElement">
-        <input type="checkbox" name="ai" checked/>{this.props.profile.name}
+      <div className="col-sm-3 gray profileElement" onClick={this.profileCheckbox.bind(this)}>
+        <input type="checkbox" name={this.props.profile.id} />{this.props.profile.name}
       </div>
     )
   }
@@ -197,12 +165,13 @@ class CourseViewer extends React.Component{
   // Adding course to the list
   addCourse(code) {
     console.log('clicking course', code);
-    this.state.courseList.push(code)
-    console.log(this.state.courseList)
+    this.state.courseList.push(code);
+    console.log(this.state.courseList);
   }
 
-  render() {
 
+
+  render() {
     var courses = this.props.courses;
     var searchString = this.state.searchString.trim().toLowerCase();
 
@@ -227,27 +196,33 @@ class CourseViewer extends React.Component{
               onChange={this.handleChange}
               placeholder="Vad får det lov att vara? 😋"
         />
-        <table style={tableStyle}>
-        <tbody>
+
         {courseRows}
-        </tbody></table>
+
       </div>
     )
   }
 };
 
 class ProfileSelector extends React.Component{
+  profileCheckbox(id) {
+    console.log('profile checkbox click')
+    console.log(id);
+
+    var profile_match = this.props.profiles.filter(function(profile) {
+      return (profile.id == id);
+    });
+    console.log(JSON.stringify(profile_match));
+  }
+
   render() {
     var profileRows = [];
     var profiles = this.props.profiles
 
     profiles.forEach((profile) => {
-      profileRows.push(<ProfileRow key={profile.id} profile={profile}/>);
+      profileRows.push(<ProfileRow key={profile.id} profile={profile} onClick={this.profileCheckbox.bind(this)}/>);
     });
 
-    console.log(profileRows)
-
-    var potatis = {color: 'red'};
     return (
       <div className="row white">
         {profileRows}
@@ -259,14 +234,15 @@ class ProfileSelector extends React.Component{
 
 class MainPage extends React.Component{
   constructor(props) {
-    super(props)
+    super(props);
   }
+
   render() {
     var tableStyleLeft = {width: '70%'}
     var tableStyleRight = {width: '30%'};
 
     return (
-      <div className="row row-eq-height container-fluid">
+      <div className="row row-eq-height container-fluid potatis">
         <div className="col-sm-8 grey">
           <ProfileSelector
             profiles={this.props.profiles}
@@ -360,15 +336,25 @@ var profiles = [
   {% endfor %}
 ];
 
-
-var courseSchedule = [
-  {% for cs in schedule %}
+var schedule = [
+  {% for sc in schedule %}
     {
-      "id": "{{ cs.ID }}",
-      "code": "{{ cs.code }}",
-      "period": "{{ cs.period }}",
-      "block1": "{{ cs.block1 }}",
-      "block2": "{{ cs.block2 }}",
+      "id": "{{ sc.ID }}",
+      "code": "{{ sc.code }}",
+      "period": "{{ sc.period }}",
+      "block1": "{{ sc.block1 }}",
+      "block2": "{{ sc.block2 }}",
+    },
+  {% endfor %}
+];
+
+var courseProfiles = [
+  {% for cp in course_profiles %}
+    {
+      "id": "{{ cp.ID }}",
+      "code": "{{ cp.code }}",
+      "profileID": "{{ cp.profileID }}",
+      "vof": "{{ cp.vof }}",
     },
   {% endfor %}
 ];
