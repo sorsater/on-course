@@ -141,7 +141,7 @@ class ProfileRow extends React.Component{
   }
   render() {
     return (
-      <div className="col-sm-3 gray profileElement" onClick={this.profileCheckbox.bind(this)}>
+      <div className="col-sm-3 profile-color profileElement" onClick={this.profileCheckbox.bind(this)}>
         <input type="checkbox" name={this.props.profile.id} />{this.props.profile.name}
       </div>
     )
@@ -222,10 +222,12 @@ class ProfileSelector extends React.Component{
     profiles.forEach((profile) => {
       profileRows.push(<ProfileRow key={profile.id} profile={profile} onClick={this.profileCheckbox.bind(this)}/>);
     });
-
+    var s = {padding: '15px'};
     return (
-      <div className="row white">
-        {profileRows}
+      <div style={s}>
+        <div className="row white">
+          {profileRows}
+        </div>
       </div>
     )
   }

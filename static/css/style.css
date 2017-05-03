@@ -26,6 +26,11 @@ table {
   background-color: #ddd;
 }
 
+.profile-color {
+  background-color: #444;
+  border: 1px solid #333;
+}
+
 .course-row {
   background-color: #333;
   color: #fff;
