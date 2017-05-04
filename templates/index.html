@@ -148,62 +148,6 @@ class ProfileRow extends React.Component{
   }
 }
 
-class CourseViewer extends React.Component{
-  constructor(props){
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.addCourse = this.addCourse.bind(this);
-    this.state = {searchString: '', courseList: []};
-  }
-
-  // sets state, triggers render method
-  handleChange(event){
-    // grab value form input box
-    this.setState({searchString:event.target.value});
-  }
-
-  // Adding course to the list
-  addCourse(code) {
-    console.log('clicking course', code);
-    this.state.courseList.push(code);
-    console.log(this.state.courseList);
-  }
-
-
-
-  render() {
-    var courses = this.props.courses;
-    var searchString = this.state.searchString.trim().toLowerCase();
-
-    // filter courses list by value from input box
-    if(searchString.length > 0){
-      courses = courses.filter(function(course){
-        return (course.code + course.name).toLowerCase().match( searchString );
-      });
-    }
-    var courseRows = []
-    courses.forEach((course) => {
-      courseRows.push(<CourseRow key={course.code} course={course} handler={this.addCourse} onClick={this.addCourse.bind(this)}/>);
-    })
-
-    var tableStyle = {width: '100%'};
-    var divStyle = {padding: '20px'};
-
-    return (
-      <div style={divStyle}>
-        <input id="search" type="text"
-              value={this.state.searchString}
-              onChange={this.handleChange}
-              placeholder="Vad får det lov att vara? 😋"
-        />
-
-        {courseRows}
-
-      </div>
-    )
-  }
-};
-
 class ProfileSelector extends React.Component{
   profileCheckbox(id) {
     console.log('profile checkbox click')
@@ -213,6 +157,7 @@ class ProfileSelector extends React.Component{
       return (profile.id == id);
     });
     console.log(JSON.stringify(profile_match));
+    this.props.profileCheckbox(id);
   }
 
   render() {
@@ -234,12 +179,57 @@ class ProfileSelector extends React.Component{
 
 };
 
-class MainPage extends React.Component{
-  constructor(props) {
+class CourseViewer extends React.Component{
+  constructor(props){
     super(props);
+    this.handleChangeSearch = this.handleChangeSearch.bind(this);
+    this.profileCheckbox = this.profileCheckbox.bind(this);
+    this.addCourse = this.addCourse.bind(this);
+    this.state = {
+      searchString: '',
+      courseList: [],
+      profileList: [],
+    };
+  }
+
+  // sets state, triggers render method
+  handleChangeSearch(event){
+    // Read value form input box
+    this.setState({searchString:event.target.value});
+  }
+
+  // Adding course to the list
+  addCourse(code) {
+    console.log('clicking course', code);
+    this.state.courseList.push(code);
+    console.log(this.state.courseList);
+  }
+
+  profileCheckbox(profileID) {
+    console.log('handleChangeProfile :) :) ');
+    console.log(profileID);
+    this.state.profileList.push(profileID);
+    console.log(this.state.profileList);
   }
 
   render() {
+    var courses = this.props.courses;
+    var searchString = this.state.searchString.trim().toLowerCase();
+
+    // filter courses list by value from input box
+    if(searchString.length > 0){
+      courses = courses.filter(function(course){
+        return (course.code + course.name).toLowerCase().match( searchString );
+      });
+    }
+    var courseRows = []
+    courses.forEach((course) => {
+      courseRows.push(<CourseRow key={course.code} course={course}  onClick={this.addCourse.bind(this)}/>);
+    })
+
+    var tableStyle = {width: '100%'};
+    var divStyle = {padding: '20px'};
+
     var tableStyleLeft = {width: '70%'}
     var tableStyleRight = {width: '30%'};
 
@@ -247,11 +237,17 @@ class MainPage extends React.Component{
       <div className="row row-eq-height container-fluid potatis">
         <div className="col-sm-8 grey">
           <ProfileSelector
+            profileCheckbox={this.profileCheckbox.bind(this)}
             profiles={this.props.profiles}
           />
-          <CourseViewer
-            courses={this.props.courses}
-          />
+          <div style={divStyle}>
+            <input id="search" type="text"
+                  value={this.state.searchString}
+                  onChange={this.handleChangeSearch}
+                  placeholder="Vad får det lov att vara? 😋"
+            />
+            {courseRows}
+          </div>
         </div>
         <div className="col-sm-4 gray">
             <div className="row">
@@ -362,7 +358,7 @@ var courseProfiles = [
 ];
 
 ReactDOM.render(
-  <MainPage courses={ courses } profiles={profiles}/>,
+  <CourseViewer courses={ courses } profiles={profiles}/>,
   document.getElementById('container')
 );
 </script>
