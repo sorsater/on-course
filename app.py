@@ -64,11 +64,16 @@ def load_user(id):
 
 @app.route('/')
 def index():
+    # ID for datateknik, used by program_courses
+    datateknik = Programs.query.filter(Programs.name == 'Datateknik').all()
+    fields = Fields.query.filter(Fields.programID == datateknik[0].ID)
     courses = Courses.query.order_by(Courses.code)
+    #programs = Programs.query.order_by(Programs.ID)
     profiles = Profiles.query.filter(Profiles.fieldID == 8)
     schedule = Schedule.query.order_by(Schedule.ID)
     course_profiles = Course_profiles.query.order_by(Course_profiles.ID)
-    return render_template('index.html', courses=courses, profiles=profiles, schedule=schedule, course_profiles=course_profiles)
+    program_courses = Program_courses.query.filter(Program_courses.programID == datateknik[0].ID)
+    return render_template('index.html', courses=courses, profiles=profiles, schedule=schedule, course_profiles=course_profiles, program_courses=program_courses, program=datateknik, fields=fields)
 
 @app.route('/test')
 def hello():

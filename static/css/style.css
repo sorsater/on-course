@@ -3,81 +3,11 @@
 body {
   margin: 0px;
   background-color: #444;
-}
-.container {
-  height: auto;
-  width: 100%;
-  color: #fff;
-
-}
-table {
-  table-layout: fixed; width: 100%;
-  border-spacing: 0px;
-}
-#left {
-  background-color: #333;
+  color: #333;
 }
 
-.grey{
-  background-color: #333;
-}
-
-.gray{
-  background-color: #ddd;
-}
-
-.profile-color {
-  background-color: #444;
-  border: 1px solid #333;
-}
-
-.course-row {
-  background-color: #333;
-  color: #fff;
-  padding: 0px;
-  border: none;
-  font-size: 16px;
-}
-
-.white{
-  color: #fff;
-}
-
-#floatingSchedule {
-    position: absolute;
-    top: 50px;
-    left: 200px;
-    z-index: 10;
-}
-
-.noborder {
-  border: 0px solid black;
-}
-
-.profileElement {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-#left div {
-  padding: 10px;
-}
-
-#search {
-  width: 80%;
-  height: 30px;
-  font-size: 30px;
-  color: #222;
-}
-
-#right {
-  background-color: #666;
-  height: 100%;
-}
-
-#right div {
-  height: 100%;
+input[type=checkbox] {
+  margin-right: 5px;
 }
 
 a {
@@ -88,4 +18,67 @@ a {
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 26.4px;
+}
+
+#selectedProgram {
+  color: #fff;
+  font-size: 30px;
+}
+
+#selectedField {
+  color: #fff;
+  font-size: 20px;
+
+}
+
+#selectedField select {
+  background-color: #000;
+}
+
+#search {
+  width: 80%;
+  height: 30px;
+  font-size: 30px;
+  color: #222;
+}
+
+.grey{
+  background-color: #333;
+}
+
+.light-grey{
+  background-color: #ddd;
+}
+
+.profileSelected {
+  background-color: #666;
+  border: 1px solid #333;
+}
+
+.profileUnselected {
+  background-color: #444;
+  border: 1px solid #333;
+}
+
+.course-row {
+  background-color: #333;
+  color: #fff;
+  padding: 0px;
+  border: none;
+  font-size: 16px;
+  margin-left: 2px;
+}
+
+.white{
+  color: #fff;
+}
+
+.noborder {
+  border: 0px solid black;
+}
+
+.profileElement {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

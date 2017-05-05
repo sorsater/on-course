@@ -1,103 +1,12 @@
 {% extends "base.html" %}
 {% block body %}
+    <!-- The main div that content is generated in -->
     <div id="container">
     </div>
 
 <!-- scripts -->
-
 <script type="text/jsx">
 /** @jsx React.DOM */
-
-// begin teset
-class ProductCategoryRow extends React.Component {
-  render() {
-    return (<tr><th colSpan="2">{this.props.category}</th></tr>);
-  }
-}
-
-class ProductRow extends React.Component {
-  render() {
-    var name = this.props.product.name;
-    return (
-      <tr>
-        <td>{this.props.product.price}</td>
-        <td>{name}</td>
-        <td>{this.props.product.category}</td>
-      </tr>
-    );
-  }
-}
-
-class ProductTable extends React.Component {
-  render() {
-    var rows = [];
-    var lastCategory = null;
-    this.props.products.forEach((product) => {
-      rows.push(<ProductRow product={product} key={product.name} />);
-    });
-    var tableStyle = {width: '100%'};
-    var tTdStyle = {width: '40%'};
-    var normalTdStyle = {width: '8%'};
-
-    return (
-      <table style={tableStyle}>
-        <thead>
-          <tr>
-            <th style={normalTdStyle}> </th>
-            <th style={tTdStyle}>HT1</th>
-            <th style={tTdStyle}>HT2</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </table>
-    );
-  }
-}
-
-
-class FilterableProductTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filterText: '',
-      inStockOnly: false
-    };
-
-    this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
-  }
-
-  handleFilterTextInput(filterText) {
-    this.setState({
-      filterText: filterText
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <ProductTable
-          products={this.props.products}
-          filterText={this.state.filterText}
-        />
-      </div>
-    );
-  }
-}
-
-var PRODUCTS = [
-  {category: 'Sporting Goods', price: '1', stocked: true, name: 'Football'},
-  {category: 'Sporting Goods', price: '1', stocked: true, name: 'Baseball'},
-  {category: 'Sporting Goods', price: '2', stocked: false, name: 'Basketball'},
-  {category: 'Electronics', price: '3', stocked: true, name: 'iPod Touch'},
-  {category: 'Electronics', price: '3', stocked: false, name: 'iPhone 5'},
-  {category: 'Electronics', price: '4', stocked: true, name: 'Nexus 7'}
-];
-
-//ReactDOM.render(
-//  <FilterableProductTable products={PRODUCTS} />,
-//  document.getElementById('coursedSchedule')
-//);
-// end test
 
 function courseClick(course){
     console.log("Course clicked: " + course.code);
@@ -136,13 +45,35 @@ class CourseRow extends React.Component{
 }
 
 class ProfileRow extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      'selected': 'profileUnselected',
+      'checked': false
+    }
+  }
+
   profileCheckbox() {
     this.props.onClick(this.props.profile.id);
+    var css = (this.state.selected === 'profileUnselected') ? 'profileSelected' : 'profileUnselected'
+    this.setState({
+      'selected': css,
+      'checked': !this.state.checked
+    })
   }
+
   render() {
     return (
-      <div className="col-sm-3 profile-color profileElement" onClick={this.profileCheckbox.bind(this)}>
-        <input type="checkbox" name={this.props.profile.id} />{this.props.profile.name}
+      <div
+        className={"col-sm-3 profileElement" + ' ' + this.state.selected}
+        onClick={this.profileCheckbox.bind(this)}
+      >
+        <input
+          type="checkbox"
+          name={this.props.profile.id}
+          checked={this.state.checked}
+        />
+        {this.props.profile.name}
       </div>
     )
   }
@@ -176,32 +107,136 @@ class ProfileSelector extends React.Component{
       </div>
     )
   }
-
 };
 
-class CourseViewer extends React.Component{
+class ScheduleViewer extends React.Component{
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+      {this.props.selectedCourses}
+      <div className="row">
+        <div className="col-sm-3 light-grey noborder">
+          Block
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+          Period 1
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+          Period 2
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-3 light-grey noborder">
+          1
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+          TDDD27
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+          TDDE01
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-3 light-grey noborder">
+          2
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+          TATA24
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+          TDDD83
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-3 light-grey noborder">
+          3
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+          TAEN33
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-3 light-grey noborder">
+          4
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+
+        </div>
+        <div className="col-sm-3 light-grey noborder">
+          TAMS27
+        </div>
+      </div>
+      </div>
+    )
+  }
+}
+
+class FieldRow extends React.Component {
+  render() {
+    return(
+      <option value={this.props.field.id}>
+        {this.props.field.name}
+      </option>
+    )
+  }
+
+}
+class Fields extends React.Component {
+  onChange(event) {
+    this.props.onChange(event.target.value);
+  }
+  render() {
+    var fieldRows = []
+    this.props.fields.forEach((field) => {
+      fieldRows.push(<FieldRow key={field.id} field={field}/>);
+    });
+    return (
+      <select onChange={this.onChange.bind(this)}>
+        {fieldRows}
+      </select>
+    )
+  }
+}
+
+class CourseViewer extends React.Component {
   constructor(props){
     super(props);
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.profileCheckbox = this.profileCheckbox.bind(this);
     this.addCourse = this.addCourse.bind(this);
+    this.fieldSelect = this.fieldSelect.bind(this);
+
     this.state = {
+      selectedField: -1,
       searchString: '',
       courseList: [],
       profileList: [],
+      currentField: 'none',
     };
   }
 
   // sets state, triggers render method
   handleChangeSearch(event){
     // Read value form input box
-    this.setState({searchString:event.target.value});
+    this.setState({
+      searchString: event.target.value
+    });
   }
 
   // Adding course to the list
   addCourse(code) {
     console.log('clicking course', code);
-    this.state.courseList.push(code);
+    //this.state.courseList.push(code);
+    console.log(this.state.courseList);
+    this.setState({
+      courseList: this.state.courseList.concat([code])
+    })
     console.log(this.state.courseList);
   }
 
@@ -212,8 +247,19 @@ class CourseViewer extends React.Component{
     console.log(this.state.profileList);
   }
 
+  fieldSelect(fieldID) {
+    var fieldName =
+      this.props.fields.filter(function(field) {
+        return (field.id == fieldID)
+      }
+    )[0].name;
+    console.log("Field selected: " + fieldID + ' ' + fieldName);
+    this.setState({ currentField: fieldID })
+  }
+
   render() {
     var courses = this.props.courses;
+
     var searchString = this.state.searchString.trim().toLowerCase();
 
     // filter courses list by value from input box
@@ -236,75 +282,33 @@ class CourseViewer extends React.Component{
     return (
       <div className="row row-eq-height container-fluid potatis">
         <div className="col-sm-8 grey">
+          <div id="selectedProgram">
+            Valt program: {this.props.program.name}
+          </div>
+          <div id="selectedField">
+            Valt huvudområde:
+            <Fields
+              fields={fields}
+              onChange={this.fieldSelect.bind(this)}
+            />
+          </div>
           <ProfileSelector
             profileCheckbox={this.profileCheckbox.bind(this)}
             profiles={this.props.profiles}
           />
           <div style={divStyle}>
             <input id="search" type="text"
-                  value={this.state.searchString}
-                  onChange={this.handleChangeSearch}
-                  placeholder="Vad får det lov att vara? 😋"
+              value={this.state.searchString}
+              onChange={this.handleChangeSearch}
+              placeholder="Vad får det lov att vara? 😋"
             />
             {courseRows}
           </div>
         </div>
-        <div className="col-sm-4 gray">
-            <div className="row">
-              <div className="col-sm-3 gray noborder">
-                Block
-              </div>
-              <div className="col-sm-3 gray noborder">
-                HT1
-              </div>
-              <div className="col-sm-3 gray noborder">
-                HT2
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-3 gray noborder">
-                1
-              </div>
-              <div className="col-sm-3 gray noborder">
-                TDDD27
-              </div>
-              <div className="col-sm-3 gray noborder">
-                TDDE01
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-3 gray noborder">
-                2
-              </div>
-              <div className="col-sm-3 gray noborder">
-                TATA24
-              </div>
-              <div className="col-sm-3 gray noborder">
-                TDDD83
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-3 gray noborder">
-                3
-              </div>
-              <div className="col-sm-3 gray noborder">
-                TAEN33
-              </div>
-              <div className="col-sm-3 gray noborder">
-
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-3 gray noborder">
-                4
-              </div>
-              <div className="col-sm-3 gray noborder">
-
-              </div>
-              <div className="col-sm-3 gray noborder">
-                TAMS27
-              </div>
-            </div>
+        <div className="col-sm-4 light-grey">
+          <ScheduleViewer
+            selectedCourses={this.state.courseList}
+          />
         </div>
       </div>
     )
@@ -357,8 +361,51 @@ var courseProfiles = [
   {% endfor %}
 ];
 
+var programCourses = [
+  {% for pc in program_courses %}
+    {
+      "id": "{{ pc.ID }}",
+      "code": "{{ pc.code }}",
+      "programID": "{{ pc.programID }}",
+    },
+  {% endfor %}
+];
+
+var program = [
+  {% for p in program %}
+    {
+      "id": "{{ p.ID }}",
+      "name": "{{ p.name }}",
+      "link": "{{ p.link }}",
+    },
+  {% endfor %}
+];
+
+var fields = [
+  {% for f in fields %}
+    {
+      "id": "{{ f.ID }}",
+      "name": "{{ f.name }}",
+      "programID": "{{ f.programID }}",
+    },
+  {% endfor %}
+];
+
+// Filter out courses that belong to certain program
+var selectedCourses = [];
+courses.forEach(function(c) {
+  if (programCourses.some(pc => pc.code == c.code)) {
+    selectedCourses.push(c)
+  }
+});
+
 ReactDOM.render(
-  <CourseViewer courses={ courses } profiles={profiles}/>,
+  <CourseViewer
+    program={ program[0] }
+    fields={ fields }
+    courses={ selectedCourses }
+    profiles={ profiles }
+  />,
   document.getElementById('container')
 );
 </script>
