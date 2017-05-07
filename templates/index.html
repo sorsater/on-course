@@ -23,11 +23,19 @@ class Schedule extends React.Component {
     super(props);
   }
   render() {
-    console.log('kurser:');
-    console.log(this.props.courses);
+
+    var codes = [];
+    this.props.courses.forEach(function(c) {
+      console.log(c);
+      console.log(c.code);
+      console.log('period1: ', c.block1);
+      console.log('period2: ', c.block2);
+      codes.push(c.code);
+    });
+
     return (
       <div>
-      { this.props.courses }
+      { codes }
       <div className="row">
         <div className="col-sm-3 light-grey noborder">
           Block
@@ -89,12 +97,17 @@ class Schedule extends React.Component {
 }
 
 // One element for each profile
-class ProfileRow extends React.Component{
+class ProfileRow extends React.Component {
   constructor(props) {
     super(props);
+    this.handleChange = this.handleChange.bind(this);
+    var selected = 'profileUnselected'
+    if (props.default === true){
+      selected = 'profileSelected';
+    }
     this.state = {
-      'selected': 'profileUnselected',
-      'checked': false
+      'selected': selected,
+      'checked': props.default,
     }
   }
 
@@ -103,66 +116,70 @@ class ProfileRow extends React.Component{
       'id': this.props.profile.id,
       'checked': !this.state.checked,
     });
-    var css = (this.state.selected === 'profileUnselected') ? 'profileSelected' : 'profileUnselected'
+    var css = (this.state.selected === 'profileUnselected') ? 'profileSelected' : 'profileUnselected';
     this.setState({
       'selected': css,
       'checked': !this.state.checked
-    })
+    });
   }
+
+  handleChange(event) {}
 
   render() {
     return (
       <div
-        className={"col-sm-3 profileElement" + ' ' + this.state.selected}
-        onClick={this.profileCheckbox.bind(this)}
+        className={ "col-sm-3 profileElement" + ' ' + this.state.selected }
+        onClick={ this.profileCheckbox.bind(this) }
       >
         <input
           type="checkbox"
-          name={this.props.profile.id}
-          checked={this.state.checked}
+          name={ this.props.profile.id }
+          checked={ this.state.checked }
+          onChange={ this.handleChange }
         />
-        {this.props.profile.name}
+        { this.props.profile.name }
       </div>
     )
   }
 }
 
 // The checkboxes for the different profiles
-class Profiles extends React.Component{
+class Profiles extends React.Component {
   profileCheckbox(id) {
     this.props.profileCheckbox(id);
   }
 
   render() {
     var profileRows = [];
-
     var all_courses = {
       'id': -1,
       'name': 'Alla kurser',
-    }
+    };
 
     profileRows.push(
       <ProfileRow
         key='all'
         profile={ all_courses }
-        onClick={this.profileCheckbox.bind(this) }
+        default={true}
+        onClick={ this.profileCheckbox.bind(this) }
       />
     );
 
     this.props.profiles.forEach((profile) => {
       profileRows.push(
         <ProfileRow
-          key={profile.id}
-          profile={profile}
-          onClick={this.profileCheckbox.bind(this)}
+          key={ profile.id }
+          default={false}
+          profile={ profile }
+          onClick={ this.profileCheckbox.bind(this) }
         />
       );
     });
-    var s = {padding: '15px'};
+    var s = { padding: '15px' };
     return (
-      <div style={s}>
+      <div style={ s }>
         <div className="row white">
-          {profileRows}
+          { profileRows }
         </div>
       </div>
     )
@@ -173,8 +190,8 @@ class Profiles extends React.Component{
 class FieldRow extends React.Component {
   render() {
     return(
-      <option value={this.props.field.id}>
-        {this.props.field.name}
+      <option value={ this.props.field.id }>
+        { this.props.field.name }
       </option>
     )
   }
@@ -207,8 +224,8 @@ class Fields extends React.Component {
       );
     });
     return (
-      <select onChange={this.onChange.bind(this)}>
-        {fieldRows}
+      <select onChange={ this.onChange.bind(this) }>
+        { fieldRows }
       </select>
     )
   }
@@ -222,7 +239,7 @@ class Semester extends React.Component {
 
   render() {
     return (
-      <select onChange={this.onChange.bind(this)}>
+      <select onChange={ this.onChange.bind(this) }>
         <option name="All">All</option>
         <option name="7">7</option>
         <option name="8">8</option>
@@ -233,39 +250,42 @@ class Semester extends React.Component {
 }
 
 // One row for each course
-class CourseRow extends React.Component{
+class CourseRow extends React.Component {
   addCourse() {
-   this.props.onClick({
-     'code': this.props.course.code,
-     'value': true,
+    var c = this.props.course;
+
+    this.props.onClick({
+      'code': c.code,
+      'block1': c.block1,
+      'block2': c.block2,
    });
   }
   render() {
-    var nameTdStyle = {width: '70%', color: 'white'};
-    var normalTdStyle = {width: '8%', color: 'white'};
+    var nameTdStyle = { width: '70%', color: 'white' };
+    var normalTdStyle = { width: '8%', color: 'white' };
 
     return (
-      <div className="row row-eq-height course-row" onClick={this.addCourse.bind(this)}>
+      <div className="row row-eq-height course-row" onClick={ this.addCourse.bind(this) }>
         <div className="col-sm-2 course-row">
-          <a href="#">{this.props.course.code}</a>
+          <a href="#">{ this.props.course.code }</a>
         </div>
         <div className="col-sm-1 course-row">
-          {this.props.course.hp}
+          { this.props.course.hp }
         </div>
         <div className="col-sm-1 course-row">
-          {this.props.course.level}
+          { this.props.course.level }
         </div>
         <div className="col-sm-1 course-row">
-          {this.props.course.semester}
+          { this.props.course.semester }
         </div>
         <div className="col-sm-1 course-row">
-          {this.props.course.block1}
+          { this.props.course.block1 }
         </div>
         <div className="col-sm-1 course-row">
-          {this.props.course.block2}
+          { this.props.course.block2 }
         </div>
         <div className="col-sm-5 course-row">
-          {this.props.course.name}
+          { this.props.course.name }
         </div>
       </div>
     )
@@ -286,7 +306,7 @@ class CourseViewer extends React.Component {
       selectedField: -1,
       searchString: '',
       courseList: [],
-      profileList: [],
+      profileList: [-1],
       currentField: 'none',
       currentSemester: 'All',
     };
@@ -320,11 +340,11 @@ class CourseViewer extends React.Component {
   }
 
   // Adding course to the list
-  handleChangeCourse(codeObj) {
-    var code = codeObj.code;
-    var val = codeObj.value;
-    console.log('clicking course: ', code, val);
-    this.setState({ courseList: this.state.courseList.concat([code]) })
+  handleChangeCourse(course) {
+    //var code = codeObj.code;
+    //var val = codeObj.value;
+    //console.log('clicking course: ', code, val);
+    this.setState({ courseList: this.state.courseList.concat([course]) })
   }
 
   render() {
@@ -344,12 +364,12 @@ class CourseViewer extends React.Component {
     // Filter out valid courses in profileCourses
     if (profileList.indexOf(-1) === -1){
       this.props.profileCourses.forEach(function(prof) {
-        if (profileList.some(pl => pl.match(prof.profileID))) {
+        if (profileList.some(pl => pl == prof.profileID)) {
           validProfilesCourses.push(prof.code);
         }
       })
     } else {
-      this.props.profileCourses.forEach(function(prof) {
+      this.props.courses.forEach(function(prof) {
         validProfilesCourses.push(prof.code);
       });
     }
@@ -525,6 +545,20 @@ var profileCourses = [
     {% endfor %}
   {% endfor %}
 ];
+
+// Sort the courses
+// Sort the courses
+courses.sort(function(a, b) {
+  var a_code = a.code;
+  var b_code = b.code;
+  if (a_code < b_code){
+    return -1;
+  }
+  if (a_code > b_code){
+    return 1;
+  }
+  return 0;
+});
 
 // Render the webpage
 ReactDOM.render(
