@@ -148,16 +148,17 @@ class Course_profile(db.Model):
 class Program_course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     #code = db.Column(db.String(100))
+    code = db.Column(db.String(100), db.ForeignKey('course.code'))
     #program_id = db.Column(db.Integer)
     program_id = db.Column(db.Integer, db.ForeignKey('program.id'))
 
-    code = db.Column(db.String(100), db.ForeignKey('course.code'))
+
     course = db.relationship("Course")
 
-    def __init__(self, id, code, program_id):
+    def __init__(self, id, program_id, code):
         self.id = id
-        self.code = code
         self.program_id = program_id
+        self.code = code
 
     def __repr__(self):
-        return 'Program_course: {0} program: {1}'.format(self.code, self.program_id)
+        return 'ProgramCourse {} {} {}'.format(self.id, self.program_id, self.code)
