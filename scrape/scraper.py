@@ -35,9 +35,12 @@ def get_courses(url, programID):
                     period = current_period[0] + current_period[-1]
 
                 if current_period[-1] == '2' and '*' in hp:
-                    schedule[kurskod+period][3] = block
+                    schedule[kurskod+period][4] = block
                 else:
-                    schedule[kurskod+period] = [kurskod, period[0], period[1], block, '']
+                    if current_period[-1] == '2':
+                        schedule[kurskod+period] = [kurskod, period[0], period[1], '', block]
+                    else:
+                        schedule[kurskod+period] = [kurskod, period[0], period[1], block, '']
 
         # HT/VTh
         else:

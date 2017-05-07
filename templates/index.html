@@ -317,93 +317,53 @@ class CourseViewer extends React.Component {
 
 // list of courses, defined with JavaScript object literals
 var courses = [
-  {% for course in courses %}
+  {% for pc in program.courses %}
     {
-      "code": "{{ course.code }}",
-      "hp": "{{ course.hp }}",
-      "level": "{{ course.level }}",
-      "name": "{{ course.name }}"
-    },
-  {% endfor %}
-];
-
-var profiles = [
-  {% for prof in profiles %}
-    {
-      "id": "{{ prof.ID }}",
-      "name": "{{ prof.name }}",
-      "fieldID": "{{ prof.fieldID }}",
-      "link": "{{ prof.link }}",
-    },
-  {% endfor %}
-];
-
-var schedule = [
-  {% for sc in schedule %}
-    {
-      "id": "{{ sc.ID }}",
-      "code": "{{ sc.code }}",
-      "period": "{{ sc.period }}",
-      "block1": "{{ sc.block1 }}",
-      "block2": "{{ sc.block2 }}",
-    },
-  {% endfor %}
-];
-
-var courseProfiles = [
-  {% for cp in course_profiles %}
-    {
-      "id": "{{ cp.ID }}",
-      "code": "{{ cp.code }}",
-      "profileID": "{{ cp.profileID }}",
-      "vof": "{{ cp.vof }}",
-    },
-  {% endfor %}
-];
-
-var programCourses = [
-  {% for pc in program_courses %}
-    {
-      "id": "{{ pc.ID }}",
-      "code": "{{ pc.code }}",
-      "programID": "{{ pc.programID }}",
+      "code": "{{ pc.course.code }}",
+      "hp": "{{ pc.course.hp }}",
+      "level": "{{ pc.course.level }}",
+      "name": "{{ pc.course.name }}"
     },
   {% endfor %}
 ];
 
 var program = [
-  {% for p in program %}
     {
-      "id": "{{ p.ID }}",
-      "name": "{{ p.name }}",
-      "link": "{{ p.link }}",
+      "id": "{{ program.id }}",
+      "name": "{{ program.name }}",
+      "link": "{{ program.link }}",
     },
-  {% endfor %}
 ];
 
 var fields = [
-  {% for f in fields %}
+  {% for f in program.fields %}
     {
-      "id": "{{ f.ID }}",
+      "id": "{{ f.id }}",
       "name": "{{ f.name }}",
-      "programID": "{{ f.programID }}",
+      "programID": "{{ f.program_id }}",
     },
   {% endfor %}
 ];
 
-// Filter out courses that belong to certain program
-var selectedCourses = [];
-courses.forEach(function(c) {
-  if (programCourses.some(pc => pc.code == c.code)) {
-    selectedCourses.push(c)
-  }
-});
+var profiles = [
+  {% for field in program.fields %}
+    {% for profile in field.profiles %}
+      {
+        "id": "{{ profile.id }}",
+        "name": "{{ profile.name }}",
+        "fieldID": "{{ profile.field_id }}",
+        "link": "{{ profile.link }}",
+      },
+    {% endfor %}
+  {% endfor %}
+];
+
 
 ReactDOM.render(
   <CourseViewer
-    program={ program[0] }
+    program={ program }
     fields={ fields }
-    courses={ selectedCourses }
+    courses={ courses }
     profiles={ profiles }
   />,
   document.getElementById('container')

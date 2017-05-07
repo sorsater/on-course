@@ -62,22 +62,33 @@ def logout():
 def load_user(id):
     return User.query.get(int(id))
 
-@app.route('/')
-def index():
+@app.route('/<selected_program>')
+def index(selected_program):
     # ID for datateknik, used by program_courses
-    datateknik = Programs.query.filter(Programs.name == 'Datateknik').all()
-    fields = Fields.query.filter(Fields.programID == datateknik[0].ID)
-    courses = Courses.query.order_by(Courses.code)
-    #programs = Programs.query.order_by(Programs.ID)
-    profiles = Profiles.query.filter(Profiles.fieldID == 8)
-    schedule = Schedule.query.order_by(Schedule.ID)
-    course_profiles = Course_profiles.query.order_by(Course_profiles.ID)
-    program_courses = Program_courses.query.filter(Program_courses.programID == datateknik[0].ID)
-    return render_template('index.html', courses=courses, profiles=profiles, schedule=schedule, course_profiles=course_profiles, program_courses=program_courses, program=datateknik, fields=fields)
+    #program = Programs.query.filter(Programs.name == selected_program).all()
+    program = Program.query.filter(Program.name == selected_program).one()
+    return render_template('index.html', program=program)
+
+
+
+
+    #fields = Fields.query.filter(Fields.programID == program.ID)
+    #courses = Courses.query.order_by(Courses.code)
+    #programs = Program.query.order_by(Programs.ID)
+    #profiles = Profiles.query.filter(Profiles.fieldID == 8)
+    #schedule = Schedule.query.order_by(Schedule.ID)
+    #course_profiles = Course_profiles.query.order_by(Course_profiles.ID)
+    #program_courses = Program_courses.query.filter(Program_courses.programID == program[0].ID)
+    #return render_template('index.html', courses=courses, profiles=profiles, schedule=schedule, course_profiles=course_profiles, program_courses=program_courses, program=program, fields=fields)
 
 @app.route('/test')
 def hello():
     return render_template('hello.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return 'potatis', 404
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=True)

@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+import os.path
 db = SQLAlchemy()
 
 class User(UserMixin, db.Model):
@@ -27,16 +28,16 @@ class User(UserMixin, db.Model):
         return '<User %s %s %s %s>' % (self.id, self.social_id, self.nickname, self.email)
 
 # Kurser, ett entry per kurs, TANA09, TDDD27...
-class Courses(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
+class Course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(20))
     name = db.Column(db.String(80), unique=True)
     level = db.Column(db.String(10))
     hp = db.Column(db.Integer)
     link = db.Column(db.String(500), unique=True)
 
-    def __init__(self, ID, code, name, level, hp, link):
-        self.ID = ID
+    def __init__(self, id, code, name, level, hp, link):
+        self.id = id
         self.code = code
         self.name = name
         self.level = level
@@ -44,26 +45,66 @@ class Courses(db.Model):
         self.link = link
 
     def __repr__(self):
-        return 'Course {0} name: {1} level: {2} hp: {3}'.format(self.code, self.name, self.level, self.hp)
+        return '(Course {} {} {} {} {})'.format(self.id, self.code, self.name, self.level, self.hp)
 
 # Utbildningsprogram, D, M, I...
-class Programs(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
+class Program(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     link = db.Column(db.String(500), unique=True)
 
-    def __init__(self, ID, name, link):
-        self.ID = ID
+    fields = db.relationship("Field")
+    courses = db.relationship("Program_course")
+
+    def __init__(self, id, name, link):
+        self.id = id
         self.name = name
         self.link = link
 
     def __repr__(self):
-        return 'Program {0} with name {1}'.format(self.ID, self.name)
+        return '(Program {} {} {})'.format(self.id, self.name, os.path.basename(self.link))
+
+
+# Field
+class Field(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    program_id = db.Column(db.Integer, db.ForeignKey('program.id'))
+
+    profiles = db.relationship("Profile")
+
+    def __init__(self, id, name, program_id):
+        self.id = id
+        self.name = name
+        self.program_id = program_id
+
+    def __repr__(self):
+        return 'Field {} {} {}'.format(self.id, self.program_id, self.name)
+
+# Profiles
+class Profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    #field_id = db.Column(db.Integer)
+    field_id = db.Column(db.Integer, db.ForeignKey('field.id'))
+    link = db.Column(db.String(500))
+
+    courses = db.relationship("Course_profile")
+
+    def __init__(self, id, name, field_id, link):
+        self.id = id
+        self.name = name
+        self.field_id = field_id
+        self.link = link
+
+    def __repr__(self):
+        return 'Profile {} {} {}'.format(self.id, self.field_id, self.name)
+
 
 # Schema
 class Schedule(db.Model):
     # Need primary key?
-    ID = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
 
     code = db.Column(db.String(20))
     semester = db.Column(db.Integer)
@@ -71,8 +112,8 @@ class Schedule(db.Model):
     block1 = db.Column(db.String(10))
     block2 = db.Column(db.String(10))
 
-    def __init__(self, ID, code, semester, period, block1, block2):
-        self.ID = ID
+    def __init__(self, id, code, semester, period, block1, block2):
+        self.id = id
         self.code = code
         self.semester = semester
         self.period = period
@@ -82,62 +123,41 @@ class Schedule(db.Model):
     def __repr__(self):
         return 'Schedule {1}, period: {2}{3}, blocks: {4}, {5}'.format(self.code, self.semester, self.period, self.block1, self.block2)
 
-# Field
-class Fields(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    programID = db.Column(db.Integer)
-
-    def __init__(self, ID, name, programID):
-        self.ID = ID
-        self.name = name
-        self.programID = programID
-
-    def __repr__(self):
-        return 'Fields {0}, programID: {1}, name: {2}'.format(self.ID, self.programID, self.name)
-
-# Profiles
-class Profiles(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    fieldID = db.Column(db.Integer)
-    link = db.Column(db.String(500))
-
-    def __init__(self, ID, name, fieldID, link):
-        self.ID = ID
-        self.name = name
-        self.fieldID = fieldID
-        self.link = link
-
-    def __repr__(self):
-        return 'Profile, field: {0}, name: {1}'.format(self.fieldID, self.name)
 
 # Courses and which profile they belong to
-class Course_profiles(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(100))
-    profileID = db.Column(db.Integer)
+class Course_profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    #code = db.Column(db.String(100))
+    #profile_id = db.Column(db.Integer)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
     vof = db.Column(db.String(10))
 
-    def __init__(self, ID, code, profileID, vof):
-        self.ID = ID
+    code = db.Column(db.String(100), db.ForeignKey('course.code'))
+    course = db.relationship("Course")
+
+    def __init__(self, id, code, profile_id, vof):
+        self.id = id
         self.code = code
-        self.profileID = profileID
+        self.profile_id = profile_id
         self.vof = vof
 
     def __repr__(self):
-        return '<Course_profiles {}>'.format(self.ID)
+        return '<Course_profiles {}>'.format(self.id)
 
 # Courses and which program they belong to
-class Program_courses(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(100))
-    programID = db.Column(db.Integer)
+class Program_course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    #code = db.Column(db.String(100))
+    #program_id = db.Column(db.Integer)
+    program_id = db.Column(db.Integer, db.ForeignKey('program.id'))
 
-    def __init__(self, ID, code, programID):
-        self.ID = ID
+    code = db.Column(db.String(100), db.ForeignKey('course.code'))
+    course = db.relationship("Course")
+
+    def __init__(self, id, code, program_id):
+        self.id = id
         self.code = code
-        self.programID = programID
+        self.program_id = program_id
 
     def __repr__(self):
-        return 'Program_course: {0} program: {1}'.format(self.code, self.programID)
+        return 'Program_course: {0} program: {1}'.format(self.code, self.program_id)
