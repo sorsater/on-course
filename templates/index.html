@@ -18,7 +18,7 @@ function courseClick(course){
 };
 
 // The schedule that is to the right of the screen
-class Schedule extends React.Component{
+class Schedule extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -27,7 +27,7 @@ class Schedule extends React.Component{
     console.log(this.props.courses);
     return (
       <div>
-      {this.props.courses}
+      { this.props.courses }
       <div className="row">
         <div className="col-sm-3 light-grey noborder">
           Block
@@ -301,6 +301,7 @@ class CourseViewer extends React.Component {
   }
 
   handleChangeProfile(profileObj) {
+    this.setState({ profileList: [] });
     var id = profileObj.id;
     var checked = profileObj.checked;
     if (checked === true) {
@@ -327,13 +328,35 @@ class CourseViewer extends React.Component {
   }
 
   render() {
-    // Filter profiles
+    // Filter profiles from field
     var profiles = this.props.profiles;
     var curField = this.state.currentField;
 
     profiles = profiles.filter(function(profile) {
       if (profile.fieldID.match(curField)){
         return true;
+      }
+    });
+
+    // Filter courses that match profil
+    var profileList = this.state.profileList;
+    var validProfilesCourses = [];
+    // Filter out valid courses in profileCourses
+    if (profileList.indexOf(-1) === -1){
+      this.props.profileCourses.forEach(function(prof) {
+        if (profileList.some(pl => pl.match(prof.profileID))) {
+          validProfilesCourses.push(prof.code);
+        }
+      })
+    } else {
+      this.props.profileCourses.forEach(function(prof) {
+        validProfilesCourses.push(prof.code);
+      });
+    }
+    var profile_courses = [];
+    this.props.courses.forEach(function(course) {
+      if (validProfilesCourses.some(pl => pl === course.code)){
+        profile_courses.push(course);
       }
     });
 
@@ -350,11 +373,10 @@ class CourseViewer extends React.Component {
     }
 
     // Join the courses with schedule and merge properties
-    var all_courses = this.props.courses;
     var courses = [];
-    for (var c = 0; c < all_courses.length; c++) {
+    for (var c = 0; c < profile_courses.length; c++) {
       for (var s = 0; s < schedule.length; s++) {
-        var cour = all_courses[c];
+        var cour = profile_courses[c];
         var sche = schedule[s];
         if (cour.code == sche.code) {
           courses.push({
@@ -371,9 +393,6 @@ class CourseViewer extends React.Component {
         }
       }
     }
-
-    console.log('Profiles');
-    console.log(this.state.profileList);
 
     // Filter the result with the search field
     var searchString = this.state.searchString.trim().toLowerCase();
@@ -439,25 +458,12 @@ class CourseViewer extends React.Component {
   }
 }
 
-// list of courses, defined with JavaScript object literals
-var courses = [
-  {% for pc in program.courses %}
-    {
-      "code": "{{ pc.course.code }}",
-      "hp": "{{ pc.course.hp }}",
-      "level": "{{ pc.course.level }}",
-      "name": "{{ pc.course.name }}"
-    },
-  {% endfor %}
-];
-
-var program = [
-    {
-      "id": "{{ program.id }}",
-      "name": "{{ program.name }}",
-      "link": "{{ program.link }}",
-    },
-];
+// Objects generated from the database
+var program = {
+  "id": "{{ program.id }}",
+  "name": "{{ program.name }}",
+  "link": "{{ program.link }}",
+};
 
 var fields = [
   {% for f in program.fields %}
@@ -495,6 +501,33 @@ var schedule = [
   {% endfor %}
 ];
 
+var courses = [
+  {% for pc in program.courses %}
+    {
+      "code": "{{ pc.course.code }}",
+      "hp": "{{ pc.course.hp }}",
+      "level": "{{ pc.course.level }}",
+      "name": "{{ pc.course.name }}"
+    },
+  {% endfor %}
+];
+
+var profileCourses = [
+  {% for field in program.fields %}
+    {% for profile in field.profiles %}
+      {% for pr_c in profile.courses%}
+        {
+          "id": "{{ pr_c.id }}",
+          "code": "{{ pr_c.course.code }}",
+          "profileID": "{{ pr_c.profile_id }}",
+          "vof": "{{ pr_c.vof }}",
+        },
+        {% endfor %}
+    {% endfor %}
+  {% endfor %}
+];
+
+// Render the webpage
 ReactDOM.render(
   <CourseViewer
     program={ program }
@@ -502,6 +535,7 @@ ReactDOM.render(
     courses={ courses }
     profiles={ profiles }
     schedule={ schedule }
+    profileCourses= { profileCourses}
   />,
   document.getElementById('container')
 );

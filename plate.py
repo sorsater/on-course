@@ -129,20 +129,19 @@ class Course_profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     #code = db.Column(db.String(100))
     #profile_id = db.Column(db.Integer)
+    code = db.Column(db.String(100), db.ForeignKey('course.code'))
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
     vof = db.Column(db.String(10))
-
-    code = db.Column(db.String(100), db.ForeignKey('course.code'))
     course = db.relationship("Course")
 
-    def __init__(self, id, code, profile_id, vof):
+    def __init__(self, id, vof, profile_id, code):
         self.id = id
-        self.code = code
-        self.profile_id = profile_id
         self.vof = vof
+        self.profile_id = profile_id
+        self.code = code
 
     def __repr__(self):
-        return '<Course_profiles {}>'.format(self.id)
+        return '(Course_profile {}, profile: {}, code: {}, vof: {})'.format(self.id, self.profile_id, self.code, self.vof)
 
 # Courses and which program they belong to
 class Program_course(db.Model):
