@@ -28,7 +28,7 @@ except Exception as e:
     print("Failure: insert values to: 'Programs'")
 
 try:
-    c.executemany('INSERT INTO Schedule VALUES (?,?,?,?,?)', schedule)
+    c.executemany('INSERT INTO Schedule VALUES (?,?,?,?,?,?)', schedule)
     conn.commit()
     print("Success: insert values to: 'Schedule'")
 except Exception as e:

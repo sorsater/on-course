@@ -37,7 +37,7 @@ def get_courses(url, programID):
                 if current_period[-1] == '2' and '*' in hp:
                     schedule[kurskod+period][3] = block
                 else:
-                    schedule[kurskod+period] = [kurskod, period, block, '']
+                    schedule[kurskod+period] = [kurskod, period[0], period[1], block, '']
 
         # HT/VTh
         else:
@@ -51,9 +51,10 @@ def get_courses(url, programID):
     program_courses = [list(c) for c in program_courses]
     program_courses = list(program_courses)
 
-    schedule = [schedule[key] for key in schedule]
+    #schedule = [schedule[key] for key in schedule]
+    #schedule = [schedule[key] for key in schedule]
 
-    return courses, schedule, program_courses
+    return courses, schedule.values(), program_courses
 
 # For each masters profile
 def get_profile_courses(url):

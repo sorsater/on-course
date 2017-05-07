@@ -66,19 +66,21 @@ class Schedule(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
 
     code = db.Column(db.String(20))
-    period = db.Column(db.String(10))
+    semester = db.Column(db.Integer)
+    period = db.Column(db.Integer)
     block1 = db.Column(db.String(10))
     block2 = db.Column(db.String(10))
 
-    def __init__(self, ID, code, period, block1, block2):
+    def __init__(self, ID, code, semester, period, block1, block2):
         self.ID = ID
         self.code = code
+        self.semester = semester
         self.period = period
         self.block1 = block1
         self.block2 = block2
 
     def __repr__(self):
-        return 'Schedule {1}, period: {2}, blocks: {3}, {4}'.format(self.code, self.period, self.block1, self.block2)
+        return 'Schedule {1}, period: {2}{3}, blocks: {4}, {5}'.format(self.code, self.semester, self.period, self.block1, self.block2)
 
 # Field
 class Fields(db.Model):
