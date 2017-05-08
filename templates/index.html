@@ -8,15 +8,17 @@
 <script type="text/jsx">
 /** @jsx React.DOM */
 
-function courseClick(course){
-    console.log("Course clicked: " + course.code);
-    console.log(course);
-    shoppingCart.push(course);
-    console.log(shoppingCart);
-    var pos = document.getElementById('ht1b1');
-    pos.innerHTML += course.code;
-};
-
+// For each slot in the schedule
+class ScheduleItem extends React.Component {
+  render() {
+    var divStyle = {'border': '1px solid black', 'margin': '2px', 'padding': '1px'}
+    return (
+      <div style={divStyle}>
+        {this.props.course.code}
+      </div>
+    )
+  }
+}
 // The schedule that is to the right of the screen
 class Schedule extends React.Component {
   constructor(props) {
@@ -24,73 +26,117 @@ class Schedule extends React.Component {
   }
   render() {
 
+    var p1b1 = [];
+    var p1b2 = [];
+    var p1b3 = [];
+    var p1b4 = [];
+    var p1none = [];
+
+    var p2b1 = [];
+    var p2b2 = [];
+    var p2b3 = [];
+    var p2b4 = [];
+    var p2none = [];
+
     var codes = [];
-    this.props.courses.forEach(function(c) {
+    var courseItem;
+    var c;
+    for (var i = 0; i < this.props.courses.length; i++) {
+      c = this.props.courses[i]
       console.log(c);
-      console.log(c.code);
-      console.log('period1: ', c.block1);
-      console.log('period2: ', c.block2);
+      courseItem = <ScheduleItem
+        key={c.code}
+        course={c}
+      />
       codes.push(c.code);
-    });
+      switch (c.block1) {
+        case '1': p1b1.push(courseItem);    break;
+        case '2': p1b2.push(courseItem);    break;
+        case '3': p1b3.push(courseItem);    break;
+        case '4': p1b4.push(courseItem);    break;
+        case '-': p1none.push(courseItem);  break;
+        default:
+      }
+      switch (c.block2) {
+        case '1': p2b1.push(courseItem);    break;
+        case '2': p2b2.push(courseItem);    break;
+        case '3': p2b3.push(courseItem);    break;
+        case '4': p2b4.push(courseItem);    break;
+        case '-': p2none.push(courseItem);  break;
+        default:
+      }
+    };
+
+    var classParams = "col-sm-3 light-grey noborder"
 
     return (
       <div>
-      { codes }
-      <div className="row">
-        <div className="col-sm-3 light-grey noborder">
-          Block
+        <div className="row">
+          <div className={classParams}>
+            <h5>Block</h5>
+          </div>
+          <div className={classParams}>
+            <h5>Period 1</h5>
+          </div>
+          <div className={classParams}>
+            <h5>Period 2</h5>
+          </div>
         </div>
-        <div className="col-sm-3 light-grey noborder">
-          Period 1
+        <div className="row">
+          <div className={classParams}>
+            1
+          </div>
+          <div className={classParams}>
+            {p1b1}
+          </div>
+          <div className={classParams}>
+            {p2b1}
+          </div>
         </div>
-        <div className="col-sm-3 light-grey noborder">
-          Period 2
+        <div className="row">
+          <div className={classParams}>
+            2
+          </div>
+          <div className={classParams}>
+            {p1b2}
+          </div>
+          <div className={classParams}>
+            {p2b2}
+          </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-3 light-grey noborder">
-          1
+        <div className="row">
+          <div className={classParams}>
+            3
+          </div>
+          <div className={classParams}>
+            {p1b3}
+          </div>
+          <div className={classParams}>
+            {p2b3}
+          </div>
         </div>
-        <div className="col-sm-3 light-grey noborder">
-          TDDD27
+        <div className="row">
+          <div className={classParams}>
+            4
+          </div>
+          <div className={classParams}>
+            {p1b4}
+          </div>
+          <div className={classParams}>
+            {p2b4}
+          </div>
         </div>
-        <div className="col-sm-3 light-grey noborder">
-          TDDE01
+        <div className="row">
+          <div className={classParams}>
+            Ospecifierat
+          </div>
+          <div className={classParams}>
+            {p1none}
+          </div>
+          <div className={classParams}>
+            {p2none}
+          </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-3 light-grey noborder">
-          2
-        </div>
-        <div className="col-sm-3 light-grey noborder">
-          TATA24
-        </div>
-        <div className="col-sm-3 light-grey noborder">
-          TDDD83
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-3 light-grey noborder">
-          3
-        </div>
-        <div className="col-sm-3 light-grey noborder">
-          TAEN33
-        </div>
-        <div className="col-sm-3 light-grey noborder">
-
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-3 light-grey noborder">
-          4
-        </div>
-        <div className="col-sm-3 light-grey noborder">
-
-        </div>
-        <div className="col-sm-3 light-grey noborder">
-          TAMS27
-        </div>
-      </div>
       </div>
     )
   }
@@ -256,6 +302,7 @@ class CourseRow extends React.Component {
 
     this.props.onClick({
       'code': c.code,
+      'semester': c.semester,
       'block1': c.block1,
       'block2': c.block2,
    });
@@ -309,6 +356,7 @@ class CourseViewer extends React.Component {
       profileList: [-1],
       currentField: 'none',
       currentSemester: 'All',
+      colors: ['#ff0000', '#00ff00', '#0000ff']
     };
   }
 
@@ -341,9 +389,6 @@ class CourseViewer extends React.Component {
 
   // Adding course to the list
   handleChangeCourse(course) {
-    //var code = codeObj.code;
-    //var val = codeObj.value;
-    //console.log('clicking course: ', code, val);
     this.setState({ courseList: this.state.courseList.concat([course]) })
   }
 
