@@ -11,7 +11,7 @@ input[type=checkbox] {
 }
 
 a {
-  color: white;
+  color: #333;
 	font-family: monospace;
 	font-size: 15px;
 	font-style: normal;
@@ -61,8 +61,8 @@ a {
 }
 
 .course-row {
-  background-color: #333;
-  color: #fff;
+  background-color: #eee;
+  color: #333;
   padding: 0px;
   border: none;
   font-size: 16px;

@@ -50,7 +50,6 @@ class Schedule extends React.Component {
     var c;
     for (var i = 0; i < this.props.courses.length; i++) {
       c = this.props.courses[i]
-      console.log(c);
       courseItem = <ScheduleItem
         key={c.code}
         handleCourseDel={this.handleCourseDel}
@@ -356,6 +355,7 @@ class CourseViewer extends React.Component {
     this.handleProfileClick = this.handleProfileClick.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.handleCourseAdd = this.handleCourseAdd.bind(this);
+    this.handleCourseDel = this.handleCourseDel.bind(this);
 
     this.state = {
       selectedField: -1,
@@ -397,11 +397,25 @@ class CourseViewer extends React.Component {
 
   // Adding course to the list
   handleCourseAdd(course) {
-    this.setState({ courseList: this.state.courseList.concat([course]) })
+    // Makes sure no dupblicates are added
+    var found = false;
+    this.state.courseList.forEach(function(c) {
+      if (course.code === c.code){
+        found = true;
+      }
+    });
+    if (found === false) {
+      this.setState({ courseList: this.state.courseList.concat([course]) })
+    }
   }
 
   handleCourseDel(courseCode){
-    console.log("remove course, potatis" + courseCode)
+    var newCourseList = this.state.courseList.filter(function(course) {
+      if (!course.code.match(courseCode)) {
+        return true;
+      }
+    });
+    this.setState({ courseList: newCourseList})
   }
 
   render() {
@@ -490,6 +504,11 @@ class CourseViewer extends React.Component {
         />
       );
     })
+
+    console.log('CourseList:');
+    this.state.courseList.forEach(function(course) {
+      console.log(course.code);
+    });
 
     var divStyle = {padding: '20px'};
     return (

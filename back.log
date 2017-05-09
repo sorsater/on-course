@@ -3,7 +3,7 @@
   * ~~Lagga till/~~ta bort kurser (rensa allt)
   * Färgkoda kurser
   * Klicka i block för att välja kurser
-  * Lägg ej till dubletter i courseList
+  * ~~Lägg ej till dubletter i courseList~~
 
 * ~~Filtrera kurser pa masterutbildningar
 Måste bestämma hur mycket data som ska hämtas in i js och vad som ska vara sql-anrop~~
