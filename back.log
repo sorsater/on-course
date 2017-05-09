@@ -1,0 +1,25 @@
+
+* Skapa blockschema (kundkorgen)
+  * ~~Lagga till/~~ta bort kurser (rensa allt)
+  * Färgkoda kurser
+  * Klicka i block för att välja kurser
+  * Lägg ej till dubletter i courseList
+
+* ~~Filtrera kurser pa masterutbildningar
+Måste bestämma hur mycket data som ska hämtas in i js och vad som ska vara sql-anrop~~
+  * ~~Kunna filtrera på utbildning/huvudområde~~
+  * ~~Kunna välja flera masterutbildningar~~
+
+* Visa kurser
+  * Klicka på kurs *info* för att expandera den och läsa mer.
+  * Skrapa ner data om examinationsmoment
+  * ~~Klicka på kurs för att lägga till i varukorgen~~
+
+* Inlogg
+  * ~~Kunna logga in med facebook~~
+  * Spara kundkorgen (cookies/databas)
+
+* Design
+  * Bestämma färger
+
+* Bestämma Header + Footer

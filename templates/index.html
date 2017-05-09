@@ -10,10 +10,13 @@
 
 // For each slot in the schedule
 class ScheduleItem extends React.Component {
+  handleCourseDel(courseCode){
+    this.props.handleCourseDel(courseCode);
+  }
   render() {
     var divStyle = {'border': '1px solid black', 'margin': '2px', 'padding': '1px'}
     return (
-      <div style={divStyle}>
+      <div style={divStyle} onClick={() => {this.handleCourseDel(this.props.course.code)}}>
         {this.props.course.code}
       </div>
     )
@@ -22,7 +25,11 @@ class ScheduleItem extends React.Component {
 // The schedule that is to the right of the screen
 class Schedule extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
+    this.handleCourseDel = this.handleCourseDel.bind(this)
+  }
+  handleCourseDel(code) {
+    this.props.handleCourseDel(code);
   }
   render() {
 
@@ -46,6 +53,7 @@ class Schedule extends React.Component {
       console.log(c);
       courseItem = <ScheduleItem
         key={c.code}
+        handleCourseDel={this.handleCourseDel}
         course={c}
       />
       codes.push(c.code);
@@ -345,9 +353,9 @@ class CourseViewer extends React.Component {
     super(props);
     this.handleChangeField = this.handleChangeField.bind(this);
     this.handleChangeSemester = this.handleChangeSemester.bind(this);
-    this.handleChangeProfile = this.handleChangeProfile.bind(this);
+    this.handleProfileClick = this.handleProfileClick.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
-    this.handleChangeCourse = this.handleChangeCourse.bind(this);
+    this.handleCourseAdd = this.handleCourseAdd.bind(this);
 
     this.state = {
       selectedField: -1,
@@ -368,7 +376,7 @@ class CourseViewer extends React.Component {
     this.setState({ currentSemester: semester });
   }
 
-  handleChangeProfile(profileObj) {
+  handleProfileClick(profileObj) {
     this.setState({ profileList: [] });
     var id = profileObj.id;
     var checked = profileObj.checked;
@@ -388,8 +396,12 @@ class CourseViewer extends React.Component {
   }
 
   // Adding course to the list
-  handleChangeCourse(course) {
+  handleCourseAdd(course) {
     this.setState({ courseList: this.state.courseList.concat([course]) })
+  }
+
+  handleCourseDel(courseCode){
+    console.log("remove course, potatis" + courseCode)
   }
 
   render() {
@@ -474,7 +486,7 @@ class CourseViewer extends React.Component {
         <CourseRow
           key={ course.code }
           course={ course }
-          onClick={ this.handleChangeCourse.bind(this) }
+          onClick={ this.handleCourseAdd.bind(this) }
         />
       );
     })
@@ -500,7 +512,7 @@ class CourseViewer extends React.Component {
           </div>
           <Profiles
             field={ this.state.currentField }
-            profileCheckbox={ this.handleChangeProfile.bind(this) }
+            profileCheckbox={ this.handleProfileClick.bind(this) }
             profiles={ profiles }
           />
           <div style={ divStyle }>
@@ -515,6 +527,7 @@ class CourseViewer extends React.Component {
         <div className="col-sm-4 light-grey">
           <Schedule
             courses={ this.state.courseList }
+            handleCourseDel={ this.handleCourseDel }
           />
         </div>
       </div>
