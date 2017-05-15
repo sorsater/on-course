@@ -8,7 +8,7 @@
 <script type="text/jsx">
 /** @jsx React.DOM */
 
-// For each slot in the schedule
+// For each course in the schedule that is selected
 class ScheduleItem extends React.Component {
   handleCourseDel(courseCode){
     this.props.handleCourseDel(courseCode);
@@ -16,21 +16,62 @@ class ScheduleItem extends React.Component {
   render() {
     var divStyle = {'border': '1px solid black', 'margin': '2px', 'padding': '1px'}
     return (
-      <div style={divStyle} onClick={() => {this.handleCourseDel(this.props.course.code)}}>
+      <div style={divStyle} onClick={(e) => {
+        e.stopPropagation();
+        this.handleCourseDel(this.props.course.code)
+      }}>
         {this.props.course.code}
       </div>
     )
   }
 }
+
+class ScheduleSlot extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+}
 // The schedule that is to the right of the screen
 class Schedule extends React.Component {
   constructor(props) {
-    super(props)
-    this.handleCourseDel = this.handleCourseDel.bind(this)
+    super(props);
+    this.handleCourseDel = this.handleCourseDel.bind(this);
+    this.state = {
+      'clickStatus': {
+        'p1b1': {'selected': 'scheduleUnselected', 'checked': false},
+        'p1b2': {'selected': 'scheduleUnselected', 'checked': false},
+        'p1b3': {'selected': 'scheduleUnselected', 'checked': false},
+        'p1b4': {'selected': 'scheduleUnselected', 'checked': false},
+        'p1none': {'selected': 'scheduleUnselected', 'checked': false},
+        'p2b1': {'selected': 'scheduleUnselected', 'checked': false},
+        'p2b2': {'selected': 'scheduleUnselected', 'checked': false},
+        'p2b3': {'selected': 'scheduleUnselected', 'checked': false},
+        'p2b4': {'selected': 'scheduleUnselected', 'checked': false},
+        'p2none': {'selected': 'scheduleUnselected', 'checked': false},
+      }
+    }
   }
   handleCourseDel(code) {
     this.props.handleCourseDel(code);
   }
+
+  handleBlockClick(slot) {
+    this.props.handleBlockClick({
+      'period': slot['period'],
+      'block': slot['block'],
+      'checked': this.state.clickStatus[slot['id']].checked,
+    });
+
+    var css = (this.state.clickStatus[slot['id']].selected === 'scheduleUnselected') ? 'scheduleSelected' : 'scheduleUnselected';
+    var new_clickStatus = this.state.clickStatus;
+    new_clickStatus[slot['id']].selected = css;
+    new_clickStatus[slot['id']].checked = ! this.state.clickStatus[slot['id']].checked;
+    this.setState({
+      'clickStatus': new_clickStatus
+    })
+  }
+
   render() {
 
     var p1b1 = [];
@@ -57,7 +98,10 @@ class Schedule extends React.Component {
       />
       codes.push(c.code);
       switch (c.block1) {
-        case '1': p1b1.push(courseItem);    break;
+        case '1':
+          p1b1.push(courseItem);
+          this.setState
+          break;
         case '2': p1b2.push(courseItem);    break;
         case '3': p1b3.push(courseItem);    break;
         case '4': p1b4.push(courseItem);    break;
@@ -74,73 +118,78 @@ class Schedule extends React.Component {
       }
     };
 
-    var classParams = "col-sm-3 light-grey noborder"
+    var defaultClasses = "col-sm-3 light-grey noborder"
+    var slotClasses = "col-sm-3 light-grey"
 
     return (
       <div>
+        <input type='button'
+          value={'Ta bort alla'}
+          onClick={() => {this.handleCourseDel('all')}}
+        />
         <div className="row">
-          <div className={classParams}>
+          <div className={defaultClasses}>
             <h5>Block</h5>
           </div>
-          <div className={classParams}>
+          <div className={defaultClasses}>
             <h5>Period 1</h5>
           </div>
-          <div className={classParams}>
+          <div className={defaultClasses}>
             <h5>Period 2</h5>
           </div>
         </div>
         <div className="row">
-          <div className={classParams}>
+          <div className={defaultClasses}>
             1
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p1b1'].selected } onClick={() => {this.handleBlockClick({ 'period': 1, 'block': 1, 'id': 'p1b1'})}}>
             {p1b1}
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p2b1'].selected } onClick={() => {this.handleBlockClick({ 'period': 2, 'block': 1, 'id': 'p2b1'})}}>
             {p2b1}
           </div>
         </div>
         <div className="row">
-          <div className={classParams}>
+          <div className={defaultClasses}>
             2
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p1b2'].selected } onClick={() => {this.handleBlockClick({ 'period': 1, 'block': 2, 'id': 'p1b2'})}}>
             {p1b2}
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p2b2'].selected } onClick={() => {this.handleBlockClick({ 'period': 2, 'block': 2, 'id': 'p2b2'})}}>
             {p2b2}
           </div>
         </div>
         <div className="row">
-          <div className={classParams}>
+          <div className={defaultClasses}>
             3
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p1b3'].selected } onClick={() => {this.handleBlockClick({ 'period': 1, 'block': 3, 'id': 'p1b3'})}}>
             {p1b3}
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p2b3'].selected } onClick={() => {this.handleBlockClick({ 'period': 2, 'block': 3, 'id': 'p2b3'})}}>
             {p2b3}
           </div>
         </div>
         <div className="row">
-          <div className={classParams}>
+          <div className={defaultClasses}>
             4
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p1b4'].selected } onClick={() => {this.handleBlockClick({ 'period': 1, 'block': 4, 'id': 'p1b4'})}}>
             {p1b4}
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p2b4'].selected } onClick={() => {this.handleBlockClick({ 'period': 2, 'block': 4, 'id': 'p2b4'})}}>
             {p2b4}
           </div>
         </div>
         <div className="row">
-          <div className={classParams}>
+          <div className={defaultClasses}>
             Ospecifierat
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p1none'].selected } onClick={() => {this.handleBlockClick({ 'period': 1, 'block': 'none', 'id': 'p1none'})}}>
             {p1none}
           </div>
-          <div className={classParams}>
+          <div className={slotClasses + ' ' + this.state.clickStatus['p2none'].selected } onClick={() => {this.handleBlockClick({ 'period': 2, 'block': 'none', 'id': 'p2none'})}}>
             {p2none}
           </div>
         </div>
@@ -356,15 +405,18 @@ class CourseViewer extends React.Component {
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.handleCourseAdd = this.handleCourseAdd.bind(this);
     this.handleCourseDel = this.handleCourseDel.bind(this);
+    this.handleBlockClick = this.handleBlockClick.bind(this);
 
     this.state = {
       selectedField: -1,
       searchString: '',
       courseList: [],
       profileList: [-1],
+      period1List: [],
+      period2List: [],
       currentField: 'none',
       currentSemester: 'All',
-      colors: ['#ff0000', '#00ff00', '#0000ff']
+      colors: ['#ff0000', '#00ff00', '#0000ff'],
     };
   }
 
@@ -377,7 +429,7 @@ class CourseViewer extends React.Component {
   }
 
   handleProfileClick(profileObj) {
-    this.setState({ profileList: [] });
+  //  this.setState({ profileList: [] });
     var id = profileObj.id;
     var checked = profileObj.checked;
     if (checked === true) {
@@ -410,12 +462,49 @@ class CourseViewer extends React.Component {
   }
 
   handleCourseDel(courseCode){
-    var newCourseList = this.state.courseList.filter(function(course) {
-      if (!course.code.match(courseCode)) {
-        return true;
-      }
-    });
+    var newCourseList;
+    if (courseCode === 'all'){
+      newCourseList = [];
+    }
+    else{
+      newCourseList = this.state.courseList.filter(function(course) {
+        if (!course.code.match(courseCode)) {
+          return true;
+        }
+      });
+    }
     this.setState({ courseList: newCourseList})
+  }
+
+  handleBlockClick(blockObj) {
+    var period = blockObj.period;
+    var block = blockObj.block;
+    var checked = blockObj.checked;
+
+    console.log(period);
+    console.log(block);
+    console.log(checked);
+
+    if (checked === true) {
+      if (period === 1){
+        this.setState({ period1List: this.state.period1List.concat( [block] ) });
+      }
+      else if (period === 2){
+        this.setState({ period2List: this.state.period2List.concat( [block] ) });
+      }
+    }
+
+    // var id = profileObj.id;
+    // var checked = profileObj.checked;
+    // if (checked === true) {
+    //   this.setState({ profileList: this.state.profileList.concat([id]) });
+    // }
+    // else{
+    //   var array = this.state.profileList;
+    //   var idx = array.indexOf(id);
+    //   array.splice(idx, 1);
+    //   this.setState({ profileList: array });
+    // }
   }
 
   render() {
@@ -454,7 +543,6 @@ class CourseViewer extends React.Component {
     // Filter courses that match semester
     var schedule = this.props.schedule;
     var curSem = this.state.currentSemester;
-
     if (curSem !== 'All'){
       schedule = schedule.filter(function(row) {
         if (row.semester.match(curSem)) {
@@ -462,6 +550,10 @@ class CourseViewer extends React.Component {
         }
       });
     }
+
+    // Filter courses that match schedule (period and block)
+    //var period_block_courses = [];
+    //profile_courses.forEach(function(course))
 
     // Join the courses with schedule and merge properties
     var courses = [];
@@ -505,11 +597,6 @@ class CourseViewer extends React.Component {
       );
     })
 
-    console.log('CourseList:');
-    this.state.courseList.forEach(function(course) {
-      console.log(course.code);
-    });
-
     var divStyle = {padding: '20px'};
     return (
       <div className="row row-eq-height container-fluid potatis">
@@ -547,6 +634,7 @@ class CourseViewer extends React.Component {
           <Schedule
             courses={ this.state.courseList }
             handleCourseDel={ this.handleCourseDel }
+            handleBlockClick={ this.handleBlockClick }
           />
         </div>
       </div>

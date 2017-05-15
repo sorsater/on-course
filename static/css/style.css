@@ -60,6 +60,16 @@ a {
   border: 1px solid #333;
 }
 
+.scheduleSelected {
+  background-color: #005;
+  border: 1px solid #333;
+}
+
+.scheduleUnselected {
+  background-color: #00d;
+  border: 1px solid #333;
+}
+
 .course-row {
   background-color: #eee;
   color: #333;
