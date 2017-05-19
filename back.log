@@ -1,25 +1,40 @@
 
 * Skapa blockschema (kundkorgen)
-  * ~~Lagga till/~~ta bort kurser (rensa allt)
-  * Färgkoda kurser
-  * Klicka i block för att välja kurser
+  * ~~Lagga till/ta bort kurser (rensa allt)~~
+  * Färgkoda kurser (michael)
+  * ~~Klicka i block för att välja kurser~~
   * ~~Lägg ej till dubletter i courseList~~
+  * Klicka i kurs, bocka ur block (michael)
+
 
 * ~~Filtrera kurser pa masterutbildningar
 Måste bestämma hur mycket data som ska hämtas in i js och vad som ska vara sql-anrop~~
   * ~~Kunna filtrera på utbildning/huvudområde~~
   * ~~Kunna välja flera masterutbildningar~~
 
+
 * Visa kurser
   * Klicka på kurs *info* för att expandera den och läsa mer.
   * Skrapa ner data om examinationsmoment
   * ~~Klicka på kurs för att lägga till i varukorgen~~
 
+
 * Inlogg
   * ~~Kunna logga in med facebook~~
   * Spara kundkorgen (cookies/databas)
 
+
+* Kundkorgen
+  * Följer med vid scroll
+
+
 * Design
   * Bestämma färger
+  * Flytta element
+
 
 * Bestämma Header + Footer
+* Adminsida för att uppdatera databasen. (ludde)
+* API mot databasen
+
+
