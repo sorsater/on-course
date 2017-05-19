@@ -72,6 +72,10 @@ def index(selected_program):
 def hello():
     return render_template('hello.html')
 
+@app.route('/_get_course/<program>')
+def hej(program):
+    return flask.json.jsonify({program: 123})
+
 @app.errorhandler(404)
 def page_not_found(e):
     return 'potatis', 404
