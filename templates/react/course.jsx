@@ -83,7 +83,7 @@ class CourseViewer extends React.Component {
       currentField: 'none',
       currentSemester: 'All',
       courseCount: 0,
-      colors: [13,2,28,17,10,4,20,30,26,3,15,18,14,21,22,6,29,7,11,1,25,27,9,16,24,8,12,5,23,19]
+      colors: [0,7,8,1,4,9,2,3,5,6],
     };
   }
 
