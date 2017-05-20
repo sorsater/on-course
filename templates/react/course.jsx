@@ -1,3 +1,22 @@
+function rainbow(numOfSteps, step) {
+    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
+    // Adam Cole, 2011-Sept-14
+    var r, g, b;
+    var h = step / numOfSteps;
+    var i = ~~(h * 6);
+    var f = h * 6 - i;
+    var q = 1 - f;
+    switch(i % 6){
+        case 0: r = 1; g = f; b = 0; break;
+        case 1: r = q; g = 1; b = 0; break;
+        case 2: r = 0; g = 1; b = f; break;
+        case 3: r = 0; g = q; b = 1; break;
+        case 4: r = f; g = 0; b = 1; break;
+        case 5: r = 1; g = 0; b = q; break;
+    }
+    var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+    return (c);
+}
 // One row for each course
 class CourseRow extends React.Component {
   addCourse() {
@@ -63,8 +82,8 @@ class CourseViewer extends React.Component {
       period2List: [],
       currentField: 'none',
       currentSemester: 'All',
-      colors: ["#FF0000", "#FF9900", "#CCFF00", "#33FF00", "#00FF66", "#00FFFF", "#0066FF", "#3300FF", "#CC00FF", "#FF0099"],
-      busyColors: [],
+      courseCount: 0,
+      colors: [13,2,28,17,10,4,20,30,26,3,15,18,14,21,22,6,29,7,11,1,25,27,9,16,24,8,12,5,23,19]
     };
   }
 
@@ -108,10 +127,11 @@ class CourseViewer extends React.Component {
       }
     });
     if (found === false) {
-      console.log('COLORS')
-      console.log(this.state.colors);
-      course['color'] = this.state.colors[this.state.courseList.length];
-      this.setState({ courseList: this.state.courseList.concat([course]) })
+      course['color'] = rainbow(this.state.colors.length, this.state.colors[this.state.courseCount]);
+      this.setState({
+        courseList: this.state.courseList.concat([course]),
+        courseCount: (this.state.courseCount + 1)%this.state.colors.length
+      });
     }
   }
 
@@ -127,7 +147,10 @@ class CourseViewer extends React.Component {
         }
       });
     }
-    this.setState({ courseList: newCourseList})
+    this.setState({
+      courseList: newCourseList,
+      courseCount: 0,
+    })
   }
 
   handleBlockClick(blockObj) {

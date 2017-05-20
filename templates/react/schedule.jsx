@@ -22,13 +22,9 @@ class ScheduleItem extends React.Component {
     this.props.handleCourseDel(courseCode);
   }
   render() {
-    var color = this.props.course.color;
-    console.log("SCHDUEL ITEM COLOR")
-    console.log(color)
-    var hej = {backgroundColor: color}
-    console.log(hej)
+    var color = {backgroundColor: this.props.course.color}
     return (
-      <div className={ 'course-selected' } style={ hej } onClick={(e) => {
+      <div className={ 'course-selected' } style={ color } onClick={(e) => {
         e.stopPropagation();
         this.handleCourseDel(this.props.course.code)
       }}>
@@ -79,7 +75,6 @@ class Schedule extends React.Component {
   }
 
   render() {
-
     var p1b1 = [];
     var p1b2 = [];
     var p1b3 = [];
@@ -95,15 +90,16 @@ class Schedule extends React.Component {
     var codes = [];
     var courseItem;
     var c;
-    for (var i = 0; i < this.props.courses.length; i++) {
-      c = this.props.courses[i]
+
+    var _this = this;
+    this.props.courses.forEach(function(course) {
       courseItem = <ScheduleItem
-        key={c.code}
-        handleCourseDel={this.handleCourseDel}
-        course={c}
+        key={ course.code }
+        handleCourseDel={ _this.handleCourseDel }
+        course={ course }
       />
-      codes.push(c.code);
-      switch (c.block1) {
+      codes.push(course.code);
+      switch (course.block1) {
         case '1': p1b1.push(courseItem);    break;
         case '2': p1b2.push(courseItem);    break;
         case '3': p1b3.push(courseItem);    break;
@@ -111,7 +107,7 @@ class Schedule extends React.Component {
         case '-': p1none.push(courseItem);  break;
         default:
       }
-      switch (c.block2) {
+      switch (course.block2) {
         case '1': p2b1.push(courseItem);    break;
         case '2': p2b2.push(courseItem);    break;
         case '3': p2b3.push(courseItem);    break;
@@ -119,7 +115,7 @@ class Schedule extends React.Component {
         case '-': p2none.push(courseItem);  break;
         default:
       }
-    };
+    });
 
     var defaultClasses = "col-sm-3 light-grey noborder"
     var slotClasses = "col-sm-3 light-grey potatis"
