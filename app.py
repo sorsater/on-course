@@ -64,11 +64,16 @@ def logout():
 def load_user(id):
     return User.query.get(int(id))
 
+
+
+@app.route('/')
 @app.route('/<selected_program>')
-def index(selected_program):
+def index(selected_program='Datateknik'):
     program = Program.query.filter(Program.name == selected_program).one()
     schedule = Schedule.query.order_by(Schedule.id)
     return render_template('index.html', program=program, schedule=schedule)
+
+
 
 @app.route('/kakburk')
 def hello():
