@@ -7,6 +7,7 @@
 <!-- scripts -->
 <script type="text/jsx">
 /** @jsx React.DOM */
+
 {% include "react/schedule.jsx" %}
 {% include "react/profile.jsx" %}
 {% include "react/field.jsx" %}
@@ -81,7 +82,6 @@ var profileCourses = [
   {% endfor %}
 ];
 
-// Sort the courses
 // Sort the courses
 courses.sort(function(a, b) {
   var a_code = a.code;

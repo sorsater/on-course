@@ -81,6 +81,10 @@ a {
   margin: 1px;
 }
 
+.scheduleUnselected:hover {
+  background-color: #666;
+}
+
 .course-row {
   background-color: #eee;
   color: #333;
