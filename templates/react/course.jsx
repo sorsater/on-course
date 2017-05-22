@@ -38,7 +38,7 @@ class CourseRow extends React.Component {
 
 
    cart.indexOf(c.code) === - 1 ? cart.push(c.code) : console.log('already in cart')
-   console.log(cart);
+   //console.log(cart);
    document.cookie = 'cart=' + cart;
 
 
@@ -87,19 +87,18 @@ class CourseViewer extends React.Component {
     this.handleCourseDel = this.handleCourseDel.bind(this);
     this.handleBlockClick = this.handleBlockClick.bind(this);
 
-
-
-    //console.log('COLORS')
-    //console.log(this.state.colors);
-    //course['color'] = this.state.colors[this.state.courseList.length];
     var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
     // Return everything after the equal sign, or an empty string if the cookie name not found
     var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
     var courseList = [];
+    var colors = [0,7,8,1,4,9,2,3,5,6];
+    var courseCount = 0;
     cart.forEach(function(c_cookie) {
       if (c_cookie) {
-        var i = props.courses.map(function(e) { return e.code; }).indexOf(c_cookie);
-        courseList.push(props.courses);
+        var i = props.schedule.map(function(e) { return e.code; }).indexOf(c_cookie);
+        props.schedule[i].color = rainbow(colors.length, colors[courseCount]);
+        courseCount++;
+        courseList.push(props.schedule[i]);
       }
     });
 
@@ -112,8 +111,8 @@ class CourseViewer extends React.Component {
       period2List: [],
       currentField: 'none',
       currentSemester: 'All',
-      courseCount: 0,
-      colors: [0,7,8,1,4,9,2,3,5,6],
+      courseCount: courseCount,
+      colors: colors,
     };
 
 
@@ -152,7 +151,6 @@ class CourseViewer extends React.Component {
   // Adding course to the list
   handleCourseAdd(course) {
     // Makes sure no duplicates are added
-    console.log(course);
     var found = false;
     this.state.courseList.forEach(function(c) {
       if (course.code === c.code){
