@@ -9,6 +9,8 @@ class User(UserMixin, db.Model):
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
 
+    courses = db.relationship("Cart")
+
     @property
     def is_authenticated(self):
         return True
@@ -26,6 +28,11 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %s %s %s %s>' % (self.id, self.social_id, self.nickname, self.email)
+
+class Cart(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    code = db.Column(db.String(100), db.ForeignKey('course.code'))
 
 # Kurser, ett entry per kurs, TANA09, TDDD27...
 class Course(db.Model):

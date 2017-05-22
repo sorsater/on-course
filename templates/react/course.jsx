@@ -1,3 +1,5 @@
+
+
 // One row for each course
 class CourseRow extends React.Component {
   addCourse() {
@@ -9,6 +11,18 @@ class CourseRow extends React.Component {
       'block1': c.block1,
       'block2': c.block2,
    });
+
+   // Get name followed by anything except a semicolon
+   var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
+   // Return everything after the equal sign, or an empty string if the cookie name not found
+   var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
+
+
+   cart.indexOf(c.code) === - 1 ? cart.push(c.code) : console.log('already in cart')
+   console.log(cart);
+   document.cookie = 'cart=' + cart;
+
+
   }
   render() {
     var nameTdStyle = { width: '70%', color: 'white' };
@@ -54,10 +68,26 @@ class CourseViewer extends React.Component {
     this.handleCourseDel = this.handleCourseDel.bind(this);
     this.handleBlockClick = this.handleBlockClick.bind(this);
 
+
+
+    //console.log('COLORS')
+    //console.log(this.state.colors);
+    //course['color'] = this.state.colors[this.state.courseList.length];
+    var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
+    // Return everything after the equal sign, or an empty string if the cookie name not found
+    var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
+    var courseList = [];
+    cart.forEach(function(c_cookie) {
+      if (c_cookie) {
+        var i = props.courses.map(function(e) { return e.code; }).indexOf(c_cookie);
+        courseList.push(props.courses);
+      }
+    });
+
     this.state = {
       selectedField: -1,
       searchString: '',
-      courseList: [],
+      courseList: courseList,
       profileList: [-1],
       period1List: [],
       period2List: [],
@@ -66,6 +96,8 @@ class CourseViewer extends React.Component {
       colors: ["#FF0000", "#FF9900", "#CCFF00", "#33FF00", "#00FF66", "#00FFFF", "#0066FF", "#3300FF", "#CC00FF", "#FF0099"],
       busyColors: [],
     };
+
+
   }
 
   handleChangeField(fieldID) {
@@ -101,6 +133,7 @@ class CourseViewer extends React.Component {
   // Adding course to the list
   handleCourseAdd(course) {
     // Makes sure no duplicates are added
+    console.log(course);
     var found = false;
     this.state.courseList.forEach(function(c) {
       if (course.code === c.code){

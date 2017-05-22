@@ -70,9 +70,12 @@ def index(selected_program):
     schedule = Schedule.query.order_by(Schedule.id)
     return render_template('index.html', program=program, schedule=schedule)
 
-@app.route('/test')
+@app.route('/kakburk')
 def hello():
-    return render_template('hello.html')
+    cart = flask.request.cookies.get('cart')
+    if not cart:
+        return 'slut på 🍪'
+    return cart
 
 @app.route('/_get_course/<program>')
 def hej(program):
@@ -81,6 +84,7 @@ def hej(program):
 @app.errorhandler(404)
 def page_not_found(e):
     return 'potatis', 404
+
 
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+
 // The Selected semester
 class Semester extends React.Component {
   onChange(event) {
@@ -20,6 +21,16 @@ class Semester extends React.Component {
 class ScheduleItem extends React.Component {
   handleCourseDel(courseCode){
     this.props.handleCourseDel(courseCode);
+
+    // Get name followed by anything except a semicolon
+    var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
+    // Return everything after the equal sign, or an empty string if the cookie name not found
+    var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
+
+    var i = cart.indexOf(courseCode);
+    i !== -1 ? cart.splice(i, 1) : console.log('not in cart');
+    console.log(cart);
+    document.cookie = 'cart=' + cart;
   }
   render() {
     var color = this.props.course.color;
