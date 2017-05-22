@@ -1,10 +1,10 @@
 
 * Skapa blockschema (kundkorgen)
   * ~~Lagga till/ta bort kurser (rensa allt)~~
-  * Färgkoda kurser (michael)
+  * ~~Färgkoda kurser (michael)~~
   * ~~Klicka i block för att välja kurser~~
   * ~~Lägg ej till dubletter i courseList~~
-  * Klicka i kurs, bocka ur block (michael)
+  * Klicka i kurs, bocka ur block / eller header typ (michael)
 
 
 * ~~Filtrera kurser pa masterutbildningar
@@ -21,7 +21,8 @@ Måste bestämma hur mycket data som ska hämtas in i js och vad som ska vara sq
 
 * Inlogg
   * ~~Kunna logga in med facebook~~
-  * Spara kundkorgen (cookies/databas)
+  * ~~Spara kundkorgen cookies~~
+  * Spara kundkorgen i databas kopplat till facebok
 
 
 * Kundkorgen
@@ -36,5 +37,3 @@ Måste bestämma hur mycket data som ska hämtas in i js och vad som ska vara sq
 * Bestämma Header + Footer
 * Adminsida för att uppdatera databasen. (ludde)
 * API mot databasen
-
-
