@@ -65,16 +65,6 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-
-@app.route('/')
-@app.route('/<selected_program>')
-def index(selected_program='Datateknik'):
-    program = Program.query.filter(Program.name == selected_program).one()
-    schedule = Schedule.query.order_by(Schedule.id)
-    return render_template('index.html', program=program, schedule=schedule)
-
-
-
 @app.route('/kakburk')
 def hello():
     cart = flask.request.cookies.get('cart')
@@ -82,9 +72,39 @@ def hello():
         return 'slut på 🍪'
     return cart
 
+@app.route('/user_cart', methods=['POST'])
+def store_user_cart():
+    data = flask.request.get_json()
+    cart = Cart(data['name'], data['user_id'], data['cart'])
+    db.session.add(cart)
+    db.session.commit()
+    return 'OK', 200
+
 @app.route('/_get_course/<program>')
 def hej(program):
     return flask.json.jsonify({program: 123})
+
+@app.route('/_get_fields', methods=['GET'])
+def get_fields():
+    selected_program = flask.request.args.get('program')
+    program = Program.query.filter(Program.name == selected_program).one()
+
+    fields = []
+    for field in program.fields:
+        fields.append({
+            'id': field.id,
+            'name': field.name,
+            'program_id': field.program_id,
+        })
+
+    return flask.json.jsonify(fields)
+
+
+@app.route('/')
+def index(selected_program='Datateknik'):
+    program = Program.query.filter(Program.name == selected_program).one()
+    schedule = Schedule.query.order_by(Schedule.id)
+    return render_template('index.html', program=program, schedule=schedule)
 
 @app.errorhandler(404)
 def page_not_found(e):

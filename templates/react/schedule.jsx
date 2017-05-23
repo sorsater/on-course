@@ -75,6 +75,35 @@ class Schedule extends React.Component {
     })
   }
 
+  handleCartLoad() {
+    var name = 'Kundis';
+    var user_id = 1;
+    var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
+    var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "")
+    const form = new FormData();
+    form.append("user_id", user_id);
+    form.append("name", name);
+    form.append("cart", cart);
+    // On submit of the form, send a POST request with the data to the server.
+    fetch('/user_cart', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: user_id,
+        name: name,
+        cart: cart,
+      })
+    })
+      .then(function(response) {
+        console.log(response)
+      }).then(function(body) {
+        console.log(body);
+      });
+  }
+
   render() {
     var p1b1 = [];
     var p1b2 = [];
@@ -194,6 +223,11 @@ class Schedule extends React.Component {
             {p2none}
           </div>
         </div>
+
+        <button onClick={() => {this.handleCartLoad()}}>
+          Kundkorg
+        </button>
+
       </div>
     )
   }

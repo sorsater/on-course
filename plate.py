@@ -30,9 +30,18 @@ class User(UserMixin, db.Model):
         return '<User %s %s %s %s>' % (self.id, self.social_id, self.nickname, self.email)
 
 class Cart(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    code = db.Column(db.String(100), db.ForeignKey('course.code'))
+    #id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    codes = db.Column(db.String(256))
+
+    def __init__(self, name, user_id, codes):
+        self.name = name
+        self.user_id = user_id
+        self.codes = codes
+
+    def __repr__(self):
+        return '<Cart %r %r %r>' % (self.name, self.user_id, self.codes)
 
 # Kurser, ett entry per kurs, TANA09, TDDD27...
 class Course(db.Model):
@@ -86,7 +95,7 @@ class Field(db.Model):
         self.program_id = program_id
 
     def __repr__(self):
-        return 'Field {} {} {}'.format(self.id, self.program_id, self.name)
+        return 'id:{};program_id:{};name:{}'.format(self.id, self.program_id, self.name)
 
 # Profiles
 class Profile(db.Model):
