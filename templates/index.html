@@ -8,6 +8,7 @@
 <script type="text/jsx">
 /** @jsx React.DOM */
 
+{% include "react/loader.jsx" %}
 {% include "react/schedule.jsx" %}
 {% include "react/profile.jsx" %}
 {% include "react/field.jsx" %}
@@ -20,91 +21,19 @@ var program = {
   "link": "{{ program.link }}",
 };
 
-var fields = [
-  {% for f in program.fields %}
-    {
-      "id": "{{ f.id }}",
-      "name": "{{ f.name }}",
-      "programID": "{{ f.program_id }}",
-    },
-  {% endfor %}
-];
 
-var profiles = [
-  {% for field in program.fields %}
-    {% for profile in field.profiles %}
-      {
-        "id": "{{ profile.id }}",
-        "name": "{{ profile.name }}",
-        "fieldID": "{{ profile.field_id }}",
-        "link": "{{ profile.link }}",
-      },
-    {% endfor %}
-  {% endfor %}
-];
-
-var schedule = [
-  {% for sc in schedule %}
-    {
-      "id": "{{ sc.id }}",
-      "code": "{{ sc.code }}",
-      "semester": "{{ sc.semester }}",
-      "period": "{{ sc.period }}",
-      "block1": "{{ sc.block1 }}",
-      "block2": "{{ sc.block2 }}",
-    },
-  {% endfor %}
-];
-
-var courses = [
-  {% for pc in program.courses %}
-    {
-      "code": "{{ pc.course.code }}",
-      "hp": "{{ pc.course.hp }}",
-      "level": "{{ pc.course.level }}",
-      "name": "{{ pc.course.name }}"
-    },
-  {% endfor %}
-];
-
-var profileCourses = [
-  {% for field in program.fields %}
-    {% for profile in field.profiles %}
-      {% for pr_c in profile.courses%}
-        {
-          "id": "{{ pr_c.id }}",
-          "code": "{{ pr_c.course.code }}",
-          "profileID": "{{ pr_c.profile_id }}",
-          "vof": "{{ pr_c.vof }}",
-        },
-        {% endfor %}
-    {% endfor %}
-  {% endfor %}
-];
-
-// Sort the courses
-courses.sort(function(a, b) {
-  var a_code = a.code;
-  var b_code = b.code;
-  if (a_code < b_code){
-    return -1;
-  }
-  if (a_code > b_code){
-    return 1;
-  }
-  return 0;
-});
 
 // Render the webpage
 ReactDOM.render(
-  <CourseViewer
-    program={ program }
-    fields={ fields }
-    courses={ courses }
-    profiles={ profiles }
-    schedule={ schedule }
-    profileCourses= { profileCourses}
-  />,
+  // <CourseViewer
+  //   program={ program }
+  //   fields={ fields }
+  //   courses={ courses }
+  //   profiles={ profiles }
+  //   schedule={ schedule }
+  //   profileCourses= { profileCourses}
+  // />,
+    <Loader />,
   document.getElementById('container')
 );
 </script>

@@ -80,9 +80,6 @@ def store_user_cart():
     db.session.commit()
     return 'OK', 200
 
-@app.route('/_get_course/<program>')
-def hej(program):
-    return flask.json.jsonify({program: 123})
 
 @app.route('/_get_fields', methods=['GET'])
 def get_fields():
@@ -99,6 +96,75 @@ def get_fields():
 
     return flask.json.jsonify(fields)
 
+@app.route('/_get_profiles', methods=['GET'])
+def get_profiles():
+    selected_program = flask.request.args.get('program')
+    program = Program.query.filter(Program.name == selected_program).one()
+
+    profiles = []
+    for field in program.fields:
+        for profile in field.profiles:
+            profiles.append({
+                'id': profile.id,
+                'name': profile.name,
+                'fieldID': profile.field_id,
+                'link': profile.link,
+            })
+
+    return flask.json.jsonify(profiles)
+
+@app.route('/_get_schedule')
+def get_schedule():
+    schedule = Schedule.query.order_by(Schedule.id)
+
+    schedules = []
+    for s in schedule:
+        schedules.append({
+            'id': s.id,
+            'code': s.code,
+            'semester': s.semester,
+            'period': s.period,
+            'block1': s.block1,
+            'block2': s.block2,
+        })
+
+    return flask.json.jsonify(schedules)
+
+@app.route('/_get_courses', methods=['GET'])
+def get_courses():
+    selected_program = flask.request.args.get('program')
+    program = Program.query.filter(Program.name == selected_program).one()
+
+    courses = []
+    for pc in program.courses:
+        if pc.course:
+            courses.append({
+                'code': pc.course.code,
+                'name': pc.course.name,
+                'level': pc.course.level,
+                'hp': pc.course.hp,
+            })
+
+
+    return flask.json.jsonify(courses)
+
+@app.route('/_get_profile_courses', methods=['GET'])
+def get_profileCourses():
+    selected_program = flask.request.args.get('program')
+    program = Program.query.filter(Program.name == selected_program).one()
+
+    profileCourses = []
+    for field in program.fields:
+        for profile in field.profiles:
+            for pr_c in profile.courses:
+                profileCourses.append({
+                    'id': pr_c.id,
+                    'code': pr_c.code,
+                    'profileID': pr_c.profile_id,
+                    'vof': pr_c.vof,
+                })
+
+    return flask.json.jsonify(profileCourses)
 
 @app.route('/')
 def index(selected_program='Datateknik'):

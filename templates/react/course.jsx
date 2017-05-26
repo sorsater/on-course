@@ -233,7 +233,7 @@ class CourseViewer extends React.Component {
     var curField = this.state.currentField;
 
     profiles = profiles.filter(function(profile) {
-      if (profile.fieldID.match(curField)){
+      if (profile.fieldID == curField){
         return true;
       }
     });
@@ -265,7 +265,7 @@ class CourseViewer extends React.Component {
     var curSem = this.state.currentSemester;
     if (curSem !== 'All'){
       schedule = schedule.filter(function(row) {
-        if (row.semester.match(curSem)) {
+        if (row.semester == curSem) {
             return true;
         }
       });
@@ -337,7 +337,7 @@ class CourseViewer extends React.Component {
           <div id="select-field-program">
             Valt huvudområde:
             <Fields
-              fields={fields}
+              fields={this.props.fields}
               onChange={ this.handleChangeField.bind(this) }
             />
             <br />
