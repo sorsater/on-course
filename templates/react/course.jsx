@@ -93,14 +93,9 @@ class CourseViewer extends React.Component {
     var courseList = [];
     var colors = [0,7,8,1,4,9,2,3,5,6];
     var courseCount = 0;
-    cart.forEach(function(c_cookie) {
-      if (c_cookie) {
-        var i = props.schedule.map(function(e) { return e.code; }).indexOf(c_cookie);
-        props.schedule[i].color = rainbow(colors.length, colors[courseCount]);
-        courseCount++;
-        courseList.push(props.schedule[i]);
-      }
-    });
+
+    // var this_ = this;
+
 
     this.state = {
       selectedField: -1,
@@ -113,6 +108,7 @@ class CourseViewer extends React.Component {
       currentSemester: 'All',
       courseCount: courseCount,
       colors: colors,
+      cart: cart,
     };
 
 
@@ -224,7 +220,25 @@ class CourseViewer extends React.Component {
     }
   }
 
+  componentWillReceiveProps() {
+
+    var _this = this;
+    if(_this.props.schedule.length && _this.state.courseList && _this.state.courseList.length == 0){
+    _this.state.cart.forEach(function(c_cookie) {
+      if (c_cookie) {
+        var i = _this.props.schedule.map(function(e) { return e.code; }).indexOf(c_cookie);
+        _this.props.schedule[i].color = rainbow(_this.state.colors.length, _this.state.colors[_this.state.courseCount]);
+        _this.state.courseCount++;
+        _this.state.courseList.push(_this.props.schedule[i]);
+      }
+    });
+    }
+  }
   render() {
+
+
+
+
     // Number of courses that match criteria
     var courseCount;
 
@@ -328,6 +342,7 @@ class CourseViewer extends React.Component {
     courseCount = courses.length;
 
     var divStyle = {padding: '20px'};
+
     return (
       <div className="row row-eq-height container-fluid potatis">
         <div className="col-sm-8 grey">
