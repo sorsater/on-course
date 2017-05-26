@@ -8,11 +8,11 @@ class Loader extends React.Component {
     this.getCourses = this.getCourses.bind(this);
     this.getProfileCourses = this.getProfileCourses.bind(this);
     this.state = {
-      fields: false,
-      profiles: false,
-      schedule: false,
-      courses: false,
-      profileCourses: false,
+      fields: [],
+      profiles: [],
+      schedule: [],
+      courses: [],
+      profileCourses: [],
     }
 
   }
@@ -76,11 +76,11 @@ class Loader extends React.Component {
   }
 
   render() {
-    if(Boolean(this.state.fields) &&
-       Boolean(this.state.profiles) &&
-       Boolean(this.state.schedule) &&
-       Boolean(this.state.courses) &&
-       Boolean(this.state.profileCourses)) {
+    // if(Boolean(this.state.fields) &&
+    //    Boolean(this.state.profiles) &&
+    //    Boolean(this.state.schedule) &&
+    //    Boolean(this.state.courses) &&
+    //    Boolean(this.state.profileCourses)) {
       return <CourseViewer
                program={ program }
                fields={ this.state.fields }
@@ -89,9 +89,9 @@ class Loader extends React.Component {
                schedule={ this.state.schedule }
                profileCourses= { this.state.profileCourses}
              />;
-    } else {
-      return <div className={"loader"}>Potatis</div>
-    }
+    // } else {
+    //   return <div className={"loader"}>Potatis</div>
+    // }
   }
 
 }
