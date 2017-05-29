@@ -94,9 +94,6 @@ class CourseViewer extends React.Component {
     var colors = [0,7,8,1,4,9,2,3,5,6];
     var courseCount = 0;
 
-    // var this_ = this;
-
-
     this.state = {
       selectedField: -1,
       searchString: '',
@@ -105,13 +102,11 @@ class CourseViewer extends React.Component {
       period1List: [],
       period2List: [],
       currentField: 'none',
-      currentSemester: 'All',
+      currentSemester: 'Alla',
       courseCount: courseCount,
       colors: colors,
       cart: cart,
     };
-
-
   }
 
   handleChangeField(fieldID) {
@@ -236,9 +231,6 @@ class CourseViewer extends React.Component {
   }
   render() {
 
-
-
-
     // Number of courses that match criteria
     var courseCount;
 
@@ -277,20 +269,20 @@ class CourseViewer extends React.Component {
     // Filter courses that match semester
     var schedule = this.props.schedule;
     var curSem = this.state.currentSemester;
-    if (curSem !== 'All'){
+    if (curSem !== 'Alla'){
       schedule = schedule.filter(function(row) {
         if (row.semester == curSem) {
             return true;
         }
       });
     }
-
     // Join the courses with schedule and merge properties
     var courses = [];
     for (var c = 0; c < profile_courses.length; c++) {
       for (var s = 0; s < schedule.length; s++) {
         var cour = profile_courses[c];
         var sche = schedule[s];
+
         if (cour.code == sche.code) {
           courses.push({
             'code': cour.code,
@@ -326,7 +318,6 @@ class CourseViewer extends React.Component {
         return (course.code + course.name).toLowerCase().match( searchString );
       });
     }
-
     // Create the actual course row objects
     var courseRows = []
     courses.forEach((course) => {
