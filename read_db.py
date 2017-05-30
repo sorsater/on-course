@@ -1,4 +1,4 @@
-from plate import db, Courses, Programs, Schedule, Fields, Profiles, Course_profiles
+from plate import db, Course, Program, Schedule, Field, Profile, Course_profile
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 
@@ -7,13 +7,11 @@ engine = create_engine('sqlite:///plate.db', echo=False)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-print(session.query(Courses).count())
+print(session.query(Course).count())
 
-programs = [program[0] for program in session.query(Programs.name)]
+programs = [program[0] for program in session.query(Program.name)]
 
 print(programs)
-
-	TFBI17
 
 
 #
