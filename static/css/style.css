@@ -99,6 +99,14 @@ a {
   background-color: salmon;
 }
 
+.course-row a:hover {
+  color: black;
+}
+
+.course-row a {
+  text-decoration: underline;
+}
+
 .schedule {
   position: fixed;
   right: 0px;

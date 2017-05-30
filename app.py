@@ -143,6 +143,7 @@ def get_courses():
                 'name': pc.course.name,
                 'level': pc.course.level,
                 'hp': pc.course.hp,
+                'link': pc.course.link,
             })
 
 
