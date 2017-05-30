@@ -1,10 +1,11 @@
+// One row for each Program
 class ProgramRow extends React.Component {
-
   render() {
     return (
-      <option name={this.props.name}>
+      <option name={ this.props.name }>
         { this.props.name }
-      </option>)
+      </option>
+    )
   }
 }
 
@@ -36,13 +37,18 @@ class Program extends React.Component {
   }
 
   render() {
-    var tom = [];
+    var programList = [];
     this.state.programs.forEach(function(program) {
-      tom.push(<ProgramRow key={program} name={program} />)
-    })
+      programList.push(
+        <ProgramRow
+          key={ program }
+          name={ program }
+        />)
+    });
+
     return (
       <select id="select-program" onChange={ this.onChange.bind(this) }>
-        { tom }
+        { programList }
       </select>
     )
   }
@@ -65,7 +71,7 @@ class Loader extends React.Component {
       schedule: [],
       courses: [],
       profileCourses: [],
-      program_name: 'Maskinteknik',
+      program_name: 'Datateknik',
     }
 
   }
@@ -140,15 +146,18 @@ class Loader extends React.Component {
   render() {
       return (
         <div>
-          <Program onChange={this.onChange}/>
-            <CourseViewer
-                   fields={ this.state.fields }
-                   courses={ this.state.courses }
-                   profiles={ this.state.profiles }
-                   schedule={ this.state.schedule }
-                   profileCourses= { this.state.profileCourses}
-                 />;
+          <Program
+            onChange={ this.onChange }
+          />
+          <CourseViewer
+            fields={ this.state.fields }
+            courses={ this.state.courses }
+            profiles={ this.state.profiles }
+            schedule={ this.state.schedule }
+            profileCourses= { this.state.profileCourses}
+          />;
        </div>
      )
   }
+
 }

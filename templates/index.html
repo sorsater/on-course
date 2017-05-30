@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-    <!-- The main div that content is generated in -->
+    <!-- The div that react uses to generate all content -->
     <div id="container">
     </div>
 
@@ -8,31 +8,22 @@
 <script type="text/jsx">
 /** @jsx React.DOM */
 
+// Include all code
 {% include "react/loader.jsx" %}
 {% include "react/schedule.jsx" %}
 {% include "react/profile.jsx" %}
 {% include "react/field.jsx" %}
 {% include "react/course.jsx" %}
 
-// Objects generated from the database
+// Generated from the database
 var program = {
   "id": "{{ program.id }}",
   "name": "{{ program.name }}",
   "link": "{{ program.link }}",
 };
 
-
-
 // Render the webpage
 ReactDOM.render(
-  // <CourseViewer
-  //   program={ program }
-  //   fields={ fields }
-  //   courses={ courses }
-  //   profiles={ profiles }
-  //   schedule={ schedule }
-  //   profileCourses= { profileCourses}
-  // />,
     <Loader />,
   document.getElementById('container')
 );

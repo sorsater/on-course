@@ -179,9 +179,7 @@ def index(selected_program='Datateknik'):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return 'potatis', 404
-
-
+    return render_template('404.html')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=True)

@@ -77,9 +77,8 @@ class Profiles extends React.Component {
         />
       );
     });
-    var s = { padding: '15px' };
     return (
-      <div style={ s }>
+      <div className="profile-style">
         <div className="row white">
           { profileRows }
         </div>

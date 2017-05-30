@@ -96,6 +96,7 @@ class CourseViewer extends React.Component {
     super(props);
     this.handleChangeField = this.handleChangeField.bind(this);
     this.handleChangeSemester = this.handleChangeSemester.bind(this);
+    this.handleChangeLevel = this.handleChangeLevel.bind(this);
     this.handleProfileClick = this.handleProfileClick.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.handleCourseAdd = this.handleCourseAdd.bind(this);
@@ -117,6 +118,7 @@ class CourseViewer extends React.Component {
       period2List: [],
       currentField: 'none',
       currentSemester: 'Alla',
+      currentLevel: 'Alla',
       courseCount: courseCount,
       colors: colors,
       cart: cart,
@@ -128,11 +130,14 @@ class CourseViewer extends React.Component {
       currentField: fieldID,
       profileList: [-1],
     });
-
   }
 
   handleChangeSemester(semester) {
     this.setState({ currentSemester: semester });
+  }
+
+  handleChangeLevel(level) {
+    this.setState({ currentLevel: level });
   }
 
   handleProfileClick(profileObj) {
@@ -296,6 +301,8 @@ class CourseViewer extends React.Component {
         }
       });
     }
+
+
     // Join the courses with schedule and merge properties
     var courses = [];
     for (var c = 0; c < profile_courses.length; c++) {
@@ -320,6 +327,15 @@ class CourseViewer extends React.Component {
       }
     }
 
+    // Filter on level
+    var curLevel = this.state.currentLevel;
+    if (curLevel !== 'Alla'){
+      courses = courses.filter(function(row) {
+        if (row.level == curLevel) {
+          return true;
+        }
+      });
+    }
     // Filter courses that match schedule (period and block)
     var period1 = this.state.period1List;
     var period2 = this.state.period2List;
@@ -361,10 +377,6 @@ class CourseViewer extends React.Component {
       );
     })
 
-    courseCount = courses.length;
-
-    var divStyle = {padding: '20px'};
-
     return (
       <div className="row row-eq-height container-fluid">
         <div className="col-sm-8 grey">
@@ -379,16 +391,21 @@ class CourseViewer extends React.Component {
             <Semester
               onChange={ this.handleChangeSemester.bind(this) }
             />
+            <br />
+            Vald nivå:
+            <Level
+              onChange={ this.handleChangeLevel.bind(this) }
+            />
           </div>
           <Profiles
             field={ this.state.currentField }
             profileCheckbox={ this.handleProfileClick.bind(this) }
             profiles={ profiles }
           />
-          <div className={'course-count'}>
-            Antal kurser: {courseCount}
+          <div className="course-count">
+            Antal kurser: { courses.length }
           </div>
-          <div style={ divStyle }>
+          <div className="course-list">
             <input id="search" type="text"
               value={ this.state.searchString }
               onChange={ this.handleChangeSearch }

@@ -1,4 +1,3 @@
-
 // The Selected semester
 class Semester extends React.Component {
   onChange(event) {
@@ -17,19 +16,38 @@ class Semester extends React.Component {
   }
 }
 
+// The selected level
+class Level extends React.Component {
+  onChange(event) {
+    this.props.onChange(event.target.value);
+  }
+
+  render() {
+    return (
+      <select onChange={ this.onChange.bind(this) }>
+        <option name="Alla">Alla</option>
+        <option name="G1">G1</option>
+        <option name="G2">G2</option>
+        <option name="A">A</option>
+      </select>
+    )
+  }
+}
+
 // For each course in the schedule that is selected
 class ScheduleItem extends React.Component {
   handleCourseDel(courseCode){
     this.props.handleCourseDel(courseCode);
   }
   render() {
-    var color = {backgroundColor: this.props.course.color}
+    var color = { backgroundColor: this.props.course.color }
     return (
-      <div className={ 'course-selected' } style={ color } onClick={(e) => {
-        e.stopPropagation();
-        this.handleCourseDel(this.props.course.code)
-      }}>
-        {this.props.course.code}
+      <div className={ 'course-selected' } style={ color }
+        onClick={(e) => {
+          e.stopPropagation();
+          this.handleCourseDel(this.props.course.code);
+        }}>
+        { this.props.course.code }
       </div>
     )
   }
@@ -72,7 +90,7 @@ class Schedule extends React.Component {
     new_clickStatus[slot['id']].checked = ! this.state.clickStatus[slot['id']].checked;
     this.setState({
       'clickStatus': new_clickStatus
-    })
+    });
   }
 
   handleCartLoad() {
@@ -104,6 +122,7 @@ class Schedule extends React.Component {
       });
   }
 
+  // Place the courses in the correct slot
   render() {
     var p1b1 = [];
     var p1b2 = [];
@@ -157,76 +176,75 @@ class Schedule extends React.Component {
           onClick={() => {this.handleCourseDel('all')}}
         />
         <div className="row my-row">
-          <div className={defaultClasses}>
+          <div className={ defaultClasses }>
             <h5>Block</h5>
           </div>
-          <div className={defaultClasses}>
+          <div className={ defaultClasses }>
             <h5>Period 1</h5>
           </div>
-          <div className={defaultClasses}>
+          <div className={ defaultClasses }>
             <h5>Period 2</h5>
           </div>
         </div>
         <div className="row my-row row-eq-height">
-          <div className={defaultClasses}>
+          <div className={ defaultClasses }>
             1
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p1b1'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '1', 'id': 'p1b1'})}}>
-            {p1b1}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p1b1'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '1', 'id': 'p1b1'})}}>
+            { p1b1 }
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p2b1'].selected} onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '1', 'id': 'p2b1'})}}>
-            {p2b1}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p2b1'].selected} onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '1', 'id': 'p2b1'})}}>
+            { p2b1 }
           </div>
         </div>
         <div className="row my-row row-eq-height">
-          <div className={defaultClasses}>
+          <div className={ defaultClasses }>
             2
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p1b2'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '2', 'id': 'p1b2'})}}>
-            {p1b2}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p1b2'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '2', 'id': 'p1b2'})}}>
+            { p1b2 }
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p2b2'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '2', 'id': 'p2b2'})}}>
-            {p2b2}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p2b2'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '2', 'id': 'p2b2'})}}>
+            { p2b2 }
           </div>
         </div>
         <div className="row my-row row-eq-height">
-          <div className={defaultClasses}>
+          <div className={ defaultClasses }>
             3
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p1b3'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '3', 'id': 'p1b3'})}}>
-            {p1b3}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p1b3'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '3', 'id': 'p1b3'})}}>
+            { p1b3 }
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p2b3'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '3', 'id': 'p2b3'})}}>
-            {p2b3}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p2b3'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '3', 'id': 'p2b3'})}}>
+            { p2b3 }
           </div>
         </div>
         <div className="row my-row row-eq-height">
-          <div className={defaultClasses}>
+          <div className={ defaultClasses }>
             4
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p1b4'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '4', 'id': 'p1b4'})}}>
-            {p1b4}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p1b4'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '4', 'id': 'p1b4'})}}>
+            { p1b4 }
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p2b4'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '4', 'id': 'p2b4'})}}>
-            {p2b4}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p2b4'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '4', 'id': 'p2b4'})}}>
+            { p2b4 }
           </div>
         </div>
         <div className="row my-row row-eq-height">
-          <div className={defaultClasses}>
+          <div className={ defaultClasses }>
             -
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p1none'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '-', 'id': 'p1none'})}}>
-            {p1none}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p1none'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '-', 'id': 'p1none'})}}>
+            { p1none }
           </div>
-          <div className={slotClasses + ' ' + this.state.clickStatus['p2none'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '-', 'id': 'p2none'})}}>
-            {p2none}
+          <div className={ slotClasses + ' ' + this.state.clickStatus['p2none'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '-', 'id': 'p2none'})}}>
+            { p2none }
           </div>
         </div>
 
         <button onClick={() => {this.handleCartLoad()}}>
           Kundkorg
         </button>
-
       </div>
     )
   }
