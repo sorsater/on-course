@@ -1,3 +1,15 @@
+// function compare(a, b, type) {
+//   console.log(a.level);
+//   console.log(type);
+//   //console.log(a[type]);
+//     if (a[type] < b[type]){
+//       return 1;
+//     }
+//     if (a[type] > b[type]){
+//       return -1;
+//     }
+//     return 0;
+// }
 
 function rainbow(numOfSteps, step) {
     // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
@@ -40,17 +52,17 @@ class CourseRow extends React.Component {
    cart.indexOf(c.code) === - 1 ? cart.push(c.code) : console.log('already in cart')
    //console.log(cart);
    document.cookie = 'cart=' + cart;
-
-
   }
+
   render() {
-    var nameTdStyle = { width: '70%', color: 'white' };
-    var normalTdStyle = { width: '8%', color: 'white' };
     var activeStyle = this.props.active ? 'not-active' : '';
+
+    var url = 'http://kdb-5.liu.se/liu/lith/studiehandboken/' + this.props.course.link;
+
     return (
       <div className={`row row-eq-height course-row ${activeStyle}`} onClick={ this.addCourse.bind(this) }>
-        <div className="col-sm-2 course-row">
-          <a href="#">{ this.props.course.code }</a>
+        <div className="col-sm-2 course-row" onClick={ (e) => { e.stopPropagation(); }}>
+          <a href={ url }>{ this.props.course.code }</a>
         </div>
         <div className="col-sm-1 course-row">
           { this.props.course.hp }
@@ -154,6 +166,8 @@ class CourseViewer extends React.Component {
         courseList: this.state.courseList.concat([course]),
         courseCount: (this.state.courseCount + 1)%this.state.colors.length
       });
+    } else {
+      this.handleCourseDel(course.code);
     }
   }
 
@@ -214,6 +228,12 @@ class CourseViewer extends React.Component {
       }
     }
   }
+
+
+  sortMePlz() {
+
+  }
+
 
   componentWillReceiveProps() {
 
@@ -289,6 +309,7 @@ class CourseViewer extends React.Component {
             'name': cour.name,
             'level': cour.level,
             'hp': cour.hp,
+            'link': cour.link,
             'semester': sche.semester,
             'period': sche.period,
             'block1': sche.block1,
@@ -319,10 +340,28 @@ class CourseViewer extends React.Component {
       });
     }
     // Create the actual course row objects
-    var courseRows = []
+    var courseRows = [];
+    var description = {
+      'block1': 'Block1',
+      'block2': 'Block1',
+      'hp': 'HP',
+      'level': 'Nivå',
+      'code': 'Kurskod',
+      'semester': 'Termin',
+      'name': 'Namn',
+    }
+    courseRows.push(
+      <CourseRow
+        key={ '-' }
+        course={ description }
+
+      />
+    );
+
+    // courses.sort(compare, function(x){'jj'});
+
     courses.forEach((course) => {
       var active = _this.state.courseList.map(function(e) { return e.code; }).indexOf(course.code) !== -1;
-      console.log(active)
       courseRows.push(
         <CourseRow
           key={ course.code }
