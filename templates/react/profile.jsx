@@ -62,7 +62,7 @@ class Profiles extends React.Component {
       <ProfileRow
         key='all'
         profile={ all_courses }
-        default={true}
+        default={ true }
         onClick={ this.profileCheckbox.bind(this) }
       />
     );
@@ -71,7 +71,7 @@ class Profiles extends React.Component {
       profileRows.push(
         <ProfileRow
           key={ profile.id }
-          default={false}
+          default={ false }
           profile={ profile }
           onClick={ this.profileCheckbox.bind(this) }
         />

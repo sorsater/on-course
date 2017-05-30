@@ -1,7 +1,10 @@
 class ProgramRow extends React.Component {
 
   render() {
-    return (<option name={this.props.name}>{this.props.name}</option>)
+    return (
+      <option name={this.props.name}>
+        { this.props.name }
+      </option>)
   }
 }
 
@@ -38,7 +41,7 @@ class Program extends React.Component {
       tom.push(<ProgramRow key={program} name={program} />)
     })
     return (
-      <select onChange={ this.onChange.bind(this) }>
+      <select id="select-program" onChange={ this.onChange.bind(this) }>
         { tom }
       </select>
     )
@@ -135,11 +138,6 @@ class Loader extends React.Component {
   }
 
   render() {
-    // if(Boolean(this.state.fields) &&
-    //    Boolean(this.state.profiles) &&
-    //    Boolean(this.state.schedule) &&
-    //    Boolean(this.state.courses) &&
-    //    Boolean(this.state.profileCourses)) {
       return (
         <div>
           <Program onChange={this.onChange}/>
@@ -152,9 +150,5 @@ class Loader extends React.Component {
                  />;
        </div>
      )
-    // } else {
-    //   return <div className={"loader"}>Potatis</div>
-    // }
   }
-
 }

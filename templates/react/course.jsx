@@ -1,16 +1,3 @@
-// function compare(a, b, type) {
-//   console.log(a.level);
-//   console.log(type);
-//   //console.log(a[type]);
-//     if (a[type] < b[type]){
-//       return 1;
-//     }
-//     if (a[type] > b[type]){
-//       return -1;
-//     }
-//     return 0;
-// }
-
 function rainbow(numOfSteps, step) {
     // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
     // Adam Cole, 2011-Sept-14
@@ -55,35 +42,51 @@ class CourseRow extends React.Component {
   }
 
   render() {
-    var activeStyle = this.props.active ? 'not-active' : '';
+    if (this.props.header === false) {
+      var activeStyle = this.props.active ? 'not-active' : '';
 
-    var url = 'http://kdb-5.liu.se/liu/lith/studiehandboken/' + this.props.course.link;
+      var url = 'http://kdb-5.liu.se/liu/lith/studiehandboken/' + this.props.course.link;
 
-    return (
-      <div className={`row row-eq-height course-row ${activeStyle}`} onClick={ this.addCourse.bind(this) }>
-        <div className="col-sm-2 course-row" onClick={ (e) => { e.stopPropagation(); }}>
-          <a href={ url }>{ this.props.course.code }</a>
+      return (
+        <div className={`row row-eq-height course-row ${activeStyle}`} onClick={ this.addCourse.bind(this) }>
+          <div className="col-sm-2 course-row" onClick={ (e) => { e.stopPropagation(); }}>
+            <a href={ url }>{ this.props.course.code }</a>
+          </div>
+          <div className="col-sm-1 course-row">
+            { this.props.course.hp }
+          </div>
+          <div className="col-sm-1 course-row">
+            { this.props.course.level }
+          </div>
+          <div className="col-sm-1 course-row">
+            { this.props.course.semester }
+          </div>
+          <div className="col-sm-1 course-row">
+            { this.props.course.block1 }
+          </div>
+          <div className="col-sm-1 course-row">
+            { this.props.course.block2 }
+          </div>
+          <div className="col-sm-5 course-row">
+            { this.props.course.name }
+          </div>
         </div>
-        <div className="col-sm-1 course-row">
-          { this.props.course.hp }
-        </div>
-        <div className="col-sm-1 course-row">
-          { this.props.course.level }
-        </div>
-        <div className="col-sm-1 course-row">
-          { this.props.course.semester }
-        </div>
-        <div className="col-sm-1 course-row">
-          { this.props.course.block1 }
-        </div>
-        <div className="col-sm-1 course-row">
-          { this.props.course.block2 }
-        </div>
-        <div className="col-sm-5 course-row">
-          { this.props.course.name }
-        </div>
-      </div>
-    )
+      )
+      } else {
+        return (
+          <div className="row row-eq-height course-row course-row-header">
+            <div className="col-sm-2 course-row course-row-header">
+              <a href="#">Kurskod</a>
+            </div>
+            <div className="col-sm-1 course-row course-row-header">   HP      </div>
+            <div className="col-sm-1 course-row course-row-header">   Nivå    </div>
+            <div className="col-sm-1 course-row course-row-header">   Termin  </div>
+            <div className="col-sm-1 course-row course-row-header">   Block1  </div>
+            <div className="col-sm-1 course-row course-row-header">   Block2  </div>
+            <div className="col-sm-5 course-row course-row-header">   Namn    </div>
+          </div>
+        )
+      }
   }
 }
 
@@ -102,14 +105,13 @@ class CourseViewer extends React.Component {
     var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
     // Return everything after the equal sign, or an empty string if the cookie name not found
     var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
-    var courseList = [];
-    var colors = [0,7,8,1,4,9,2,3,5,6];
+    var colors = ['blueviolet','brown','burlywood','yellowgreen','coral','dodgerblue','crimson','teal','seagreen','sandybrown','plum','peru'];
     var courseCount = 0;
 
     this.state = {
       selectedField: -1,
       searchString: '',
-      courseList: courseList,
+      courseList: [],
       profileList: [-1],
       period1List: [],
       period2List: [],
@@ -125,7 +127,8 @@ class CourseViewer extends React.Component {
     this.setState({
       currentField: fieldID,
       profileList: [-1],
-     })
+    });
+
   }
 
   handleChangeSemester(semester) {
@@ -137,7 +140,9 @@ class CourseViewer extends React.Component {
     var id = profileObj.id;
     var checked = profileObj.checked;
     if (checked === true) {
-      this.setState({ profileList: this.state.profileList.concat([id]) });
+      if (this.state.profileList.indexOf(id) === -1){
+        this.setState({ profileList: this.state.profileList.concat([id]) });
+      }
     }
     else{
       var array = this.state.profileList;
@@ -161,7 +166,8 @@ class CourseViewer extends React.Component {
       }
     });
     if (found === false) {
-      course['color'] = rainbow(this.state.colors.length, this.state.colors[this.state.courseCount]);
+      //course['color'] = rainbow(this.state.colors.length, this.state.colors[this.state.courseCount]);
+      course['color'] = this.state.colors[this.state.courseCount];
       this.setState({
         courseList: this.state.courseList.concat([course]),
         courseCount: (this.state.courseCount + 1)%this.state.colors.length
@@ -229,12 +235,6 @@ class CourseViewer extends React.Component {
     }
   }
 
-
-  sortMePlz() {
-
-  }
-
-
   componentWillReceiveProps() {
 
     var _this = this;
@@ -242,7 +242,7 @@ class CourseViewer extends React.Component {
     _this.state.cart.forEach(function(c_cookie) {
       if (c_cookie) {
         var i = _this.props.schedule.map(function(e) { return e.code; }).indexOf(c_cookie);
-        _this.props.schedule[i].color = rainbow(_this.state.colors.length, _this.state.colors[_this.state.courseCount]);
+        _this.props.schedule[i].color = _this.state.colors[_this.state.courseCount];
         _this.state.courseCount++;
         _this.state.courseList.push(_this.props.schedule[i]);
       }
@@ -341,24 +341,12 @@ class CourseViewer extends React.Component {
     }
     // Create the actual course row objects
     var courseRows = [];
-    var description = {
-      'block1': 'Block1',
-      'block2': 'Block1',
-      'hp': 'HP',
-      'level': 'Nivå',
-      'code': 'Kurskod',
-      'semester': 'Termin',
-      'name': 'Namn',
-    }
+    // The header for the courses
     courseRows.push(
       <CourseRow
-        key={ '-' }
-        course={ description }
-
-      />
+        key={ 'header' }
+        header={ true } />
     );
-
-    // courses.sort(compare, function(x){'jj'});
 
     courses.forEach((course) => {
       var active = _this.state.courseList.map(function(e) { return e.code; }).indexOf(course.code) !== -1;
@@ -368,6 +356,7 @@ class CourseViewer extends React.Component {
           course={ course }
           onClick={ this.handleCourseAdd.bind(this) }
           active={ active }
+          header={ false}
         />
       );
     })

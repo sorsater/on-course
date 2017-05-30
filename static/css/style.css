@@ -29,7 +29,12 @@ a {
 /* Div for program */
 #select-program {
   color: #fff;
-  font-size: 30px;
+  font-size: 26px;
+  background-color: #000;
+}
+
+#select-program select {
+  background-color: #000;
 }
 
 /* Divs for field and program */
@@ -70,13 +75,15 @@ a {
 }
 
 .scheduleSelected {
-  background-color: #666;
+  /*background-color: #666;*/
+  background-color: midnightblue;
   border: 1px solid #333;
   margin: 1px;
 }
 
 .scheduleUnselected {
-  background-color: #444;
+  /*background-color: #444;*/
+  background-color: cadetblue;
   border: 1px solid #333;
   margin: 1px;
 }
@@ -95,6 +102,7 @@ a {
 .course-row {
   background-color: tomato;
 }
+
 .course-row.not-active div {
   background-color: salmon;
 }
@@ -105,6 +113,15 @@ a {
 
 .course-row a {
   text-decoration: underline;
+}
+
+.course-row-header {
+  background-color: #e3e3e3;
+}
+
+/* Override the bootstrap margin */
+.row .row {
+  margin-top: 5px;
 }
 
 .schedule {
@@ -139,22 +156,9 @@ a {
 }
 
 .my-row {
-
-
   margin-right: 0px;
   margin-left: 0px;
 }
-/*
-[class*="col-"] {
-  min-height: 34px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-right: 2px;
-  padding-left: 2px;
-
-  margin-left: 0px;
-  margin-right: 0px;
-}*/
 
 .potatis {
   min-height: 52px;

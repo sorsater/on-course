@@ -122,9 +122,7 @@ class Schedule extends React.Component {
     var c;
 
     var _this = this;
-    console.log(this.props.courses);
     this.props.courses.forEach(function(course) {
-      console.log(course);
       courseItem = <ScheduleItem
         key={ course.code }
         handleCourseDel={ _this.handleCourseDel }
