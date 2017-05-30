@@ -338,11 +338,8 @@ class CourseViewer extends React.Component {
     var divStyle = {padding: '20px'};
 
     return (
-      <div className="row row-eq-height container-fluid potatis">
+      <div className="row row-eq-height container-fluid">
         <div className="col-sm-8 grey">
-          <div id="select-program">
-            Valt program: { this.props.program.name }
-          </div>
           <div id="select-field-program">
             Valt huvudområde:
             <Fields

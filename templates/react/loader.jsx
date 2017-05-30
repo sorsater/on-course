@@ -1,3 +1,51 @@
+class ProgramRow extends React.Component {
+
+  render() {
+    return (<option name={this.props.name}>{this.props.name}</option>)
+  }
+}
+
+class Program extends React.Component {
+  constructor(props){
+    super(props)
+    this.getPrograms = this.getPrograms.bind(this);
+    this.state = {
+      programs: [],
+    }
+  }
+
+  componentDidMount() {
+    this.getPrograms();
+  }
+
+  onChange(event) {
+    this.props.onChange(event.target.value);
+  }
+
+  getPrograms(){
+    fetch('/_get_programs')
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          programs: json
+        });
+      });
+  }
+
+  render() {
+    var tom = [];
+    this.state.programs.forEach(function(program) {
+      tom.push(<ProgramRow key={program} name={program} />)
+    })
+    return (
+      <select onChange={ this.onChange.bind(this) }>
+        { tom }
+      </select>
+    )
+  }
+}
+
+
 class Loader extends React.Component {
 
   constructor(props){
@@ -7,26 +55,37 @@ class Loader extends React.Component {
     this.getSchedule = this.getSchedule.bind(this);
     this.getCourses = this.getCourses.bind(this);
     this.getProfileCourses = this.getProfileCourses.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.state = {
       fields: [],
       profiles: [],
       schedule: [],
       courses: [],
       profileCourses: [],
+      program_name: 'Maskinteknik',
     }
 
   }
 
-  componentDidMount() {
-    this.getFields();
-    this.getProfiles();
-    this.getSchedule();
-    this.getCourses();
-    this.getProfileCourses();
+  onChange(event) {
+    this.setState({program_name: event})
+    this.getFields(event);
+    this.getProfiles(event);
+    this.getSchedule(event);
+    this.getCourses(event);
+    this.getProfileCourses(event);
   }
 
-  getFields(){
-    fetch('/_get_fields?program=Datateknik')
+  componentDidMount() {
+    this.getFields(this.state.program_name);
+    this.getProfiles(this.state.program_name);
+    this.getSchedule(this.state.program_name);
+    this.getCourses(this.state.program_name);
+    this.getProfileCourses(this.state.program_name);
+  }
+
+  getFields(program){
+    fetch('/_get_fields?program=' + program)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -35,8 +94,8 @@ class Loader extends React.Component {
       });
   }
 
-  getProfiles(){
-    fetch('/_get_profiles?program=Datateknik')
+  getProfiles(program){
+    fetch('/_get_profiles?program=' + program)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -45,7 +104,7 @@ class Loader extends React.Component {
       });
   }
 
-  getSchedule(){
+  getSchedule(program){
     fetch('/_get_schedule')
       .then(response => response.json())
       .then(json => {
@@ -55,8 +114,8 @@ class Loader extends React.Component {
       });
   }
 
-  getCourses(){
-    fetch('/_get_courses?program=Datateknik')
+  getCourses(program){
+    fetch('/_get_courses?program=' + program)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -65,8 +124,8 @@ class Loader extends React.Component {
       });
   }
 
-  getProfileCourses(){
-    fetch('/_get_profile_courses?program=Datateknik')
+  getProfileCourses(program){
+    fetch('/_get_profile_courses?program=' + program)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -81,14 +140,18 @@ class Loader extends React.Component {
     //    Boolean(this.state.schedule) &&
     //    Boolean(this.state.courses) &&
     //    Boolean(this.state.profileCourses)) {
-      return <CourseViewer
-               program={ program }
-               fields={ this.state.fields }
-               courses={ this.state.courses }
-               profiles={ this.state.profiles }
-               schedule={ this.state.schedule }
-               profileCourses= { this.state.profileCourses}
-             />;
+      return (
+        <div>
+          <Program onChange={this.onChange}/>
+            <CourseViewer
+                   fields={ this.state.fields }
+                   courses={ this.state.courses }
+                   profiles={ this.state.profiles }
+                   schedule={ this.state.schedule }
+                   profileCourses= { this.state.profileCourses}
+                 />;
+       </div>
+     )
     // } else {
     //   return <div className={"loader"}>Potatis</div>
     // }

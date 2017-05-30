@@ -169,7 +169,7 @@ class Schedule extends React.Component {
             <h5>Period 2</h5>
           </div>
         </div>
-        <div className="row my-row">
+        <div className="row my-row row-eq-height">
           <div className={defaultClasses}>
             1
           </div>
@@ -180,7 +180,7 @@ class Schedule extends React.Component {
             {p2b1}
           </div>
         </div>
-        <div className="row my-row">
+        <div className="row my-row row-eq-height">
           <div className={defaultClasses}>
             2
           </div>
@@ -191,7 +191,7 @@ class Schedule extends React.Component {
             {p2b2}
           </div>
         </div>
-        <div className="row my-row">
+        <div className="row my-row row-eq-height">
           <div className={defaultClasses}>
             3
           </div>
@@ -202,7 +202,7 @@ class Schedule extends React.Component {
             {p2b3}
           </div>
         </div>
-        <div className="row my-row">
+        <div className="row my-row row-eq-height">
           <div className={defaultClasses}>
             4
           </div>
@@ -213,7 +213,7 @@ class Schedule extends React.Component {
             {p2b4}
           </div>
         </div>
-        <div className="row my-row">
+        <div className="row my-row row-eq-height">
           <div className={defaultClasses}>
             -
           </div>

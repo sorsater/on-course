@@ -81,6 +81,10 @@ def store_user_cart():
     return 'OK', 200
 
 
+@app.route('/_get_programs')
+def get_programs():
+    return flask.json.jsonify([program.name for program in Program.query.all()])
+
 @app.route('/_get_fields', methods=['GET'])
 def get_fields():
     selected_program = flask.request.args.get('program')
