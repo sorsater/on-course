@@ -215,7 +215,7 @@ class Schedule extends React.Component {
         </div>
         <div className="row my-row">
           <div className={defaultClasses}>
-            Ospecifierat
+            -
           </div>
           <div className={slotClasses + ' ' + this.state.clickStatus['p1none'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '-', 'id': 'p1none'})}}>
             {p1none}

@@ -70,7 +70,7 @@ class Program(db.Model):
     link = db.Column(db.String(500), unique=True)
 
     fields = db.relationship("Field")
-    courses = db.relationship("Program_course")
+    courses = db.relationship("Program_course", order_by='Program_course.code')
 
     def __init__(self, id, name, link):
         self.id = id

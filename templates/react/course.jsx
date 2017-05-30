@@ -46,9 +46,9 @@ class CourseRow extends React.Component {
   render() {
     var nameTdStyle = { width: '70%', color: 'white' };
     var normalTdStyle = { width: '8%', color: 'white' };
-
+    var activeStyle = this.props.active ? 'not-active' : '';
     return (
-      <div className="row row-eq-height course-row" onClick={ this.addCourse.bind(this) }>
+      <div className={`row row-eq-height course-row ${activeStyle}`} onClick={ this.addCourse.bind(this) }>
         <div className="col-sm-2 course-row">
           <a href="#">{ this.props.course.code }</a>
         </div>
@@ -310,8 +310,8 @@ class CourseViewer extends React.Component {
     // Filter courses that match schedule (period and block)
     var period1 = this.state.period1List;
     var period2 = this.state.period2List;
+    var _this = this;
     if (period1.length > 0 || period2.length > 0){
-      var _this = this;
       courses = courses.filter(function(course) {
         if (period1.indexOf(course.block1) > -1 || period2.indexOf(course.block2) > -1){
           return true;
@@ -330,11 +330,14 @@ class CourseViewer extends React.Component {
     // Create the actual course row objects
     var courseRows = []
     courses.forEach((course) => {
+      var active = _this.state.courseList.map(function(e) { return e.code; }).indexOf(course.code) !== -1;
+      console.log(active)
       courseRows.push(
         <CourseRow
           key={ course.code }
           course={ course }
           onClick={ this.handleCourseAdd.bind(this) }
+          active={ active }
         />
       );
     })
@@ -378,7 +381,7 @@ class CourseViewer extends React.Component {
             { courseRows }
           </div>
         </div>
-        <div className="col-sm-4 light-grey">
+        <div className="col-sm-4 light-grey schedule">
           <Schedule
             courses={ this.state.courseList }
             handleCourseDel={ this.handleCourseDel }

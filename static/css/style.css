@@ -85,13 +85,23 @@ a {
   background-color: #666;
 }
 
-.course-row {
-  background-color: #eee;
+.course-row div {
   color: #333;
   padding: 0px;
   border: none;
   font-size: 16px;
-  margin-left: 2px;
+  padding-left: 2px;
+}
+.course-row {
+  background-color: tomato;
+}
+.course-row.not-active div {
+  background-color: salmon;
+}
+
+.schedule {
+  position: fixed;
+  right: 0px;
 }
 
 .white{
