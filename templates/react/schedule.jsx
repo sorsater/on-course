@@ -166,8 +166,8 @@ class Schedule extends React.Component {
       }
     });
 
-    var defaultClasses = "col-sm-3 light-grey noborder"
-    var slotClasses = "col-sm-3 light-grey potatis"
+    var defaultClasses = "col-sm-2 light-grey noborder"
+    var slotClasses = "col-sm-5 light-grey potatis"
 
     return (
       <div>
@@ -176,16 +176,17 @@ class Schedule extends React.Component {
           onClick={() => {this.handleCourseDel('all')}}
         />
         <div className="row my-row">
-          <div className={ defaultClasses }>
+          <div className="col-sm-2 light-grey noborder">
             <h5>Block</h5>
           </div>
-          <div className={ defaultClasses }>
+          <div className="col-sm-5 light-grey noborder">
             <h5>Period 1</h5>
           </div>
-          <div className={ defaultClasses }>
+          <div className="col-sm-5 light-grey noborder">
             <h5>Period 2</h5>
           </div>
         </div>
+
         <div className="row my-row row-eq-height">
           <div className={ defaultClasses }>
             1
@@ -197,6 +198,8 @@ class Schedule extends React.Component {
             { p2b1 }
           </div>
         </div>
+
+
         <div className="row my-row row-eq-height">
           <div className={ defaultClasses }>
             2
