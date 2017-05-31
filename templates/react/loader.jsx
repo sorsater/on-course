@@ -1,6 +1,7 @@
 // One row for each Program
 class ProgramRow extends React.Component {
   render() {
+    var selected = this.props.active ? 'selected' : '';
     return (
       <option name={ this.props.name }>
         { this.props.name }
@@ -47,7 +48,7 @@ class Program extends React.Component {
     });
 
     return (
-      <select id="select-program" onChange={ this.onChange.bind(this) }>
+      <select id="select-program" onChange={ this.onChange.bind(this) } value={this.props.active}>
         { programList }
       </select>
     )
@@ -65,13 +66,22 @@ class Loader extends React.Component {
     this.getCourses = this.getCourses.bind(this);
     this.getProfileCourses = this.getProfileCourses.bind(this);
     this.onChange = this.onChange.bind(this);
+
+    var cookiestring = RegExp("program[^;]+").exec(document.cookie);
+    // Return everything after the equal sign, or an empty string if the cookie name not found
+    var program =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
+    if(!program)
+      program = 'Datateknik'
+
+    console.log(program)
+
     this.state = {
       fields: [],
       profiles: [],
       schedule: [],
       courses: [],
       profileCourses: [],
-      program_name: 'Datateknik',
+      program_name: program,
     }
 
   }
@@ -83,6 +93,7 @@ class Loader extends React.Component {
     this.getSchedule(event);
     this.getCourses(event);
     this.getProfileCourses(event);
+    document.cookie = 'program=' + event;
   }
 
   componentDidMount() {
@@ -148,6 +159,7 @@ class Loader extends React.Component {
         <div>
           <Program
             onChange={ this.onChange }
+            active={this.state.program_name}
           />
           <CourseViewer
             fields={ this.state.fields }
