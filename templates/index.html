@@ -1,19 +1,23 @@
 {% extends "base.html" %}
 {% block body %}
-    <!-- The div that react uses to generate all content -->
-    <div id="container">
-    </div>
+
+<!-- The div that react uses to generate all content -->
+<div id="container">
+</div>
 
 <!-- scripts -->
 <script type="text/jsx">
 /** @jsx React.DOM */
 
 // Include all code
-{% include "react/loader.jsx" %}
-{% include "react/schedule.jsx" %}
-{% include "react/profile.jsx" %}
-{% include "react/field.jsx" %}
 {% include "react/course.jsx" %}
+{% include "react/field.jsx" %}
+{% include "react/level.jsx" %}
+{% include "react/loader.jsx" %}
+{% include "react/profile.jsx" %}
+{% include "react/program.jsx" %}
+{% include "react/schedule.jsx" %}
+{% include "react/semester.jsx" %}
 
 // Generated from the database
 var program = {
@@ -24,7 +28,7 @@ var program = {
 
 // Render the webpage
 ReactDOM.render(
-    <Loader />,
+  <Loader />,
   document.getElementById('container')
 );
 </script>

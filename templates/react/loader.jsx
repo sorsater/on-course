@@ -1,65 +1,7 @@
-// One row for each Program
-class ProgramRow extends React.Component {
-  render() {
-    var selected = this.props.active ? 'selected' : '';
-    return (
-      <option name={ this.props.name }>
-        { this.props.name }
-      </option>
-    )
-  }
-}
-
-class Program extends React.Component {
-  constructor(props){
-    super(props)
-    this.getPrograms = this.getPrograms.bind(this);
-    this.state = {
-      programs: [],
-    }
-  }
-
-  componentDidMount() {
-    this.getPrograms();
-  }
-
-  onChange(event) {
-    this.props.onChange(event.target.value);
-  }
-
-  getPrograms(){
-    fetch('/_get_programs')
-      .then(response => response.json())
-      .then(json => {
-        this.setState({
-          programs: json
-        });
-      });
-  }
-
-  render() {
-    var programList = [];
-    this.state.programs.forEach(function(program) {
-      programList.push(
-        <ProgramRow
-          key={ program }
-          name={ program }
-        />)
-    });
-
-    return (
-      <select id="select-program" onChange={ this.onChange.bind(this) } value={this.props.active}>
-        { programList }
-      </select>
-    )
-  }
-}
-
-
+// The class that loads all other components
 class Loader extends React.Component {
-
   constructor(props){
-    super(props)
+    super(props);
     this.getFields = this.getFields.bind(this);
     this.getProfiles = this.getProfiles.bind(this);
     this.getSchedule = this.getSchedule.bind(this);
@@ -70,10 +12,9 @@ class Loader extends React.Component {
     var cookiestring = RegExp("program[^;]+").exec(document.cookie);
     // Return everything after the equal sign, or an empty string if the cookie name not found
     var program =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
-    if(!program)
-      program = 'Datateknik'
-
-    console.log(program)
+    if(!program){
+      program = 'Datateknik';
+    }
 
     this.state = {
       fields: [],
@@ -83,7 +24,6 @@ class Loader extends React.Component {
       profileCourses: [],
       program_name: program,
     }
-
   }
 
   onChange(event) {
@@ -157,19 +97,16 @@ class Loader extends React.Component {
   render() {
       return (
         <div>
-          <Program
-            onChange={ this.onChange }
-            active={this.state.program_name}
-          />
           <CourseViewer
+            activeProgram={ this.state.program_name }
+            onChange={ this.onChange }
             fields={ this.state.fields }
             courses={ this.state.courses }
             profiles={ this.state.profiles }
             schedule={ this.state.schedule }
-            profileCourses= { this.state.profileCourses}
+            profileCourses= { this.state.profileCourses }
           />;
        </div>
      )
   }
-
 }

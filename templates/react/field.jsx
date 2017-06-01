@@ -10,7 +10,7 @@ class FieldRow extends React.Component {
 }
 
 // Select the different fields
-class Fields extends React.Component {
+class Field extends React.Component {
   onChange(event) {
     this.props.onChange(event.target.value);
   }

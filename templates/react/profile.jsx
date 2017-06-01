@@ -46,7 +46,7 @@ class ProfileRow extends React.Component {
 }
 
 // The checkboxes for the different profiles
-class Profiles extends React.Component {
+class Profile extends React.Component {
   profileCheckbox(id) {
     this.props.profileCheckbox(id);
   }

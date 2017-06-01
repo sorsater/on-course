@@ -1,11 +1,21 @@
 <div id="FBLogin">
   {% if current_user.is_authenticated %}
     <img src="http://graph.facebook.com/{{ current_user.social_id.split('$')[1] }}/picture?type=square">
-    <span style="color:white">
+    <span class="white">
       Hi {{ current_user.nickname }}!
     </span>
-    <a href="/logout" style="position:absolute;right:20px;top:10px">logga ut</a>
+
+    <a href="/logout">
+      <button class="btn facebook-btn facebook-btn-logout">
+        Logga ut
+      </button>
+    </a>
+
   {% else %}
-  <a href="/authorize/facebook"><button>Facebook</button></a>
+    <a href="/authorize/facebook">
+      <button class="btn facebook-btn">
+        Facebook
+      </button>
+    </a>
   {% endif %}
 </div>

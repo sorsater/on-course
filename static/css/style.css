@@ -1,10 +1,23 @@
-/* custom styles */
-
 body {
   margin: 0px;
   background-color: #444;
   color: #333;
   /*overflow: hidden;*/
+}
+
+#footer {
+  color: #e3e3e3;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.facebook-btn {
+  margin: 2px;
+}
+
+.facebook-btn-logout {
+  float: right;
+  min-height: 46px;
 }
 
 /* Hide the scrollbar */
@@ -26,26 +39,21 @@ a {
 	line-height: 26.4px;
 }
 
-/* Div for program */
-#select-program {
-  color: #fff;
-  font-size: 26px;
-  background-color: #000;
-}
-
-#select-program select {
-  background-color: #000;
-}
-
-/* Divs for field and program */
-#select-field-program {
-  color: #fff;
+.select-box {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  color: white;
+  background-color: inherit;
   font-size: 20px;
 }
 
-/* The select fields for program and field */
-#select-field-program select {
-  background-color: #000;
+.select-box select {
+  background-color: black;
+}
+
+.select-row {
+  margin-left: 10px;
 }
 
 /* Searchbox to filter courses */
@@ -124,10 +132,6 @@ a {
 /* Override the bootstrap margin */
 .row .row {
   margin-top: 5px;
-}
-
-.course-list {
-  padding: 20px;
 }
 
 .schedule {

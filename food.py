@@ -2,18 +2,14 @@ import sqlite3
 from scrape.scraper import scrape_content
 import pickle
 import sys
-#sys.setrecursionlimit(10000)
+
+sys.setrecursionlimit(10000)
 print("Scraping plates")
-#courses, schedule = scrape_courses()
-#programs, fields, profiles, course_profile = scrape_programs()
 
-
-#courses, schedule, program_courses, programs, fields, profiles, course_profile = scrape_content()
-#data = scrape_content()
-#with open('pickled_food.pkl', 'wb') as f:
-#    pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
-#sys.exit(0)
-
+if len(sys.argv) > 1 :
+    data = scrape_content()
+    with open('pickled_food.pkl', 'wb') as f:
+       pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 with open('pickled_food.pkl', 'rb') as f:
     data = pickle.load(f)
 

@@ -1,39 +1,3 @@
-// The Selected semester
-class Semester extends React.Component {
-  onChange(event) {
-    this.props.onChange(event.target.value);
-  }
-
-  render() {
-    return (
-      <select onChange={ this.onChange.bind(this) }>
-        <option name="Alla">Alla</option>
-        <option name="7">7</option>
-        <option name="8">8</option>
-        <option name="9">9</option>
-      </select>
-    )
-  }
-}
-
-// The selected level
-class Level extends React.Component {
-  onChange(event) {
-    this.props.onChange(event.target.value);
-  }
-
-  render() {
-    return (
-      <select onChange={ this.onChange.bind(this) }>
-        <option name="Alla">Alla</option>
-        <option name="G1">G1</option>
-        <option name="G2">G2</option>
-        <option name="A">A</option>
-      </select>
-    )
-  }
-}
-
 // For each course in the schedule that is selected
 class ScheduleItem extends React.Component {
   handleCourseDel(courseCode){

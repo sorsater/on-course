@@ -1,23 +1,3 @@
-function rainbow(numOfSteps, step) {
-    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
-    // Adam Cole, 2011-Sept-14
-    var r, g, b;
-    var h = step / numOfSteps;
-    var i = ~~(h * 6);
-    var f = h * 6 - i;
-    var q = 1 - f;
-    switch(i % 6){
-        case 0: r = 1; g = f; b = 0; break;
-        case 1: r = q; g = 1; b = 0; break;
-        case 2: r = 0; g = 1; b = f; break;
-        case 3: r = 0; g = q; b = 1; break;
-        case 4: r = f; g = 0; b = 1; break;
-        case 5: r = 1; g = 0; b = q; break;
-    }
-    var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
-    return (c);
-}
-
 // One row for each course
 class CourseRow extends React.Component {
   addCourse() {
@@ -28,7 +8,7 @@ class CourseRow extends React.Component {
       'semester': c.semester,
       'block1': c.block1,
       'block2': c.block2,
-   });
+   });d
 
    // Get name followed by anything except a semicolon
    var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
@@ -302,7 +282,6 @@ class CourseViewer extends React.Component {
       });
     }
 
-
     // Join the courses with schedule and merge properties
     var courses = [];
     for (var c = 0; c < profile_courses.length; c++) {
@@ -379,25 +358,52 @@ class CourseViewer extends React.Component {
 
     return (
       <div className="row row-eq-height container-fluid">
-        <div className="col-sm-8 grey">
-          <div id="select-field-program">
-            Valt huvudområde:
-            <Fields
-              fields={this.props.fields}
-              onChange={ this.handleChangeField.bind(this) }
-            />
-            <br />
-            Vald termin:
-            <Semester
-              onChange={ this.handleChangeSemester.bind(this) }
-            />
-            <br />
-            Vald nivå:
-            <Level
-              onChange={ this.handleChangeLevel.bind(this) }
-            />
+        <div className="col-sm-9 grey">
+          <div className="row select-row">
+            <div className="col-sm-3 select-box">
+              Valt program
+            </div>
+            <div className="col-sm-3 select-box">
+              <Program
+                active={ this.props.activeProgram }
+                onChange={ this.props.onChange }
+                />
+            </div>
           </div>
-          <Profiles
+          <div className="row select-row">
+            <div className="col-sm-3 select-box">
+              Valt huvudområde:
+            </div>
+            <div className="col-sm-3 select-box">
+              <Field
+                fields={ this.props.fields }
+                onChange={ this.handleChangeField.bind(this) }
+                />
+            </div>
+          </div>
+          <div className="row select-row">
+            <div className="col-sm-3 select-box">
+              Vald termin:
+            </div>
+            <div className="col-sm-3 select-box">
+              <Semester
+                onChange={ this.handleChangeSemester.bind(this) }
+              />
+            </div>
+          </div>
+
+          <div className="row select-row">
+            <div className="col-sm-3 select-box">
+              Vald nivå:
+            </div>
+            <div className="col-sm-3 select-box">
+              <Level
+                onChange={ this.handleChangeLevel.bind(this) }
+              />
+            </div>
+          </div>
+
+          <Profile
             field={ this.state.currentField }
             profileCheckbox={ this.handleProfileClick.bind(this) }
             profiles={ profiles }
@@ -405,7 +411,7 @@ class CourseViewer extends React.Component {
           <div className="course-count">
             Antal kurser: { courses.length }
           </div>
-          <div className="course-list">
+          <div>
             <input id="search" type="text"
               value={ this.state.searchString }
               onChange={ this.handleChangeSearch }
@@ -414,7 +420,7 @@ class CourseViewer extends React.Component {
             { courseRows }
           </div>
         </div>
-        <div className="col-sm-4 light-grey schedule">
+        <div className="col-sm-3 light-grey schedule">
           <Schedule
             courses={ this.state.courseList }
             handleCourseDel={ this.handleCourseDel }
