@@ -29,25 +29,25 @@ class CourseRow extends React.Component {
 
       return (
         <div className={`row row-eq-height course-row ${activeStyle}`} onClick={ this.addCourse.bind(this) }>
-          <div className="col-sm-2 course-item" onClick={ (e) => { e.stopPropagation(); }}>
+          <div className="col-xs-2 course-item" onClick={ (e) => { e.stopPropagation(); }}>
             <a href={ url }>{ this.props.course.code }</a>
           </div>
-          <div className="col-sm-1 course-item">
+          <div className="col-xs-1 course-item">
             { this.props.course.hp }
           </div>
-          <div className="col-sm-1 course-item">
+          <div className="col-xs-1 course-item">
             { this.props.course.level }
           </div>
-          <div className="col-sm-1 course-item">
+          <div className="col-xs-1 course-item">
             { this.props.course.semester }
           </div>
-          <div className="col-sm-1 course-item">
+          <div className="col-xs-1 course-item">
             { this.props.course.block1 }
           </div>
-          <div className="col-sm-1 course-item">
+          <div className="col-xs-1 course-item">
             { this.props.course.block2 }
           </div>
-          <div className="col-sm-5 course-item">
+          <div className="col-xs-5 course-item">
             { this.props.course.name }
           </div>
         </div>
@@ -55,15 +55,15 @@ class CourseRow extends React.Component {
     } else {
       return (
         <div className="row row-eq-height course-row-header">
-          <div className="col-sm-2 course-item">
+          <div className="col-xs-2 course-item">
             <a href="#">Kurskod</a>
           </div>
-          <div className="col-sm-1 course-item">   HP      </div>
-          <div className="col-sm-1 course-item">   Nivå    </div>
-          <div className="col-sm-1 course-item">   Termin  </div>
-          <div className="col-sm-1 course-item">   Block1  </div>
-          <div className="col-sm-1 course-item">   Block2  </div>
-          <div className="col-sm-5 course-item">   Namn    </div>
+          <div className="col-xs-1 course-item">   HP      </div>
+          <div className="col-xs-1 course-item">   Nivå    </div>
+          <div className="col-xs-1 course-item">   Termin  </div>
+          <div className="col-xs-1 course-item">   Block1  </div>
+          <div className="col-xs-1 course-item">   Block2  </div>
+          <div className="col-xs-5 course-item">   Namn    </div>
         </div>
       )
     }
@@ -376,9 +376,9 @@ class CourseViewer extends React.Component {
 
     return (
       <div className="row row-eq-height container-fluid">
-        <div className="col-sm-12 grey">
+        <div className="col-xs-12 grey">
           <div className="row select-row">
-            <div className="col-sm-3 select-box">
+            <div className="col-xs-3 select-box">
               Program:
               <Program
                 active={ this.props.activeProgram }
@@ -386,7 +386,7 @@ class CourseViewer extends React.Component {
                 />
             </div>
 
-            <div className="col-sm-3 select-box">
+            <div className="col-xs-3 select-box">
               Huvudområde:
               <Field
                 fields={ this.props.fields }
@@ -394,13 +394,13 @@ class CourseViewer extends React.Component {
                 />
             </div>
 
-            <div className="col-sm-3 select-box">
+            <div className="col-xs-3 select-box">
               Termin:
               <Semester
                 onChange={ this.handleChangeSemester.bind(this) }
                 />
             </div>
-            <div className="col-sm-3 select-box">
+            <div className="col-xs-3 select-box">
               Nivå:
               <Level
                 onChange={ this.handleChangeLevel.bind(this) }
@@ -419,15 +419,13 @@ class CourseViewer extends React.Component {
             <div className="course-count select-row">
               Antal kurser: { courses.length }
             </div>
-
             <div className="row row-eq-height select-row">
-              <div className="col-sm-8 course-list" >
+              <div className="col-xs-8 course-list" >
                 <input id="search" type="text"  className="form-control"
                   value={ this.state.searchString }
                   onChange={ this.handleChangeSearch }
                   placeholder="Vad får det lov att vara? 😋"
                   />
-
                 <CourseRow
                   key={ 'header' }
                   header={ true } />
@@ -437,7 +435,7 @@ class CourseViewer extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-4">
+              <div className="col-xs-4">
                 <Schedule
                   handleCourseLoad={ this.handleCourseLoad }
                   loggedInCart={ this.props.loggedInCart }
