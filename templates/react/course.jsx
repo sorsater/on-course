@@ -29,41 +29,41 @@ class CourseRow extends React.Component {
 
       return (
         <div className={`row row-eq-height course-row ${activeStyle}`} onClick={ this.addCourse.bind(this) }>
-          <div className="col-sm-2 course-row" onClick={ (e) => { e.stopPropagation(); }}>
+          <div className="col-sm-2 course-item" onClick={ (e) => { e.stopPropagation(); }}>
             <a href={ url }>{ this.props.course.code }</a>
           </div>
-          <div className="col-sm-1 course-row">
+          <div className="col-sm-1 course-item">
             { this.props.course.hp }
           </div>
-          <div className="col-sm-1 course-row">
+          <div className="col-sm-1 course-item">
             { this.props.course.level }
           </div>
-          <div className="col-sm-1 course-row">
+          <div className="col-sm-1 course-item">
             { this.props.course.semester }
           </div>
-          <div className="col-sm-1 course-row">
+          <div className="col-sm-1 course-item">
             { this.props.course.block1 }
           </div>
-          <div className="col-sm-1 course-row">
+          <div className="col-sm-1 course-item">
             { this.props.course.block2 }
           </div>
-          <div className="col-sm-5 course-row">
+          <div className="col-sm-5 course-item">
             { this.props.course.name }
           </div>
         </div>
       )
       } else {
         return (
-          <div className="row row-eq-height course-row course-row-header">
-            <div className="col-sm-2 course-row course-row-header">
+          <div className="row row-eq-height course-row-header">
+            <div className="col-sm-2 course-item">
               <a href="#">Kurskod</a>
             </div>
-            <div className="col-sm-1 course-row course-row-header">   HP      </div>
-            <div className="col-sm-1 course-row course-row-header">   Nivå    </div>
-            <div className="col-sm-1 course-row course-row-header">   Termin  </div>
-            <div className="col-sm-1 course-row course-row-header">   Block1  </div>
-            <div className="col-sm-1 course-row course-row-header">   Block2  </div>
-            <div className="col-sm-5 course-row course-row-header">   Namn    </div>
+            <div className="col-sm-1 course-item">   HP      </div>
+            <div className="col-sm-1 course-item">   Nivå    </div>
+            <div className="col-sm-1 course-item">   Termin  </div>
+            <div className="col-sm-1 course-item">   Block1  </div>
+            <div className="col-sm-1 course-item">   Block2  </div>
+            <div className="col-sm-5 course-item">   Namn    </div>
           </div>
         )
       }
@@ -337,11 +337,11 @@ class CourseViewer extends React.Component {
     // Create the actual course row objects
     var courseRows = [];
     // The header for the courses
-    courseRows.push(
-      <CourseRow
-        key={ 'header' }
-        header={ true } />
-    );
+    // courseRows.push(
+    //   <CourseRow
+    //     key={ 'header' }
+    //     header={ true } />
+    // );
 
     courses.forEach((course) => {
       var active = _this.state.courseList.map(function(e) { return e.code; }).indexOf(course.code) !== -1;
@@ -358,45 +358,32 @@ class CourseViewer extends React.Component {
 
     return (
       <div className="row row-eq-height container-fluid">
-        <div className="col-sm-9 grey">
+        <div className="col-sm-12 grey">
           <div className="row select-row">
             <div className="col-sm-3 select-box">
-              Valt program
-            </div>
-            <div className="col-sm-3 select-box">
+              Program:
               <Program
                 active={ this.props.activeProgram }
                 onChange={ this.props.onChange }
                 />
             </div>
-          </div>
-          <div className="row select-row">
+
             <div className="col-sm-3 select-box">
-              Valt huvudområde:
-            </div>
-            <div className="col-sm-3 select-box">
+              Huvudområde:
               <Field
                 fields={ this.props.fields }
                 onChange={ this.handleChangeField.bind(this) }
                 />
             </div>
-          </div>
-          <div className="row select-row">
+
             <div className="col-sm-3 select-box">
-              Vald termin:
-            </div>
-            <div className="col-sm-3 select-box">
+              Termin:
               <Semester
                 onChange={ this.handleChangeSemester.bind(this) }
               />
             </div>
-          </div>
-
-          <div className="row select-row">
             <div className="col-sm-3 select-box">
-              Vald nivå:
-            </div>
-            <div className="col-sm-3 select-box">
+              Nivå:
               <Level
                 onChange={ this.handleChangeLevel.bind(this) }
               />
@@ -408,24 +395,40 @@ class CourseViewer extends React.Component {
             profileCheckbox={ this.handleProfileClick.bind(this) }
             profiles={ profiles }
           />
-          <div className="course-count">
+
+
+        <div className="row">
+          <div className="course-count select-row">
             Antal kurser: { courses.length }
           </div>
-          <div>
-            <input id="search" type="text"
-              value={ this.state.searchString }
-              onChange={ this.handleChangeSearch }
-              placeholder="Vad får det lov att vara? 😋"
+
+          <div className="row row-eq-height select-row">
+            <div className="col-sm-8 course-list" >
+              <input id="search" type="text"  className="form-control"
+                value={ this.state.searchString }
+                onChange={ this.handleChangeSearch }
+                placeholder="Vad får det lov att vara? 😋"
+              />
+
+              <CourseRow
+                key={ 'header' }
+                header={ true } />
+              <div className="course-list-container">
+                <div className="course-list-inner">
+                  { courseRows }
+                </div>
+              </div>
+            </div>
+          <div className="col-sm-4">
+            <Schedule
+              courses={ this.state.courseList }
+              handleCourseDel={ this.handleCourseDel }
+              handleBlockClick={ this.handleBlockClick }
             />
-            { courseRows }
           </div>
         </div>
-        <div className="col-sm-3 light-grey schedule">
-          <Schedule
-            courses={ this.state.courseList }
-            handleCourseDel={ this.handleCourseDel }
-            handleBlockClick={ this.handleBlockClick }
-          />
+      </div>
+
         </div>
       </div>
     )

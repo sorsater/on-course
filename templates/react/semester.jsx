@@ -6,7 +6,7 @@ class Semester extends React.Component {
 
   render() {
     return (
-      <select onChange={ this.onChange.bind(this) }>
+      <select className="form-control" onChange={ this.onChange.bind(this) }>
         <option name="Alla">Alla</option>
         <option name="7">7</option>
         <option name="8">8</option>

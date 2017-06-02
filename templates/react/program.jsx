@@ -48,7 +48,7 @@ class Program extends React.Component {
     });
 
     return (
-      <select id="select-program" onChange={ this.onChange.bind(this) } value={this.props.active}>
+      <select className="form-control" id="select-program" onChange={ this.onChange.bind(this) } value={this.props.active}>
         { programList }
       </select>
     )

@@ -6,7 +6,7 @@ class ScheduleItem extends React.Component {
   render() {
     var color = { backgroundColor: this.props.course.color }
     return (
-      <div className={ 'course-selected' } style={ color }
+      <div className='course-selected col-sm-6' style={ color }
         onClick={(e) => {
           e.stopPropagation();
           this.handleCourseDel(this.props.course.code);
@@ -24,16 +24,16 @@ class Schedule extends React.Component {
     this.handleCourseDel = this.handleCourseDel.bind(this);
     this.state = {
       'clickStatus': {
-        'p1b1': {'selected': 'scheduleUnselected', 'checked': true},
-        'p1b2': {'selected': 'scheduleUnselected', 'checked': true},
-        'p1b3': {'selected': 'scheduleUnselected', 'checked': true},
-        'p1b4': {'selected': 'scheduleUnselected', 'checked': true},
-        'p1none': {'selected': 'scheduleUnselected', 'checked': true},
-        'p2b1': {'selected': 'scheduleUnselected', 'checked': true},
-        'p2b2': {'selected': 'scheduleUnselected', 'checked': true},
-        'p2b3': {'selected': 'scheduleUnselected', 'checked': true},
-        'p2b4': {'selected': 'scheduleUnselected', 'checked': true},
-        'p2none': {'selected': 'scheduleUnselected', 'checked': true},
+        'p1b1': {'selected': 'unselected', 'checked': true},
+        'p1b2': {'selected': 'unselected', 'checked': true},
+        'p1b3': {'selected': 'unselected', 'checked': true},
+        'p1b4': {'selected': 'unselected', 'checked': true},
+        'p1none': {'selected': 'unselected', 'checked': true},
+        'p2b1': {'selected': 'unselected', 'checked': true},
+        'p2b2': {'selected': 'unselected', 'checked': true},
+        'p2b3': {'selected': 'unselected', 'checked': true},
+        'p2b4': {'selected': 'unselected', 'checked': true},
+        'p2none': {'selected': 'unselected', 'checked': true},
       }
     }
   }
@@ -48,7 +48,7 @@ class Schedule extends React.Component {
       'checked': this.state.clickStatus[slot['id']].checked,
     });
 
-    var css = (this.state.clickStatus[slot['id']].selected === 'scheduleUnselected') ? 'scheduleSelected' : 'scheduleUnselected';
+    var css = (this.state.clickStatus[slot['id']].selected === 'unselected') ? 'selected' : 'unselected';
     var new_clickStatus = this.state.clickStatus;
     new_clickStatus[slot['id']].selected = css;
     new_clickStatus[slot['id']].checked = ! this.state.clickStatus[slot['id']].checked;
@@ -130,23 +130,23 @@ class Schedule extends React.Component {
       }
     });
 
-    var defaultClasses = "col-sm-2 light-grey noborder"
-    var slotClasses = "col-sm-5 light-grey potatis"
+    var defaultClasses = "col-md-2 col-xs-2 light-grey noborder schedule-header"
+    var slotClasses = "col-md-5 col-xs-5 block-box-container"
 
     return (
-      <div>
+      <div className="schedule">
         <input type='button'
           value={'Ta bort alla'}
           onClick={() => {this.handleCourseDel('all')}}
         />
-        <div className="row my-row">
-          <div className="col-sm-2 light-grey noborder">
+        <div className="row my-row schedule-header">
+          <div className="col-md-2 col-xs-3 light-grey noborder">
             <h5>Block</h5>
           </div>
-          <div className="col-sm-5 light-grey noborder">
+          <div className="col-md-5 col-xs-5 light-grey noborder">
             <h5>Period 1</h5>
           </div>
-          <div className="col-sm-5 light-grey noborder">
+          <div className="col-md-5 col-xs-4 light-grey noborder">
             <h5>Period 2</h5>
           </div>
         </div>
@@ -156,10 +156,14 @@ class Schedule extends React.Component {
             1
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1b1'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '1', 'id': 'p1b1'})}}>
-            { p1b1 }
+            <div className="row select-row block-box">
+              { p1b1 }
+            </div>
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2b1'].selected} onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '1', 'id': 'p2b1'})}}>
+            <div className="row select-row block-box">
             { p2b1 }
+          </div>
           </div>
         </div>
 
@@ -169,10 +173,14 @@ class Schedule extends React.Component {
             2
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1b2'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '2', 'id': 'p1b2'})}}>
+            <div className="row select-row block-box">
             { p1b2 }
           </div>
+          </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2b2'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '2', 'id': 'p2b2'})}}>
+            <div className="row select-row block-box">
             { p2b2 }
+          </div>
           </div>
         </div>
         <div className="row my-row row-eq-height">
@@ -180,10 +188,14 @@ class Schedule extends React.Component {
             3
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1b3'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '3', 'id': 'p1b3'})}}>
+            <div className="row select-row block-box">
             { p1b3 }
           </div>
+          </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2b3'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '3', 'id': 'p2b3'})}}>
+            <div className="row select-row block-box">
             { p2b3 }
+          </div>
           </div>
         </div>
         <div className="row my-row row-eq-height">
@@ -191,10 +203,14 @@ class Schedule extends React.Component {
             4
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1b4'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '4', 'id': 'p1b4'})}}>
+            <div className="row select-row block-box">
             { p1b4 }
           </div>
+          </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2b4'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '4', 'id': 'p2b4'})}}>
+            <div className="row select-row block-box">
             { p2b4 }
+          </div>
           </div>
         </div>
         <div className="row my-row row-eq-height">
@@ -202,10 +218,14 @@ class Schedule extends React.Component {
             -
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1none'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '-', 'id': 'p1none'})}}>
+            <div className="row select-row block-box">
             { p1none }
           </div>
+          </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2none'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '-', 'id': 'p2none'})}}>
+            <div className="row select-row block-box">
             { p2none }
+          </div>
           </div>
         </div>
 

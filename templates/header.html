@@ -13,9 +13,7 @@
 
   {% else %}
     <a href="/authorize/facebook">
-      <button class="btn facebook-btn">
-        Facebook
-      </button>
+      <img class="facebook-btn" src="{{ url_for('static', filename='fbbutton.png') }}" alt="">
     </a>
   {% endif %}
 </div>

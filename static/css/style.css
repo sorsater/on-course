@@ -9,10 +9,12 @@ body {
   color: #e3e3e3;
   font-size: 12px;
   margin-left: 10px;
+  margin-top: -28px;
 }
 
 .facebook-btn {
   margin: 2px;
+  height: 46px;
 }
 
 .facebook-btn-logout {
@@ -49,7 +51,7 @@ a {
 }
 
 .select-box select {
-  background-color: black;
+  width: 95%;
 }
 
 .select-row {
@@ -62,6 +64,8 @@ a {
   height: 30px;
   font-size: 30px;
   color: #222;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 .grey{
@@ -72,32 +76,106 @@ a {
   background-color: #ddd;
 }
 
-.profileSelected {
-  background-color: #666;
+.selected {
+  background-color: #FA6900;
   border: 1px solid #333;
+  color: black;
+  border-radius: 5px;
 }
 
-.profileUnselected {
-  background-color: #444;
+.unselected {
+  background-color: #F38630;
   border: 1px solid #333;
+  color: black;
+  border-radius: 5px;
 }
 
-.scheduleSelected {
-  /*background-color: #666;*/
-  background-color: midnightblue;
-  border: 1px solid #333;
-  margin: 1px;
+.selected:hover {
+  background-color: #d75b02;
+}
+.unselected:hover {
+  background-color: #f1a56a;
+}
+.schedule {
+  background-color: #ddd;
+  border: 0px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  height: 510px;
+  text-align: center;
 }
 
-.scheduleUnselected {
-  /*background-color: #444;*/
-  background-color: cadetblue;
-  border: 1px solid #333;
-  margin: 1px;
+.schedule-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 25px;
 }
 
-.scheduleUnselected:hover {
-  background-color: #666;
+.schedule-header h5 {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.course-selected {
+  height: 20px;
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+.block-box {
+  padding: 0px;
+  margin: 0px;
+}
+
+.block-box-container {
+  min-height: 52px;
+  padding: 0px;
+  margin-right: 5px;
+  padding-left: 15px;
+  border: 0px;
+}
+
+.course-list {
+  background-color: #333;
+  border: 0px;
+  padding-left: 0px;
+}
+
+.course-list-container {
+  overflow-x: hidden;
+  height: 443px;
+  margin-bottom: 5px;
+}
+.course-list-inner {
+}
+
+.course-row-header {
+  margin: 0px;
+}
+.course-row-header div{
+  background-color: #e3e3e3;
+  padding: 0px;
+  border: none;
+  font-size: 16px;
+  padding-left: 2px;
+  margin-bottom: 5px;
+}
+
+.course-row {
+  margin: 0px;
+  padding-left: 0px;
+}
+
+.course-row:first-child{
+  margin-top: 0px !important;
 }
 
 .course-row div {
@@ -106,11 +184,17 @@ a {
   border: none;
   font-size: 16px;
   padding-left: 2px;
-}
-.course-row {
+
   background-color: tomato;
+}
+
+.course-item {
   margin-left: 0px;
   margin-right: 0px;
+}
+
+.course-row-container:hover {
+  background-color: #fff;
 }
 
 .course-row.not-active div {
@@ -125,19 +209,14 @@ a {
   text-decoration: underline;
 }
 
-.course-row-header {
-  background-color: #e3e3e3;
-}
+
 
 /* Override the bootstrap margin */
 .row .row {
   margin-top: 5px;
 }
 
-.schedule {
-  position: fixed;
-  right: 0px;
-}
+
 
 .white{
   color: #fff;
@@ -151,6 +230,9 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 5px 0px 5px 5px;
+  font-weight: bold;
+  color: #333;
 }
 
 .profile-style {
@@ -162,28 +244,11 @@ a {
   font-size: 30px;
 }
 
-.course-selected {
-  border: 1px solid black;
-  background-color: #4ABDAC;
-  margin: 2px;
-  padding: 1px;
-}
-
 .my-row {
   margin-right: 0px;
   margin-left: 0px;
 }
 
-.potatis {
-  min-height: 52px;
-  padding-top: 20px;
-  padding-bottom: 2px;
-  padding-right: 2px;
-  padding-left: 2px;
-
-  margin-left: 0px;
-  margin-right: 0px;
-}
 
 .loader {
     position: fixed; /* or absolute */
@@ -196,6 +261,7 @@ a {
     height: 220px;
     animation: spin 2s linear infinite;
 }
+
 
 @keyframes spin {
     0% { transform: rotate(0deg); }

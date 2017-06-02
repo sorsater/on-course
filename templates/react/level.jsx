@@ -6,7 +6,7 @@ class Level extends React.Component {
 
   render() {
     return (
-      <select onChange={ this.onChange.bind(this) }>
+      <select className="form-control" onChange={ this.onChange.bind(this) }>
         <option name="Alla">Alla</option>
         <option name="G1">G1</option>
         <option name="G2">G2</option>

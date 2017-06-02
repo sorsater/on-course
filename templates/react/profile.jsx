@@ -3,9 +3,9 @@ class ProfileRow extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    var selected = 'profileUnselected'
+    var selected = 'unselected'
     if (props.default === true){
-      selected = 'profileSelected';
+      selected = 'selected';
     }
     this.state = {
       'selected': selected,
@@ -18,7 +18,7 @@ class ProfileRow extends React.Component {
       'id': this.props.profile.id,
       'checked': !this.state.checked,
     });
-    var css = (this.state.selected === 'profileUnselected') ? 'profileSelected' : 'profileUnselected';
+    var css = (this.state.selected === 'unselected') ? 'selected' : 'unselected';
     this.setState({
       'selected': css,
       'checked': !this.state.checked
@@ -30,7 +30,7 @@ class ProfileRow extends React.Component {
   render() {
     return (
       <div
-        className={ "col-sm-3 profileElement" + ' ' + this.state.selected }
+        className={ "col-sm-2 profileElement" + ' ' + this.state.selected }
         onClick={ this.profileCheckbox.bind(this) }
       >
         <input
@@ -78,7 +78,7 @@ class Profile extends React.Component {
       );
     });
     return (
-      <div className="profile-style">
+      <div className="profile-style select-row">
         <div className="row white">
           { profileRows }
         </div>

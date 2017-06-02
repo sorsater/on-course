@@ -17,7 +17,7 @@ class Field extends React.Component {
   render() {
     var allFields = {
       'id': -1,
-      'name': 'Alla områden',
+      'name': 'Alla',
     };
 
     var fieldRows = []
@@ -36,7 +36,7 @@ class Field extends React.Component {
       );
     });
     return (
-      <select onChange={ this.onChange.bind(this) }>
+      <select className="form-control" onChange={ this.onChange.bind(this) }>
         { fieldRows }
       </select>
     )
