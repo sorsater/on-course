@@ -77,6 +77,7 @@ def store_user_cart():
     user = Cart.query.filter_by(user_id=data['user_id'])
     if user:
         Cart.query.filter_by(user_id=data['user_id']).delete()
+        db.session.commit()
 
     cart = Cart(data['name'], data['user_id'], data['cart'])
     db.session.add(cart)

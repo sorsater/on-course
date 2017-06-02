@@ -5,6 +5,10 @@ body {
   /*overflow: hidden;*/
 }
 
+.btn:focus {
+  outline:none;
+}
+
 #footer {
   color: #e3e3e3;
   font-size: 12px;
@@ -262,6 +266,10 @@ a {
     animation: spin 2s linear infinite;
 }
 
+.button-row div{
+  padding: 0px;
+  margin: 0px;
+}
 
 @keyframes spin {
     0% { transform: rotate(0deg); }

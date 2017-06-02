@@ -23,6 +23,7 @@ class Schedule extends React.Component {
     super(props);
     this.handleCourseDel = this.handleCourseDel.bind(this);
     this.state = {
+      'sessionCart': props.loggedInCart,
       'clickStatus': {
         'p1b1': {'selected': 'unselected', 'checked': true},
         'p1b2': {'selected': 'unselected', 'checked': true},
@@ -38,6 +39,7 @@ class Schedule extends React.Component {
     }
   }
   handleCourseDel(code) {
+    document.activeElement.blur();
     this.props.handleCourseDel(code);
   }
 
@@ -58,20 +60,25 @@ class Schedule extends React.Component {
   }
 
   handleCartSave() {
+    document.activeElement.blur();
     var name = 'Kundis';
     var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
     var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "")
     const form = new FormData();
 
     {% if current_user.is_authenticated %}
-      var user_id = {{ current_user.id }};
+    var user_id = {{ current_user.id }};
     {% else %}
-      var user_id = 0;
+    var user_id = 0;
     {% endif %}
 
     form.append("user_id", user_id);
     form.append("name", name);
     form.append("cart", cart);
+
+    this.setState({
+      sessionCart: cart
+    });
     // On submit of the form, send a POST request with the data to the server.
     fetch('/user_cart', {
       method: 'POST',
@@ -85,16 +92,17 @@ class Schedule extends React.Component {
         cart: cart,
       })
     })
-      .then(function(response) {
-        console.log(response)
-      }).then(function(body) {
-        console.log(body);
-      });
+    .then(function(response) {
+      console.log(response)
+    }).then(function(body) {
+      console.log(body);
+    });
   }
 
   handleCartLoad(){
-    if (this.props.loggedInCart.length > 1) {
-      var cart = this.props.loggedInCart.split(',');
+    document.activeElement.blur();
+    if (this.state.sessionCart.length > 1) {
+      var cart = this.state.sessionCart.split(',');
       this.props.handleCourseLoad(cart);
     }
   }
@@ -123,7 +131,7 @@ class Schedule extends React.Component {
         key={ course.code }
         handleCourseDel={ _this.handleCourseDel }
         course={ course }
-      />
+        />
       codes.push(course.code);
       switch (course.block1) {
         case '1': p1b1.push(courseItem);    break;
@@ -146,11 +154,9 @@ class Schedule extends React.Component {
     var defaultClasses = "col-md-2 col-xs-2 light-grey noborder schedule-header"
     var slotClasses = "col-md-5 col-xs-5 block-box-container"
 
+
     return (
       <div className="schedule">
-        <button className='btn-danger' onClick={() => {this.handleCourseDel('all')}}>
-          Ta bort alla
-        </button>
         <div className="row my-row schedule-header">
           <div className="col-md-2 col-xs-3 light-grey noborder">
             <h5>Block</h5>
@@ -174,8 +180,8 @@ class Schedule extends React.Component {
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2b1'].selected} onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '1', 'id': 'p2b1'})}}>
             <div className="row select-row block-box">
-            { p2b1 }
-          </div>
+              { p2b1 }
+            </div>
           </div>
         </div>
 
@@ -186,13 +192,13 @@ class Schedule extends React.Component {
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1b2'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '2', 'id': 'p1b2'})}}>
             <div className="row select-row block-box">
-            { p1b2 }
-          </div>
+              { p1b2 }
+            </div>
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2b2'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '2', 'id': 'p2b2'})}}>
             <div className="row select-row block-box">
-            { p2b2 }
-          </div>
+              { p2b2 }
+            </div>
           </div>
         </div>
         <div className="row my-row row-eq-height">
@@ -201,13 +207,13 @@ class Schedule extends React.Component {
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1b3'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '3', 'id': 'p1b3'})}}>
             <div className="row select-row block-box">
-            { p1b3 }
-          </div>
+              { p1b3 }
+            </div>
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2b3'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '3', 'id': 'p2b3'})}}>
             <div className="row select-row block-box">
-            { p2b3 }
-          </div>
+              { p2b3 }
+            </div>
           </div>
         </div>
         <div className="row my-row row-eq-height">
@@ -216,13 +222,13 @@ class Schedule extends React.Component {
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1b4'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '4', 'id': 'p1b4'})}}>
             <div className="row select-row block-box">
-            { p1b4 }
-          </div>
+              { p1b4 }
+            </div>
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2b4'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '4', 'id': 'p2b4'})}}>
             <div className="row select-row block-box">
-            { p2b4 }
-          </div>
+              { p2b4 }
+            </div>
           </div>
         </div>
         <div className="row my-row row-eq-height">
@@ -231,23 +237,38 @@ class Schedule extends React.Component {
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p1none'].selected } onClick={() => {this.handleBlockClick({ 'period': '1', 'block': '-', 'id': 'p1none'})}}>
             <div className="row select-row block-box">
-            { p1none }
-          </div>
+              { p1none }
+            </div>
           </div>
           <div className={ slotClasses + ' ' + this.state.clickStatus['p2none'].selected } onClick={() => {this.handleBlockClick({ 'period': '2', 'block': '-', 'id': 'p2none'})}}>
             <div className="row select-row block-box">
-            { p2none }
-          </div>
+              { p2none }
+            </div>
           </div>
         </div>
 
-        <button className='btn-default' onClick={() => {this.handleCartSave()}}>
-          Spara kurser
-        </button>
+        <div className="row button-row">
 
-        <button className='btn-default' onClick={() => {this.handleCartLoad()}}>
-          Ladda kurser
-        </button>
+
+            <div className="col-xs-8">
+
+              <fieldset disabled={"{{ '' if current_user.is_authenticated else 'disabled'}}"}>
+              <button className='btn btn-default' onClick={() => {this.handleCartSave()}}>
+                Spara kurser
+              </button>
+              <button className='btn btn-default' onClick={() => {this.handleCartLoad()}}>
+                Ladda kurser
+              </button>
+              </fieldset>
+            </div>
+
+          <div className="col-xs-4">
+            <button className='btn btn-danger' onClick={() => {this.handleCourseDel('all')}}>
+              Ta bort alla
+            </button>
+          </div>
+        </div>
+
       </div>
     )
   }

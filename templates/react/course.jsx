@@ -188,8 +188,7 @@ class CourseViewer extends React.Component {
       document.cookie = 'cart=' + cart;
     }
     this.setState({
-      courseList: newCourseList,
-      courseCount: 0,
+      courseList: newCourseList
     })
   }
 
