@@ -30,7 +30,6 @@ db.app = app
 db.init_app(app)
 db.create_all()
 
-
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
     if not flask_login.current_user.is_anonymous:
@@ -64,7 +63,6 @@ def logout():
 def load_user(id):
     return User.query.get(int(id))
 
-
 @app.route('/kakburk')
 def hello():
     cart = flask.request.cookies.get('cart')
@@ -75,8 +73,14 @@ def hello():
 @app.route('/user_cart', methods=['POST'])
 def store_user_cart():
     data = flask.request.get_json()
+
+    user = Cart.query.filter_by(user_id=data['user_id'])
+    if user:
+        Cart.query.filter_by(user_id=data['user_id']).delete()
+
     cart = Cart(data['name'], data['user_id'], data['cart'])
     db.session.add(cart)
+
     db.session.commit()
     return 'OK', 200
 
@@ -174,8 +178,16 @@ def get_profileCourses():
 @app.route('/')
 def index(selected_program='Datateknik'):
     program = Program.query.filter(Program.name == selected_program).one()
-    schedule = Schedule.query.order_by(Schedule.id)
-    return render_template('index.html', program=program, schedule=schedule)
+
+    cart = ','
+    if flask_login.current_user:
+        try:
+            cart = flask_login.current_user.courses[0]
+        except Exception as e:
+            print(e)
+            pass
+
+    return render_template('index.html', program=program, loggedInCart=cart)
 
 @app.errorhandler(404)
 def page_not_found(e):

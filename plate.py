@@ -9,7 +9,7 @@ class User(UserMixin, db.Model):
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
 
-    courses = db.relationship("Cart")
+    courses = db.relationship("Cart", lazy='dynamic')
 
     @property
     def is_authenticated(self):
@@ -30,8 +30,7 @@ class User(UserMixin, db.Model):
         return '<User %s %s %s %s>' % (self.id, self.social_id, self.nickname, self.email)
 
 class Cart(db.Model):
-    #id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), primary_key=True)
+    name = db.Column(db.String(256))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     codes = db.Column(db.String(256))
 
@@ -41,7 +40,7 @@ class Cart(db.Model):
         self.codes = codes
 
     def __repr__(self):
-        return '<Cart %r %r %r>' % (self.name, self.user_id, self.codes)
+        return self.codes
 
 # Kurser, ett entry per kurs, TANA09, TDDD27...
 class Course(db.Model):

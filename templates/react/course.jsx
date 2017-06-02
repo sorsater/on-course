@@ -8,17 +8,17 @@ class CourseRow extends React.Component {
       'semester': c.semester,
       'block1': c.block1,
       'block2': c.block2,
-   });d
+    });
 
-   // Get name followed by anything except a semicolon
-   var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
-   // Return everything after the equal sign, or an empty string if the cookie name not found
-   var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
+    // Get name followed by anything except a semicolon
+    var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
+    // Return everything after the equal sign, or an empty string if the cookie name not found
+    var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
 
 
-   cart.indexOf(c.code) === - 1 ? cart.push(c.code) : console.log('already in cart')
-   //console.log(cart);
-   document.cookie = 'cart=' + cart;
+    cart.indexOf(c.code) === - 1 ? cart.push(c.code) : console.log('already in cart')
+    //console.log(cart);
+    document.cookie = 'cart=' + cart;
   }
 
   render() {
@@ -52,21 +52,21 @@ class CourseRow extends React.Component {
           </div>
         </div>
       )
-      } else {
-        return (
-          <div className="row row-eq-height course-row-header">
-            <div className="col-sm-2 course-item">
-              <a href="#">Kurskod</a>
-            </div>
-            <div className="col-sm-1 course-item">   HP      </div>
-            <div className="col-sm-1 course-item">   Nivå    </div>
-            <div className="col-sm-1 course-item">   Termin  </div>
-            <div className="col-sm-1 course-item">   Block1  </div>
-            <div className="col-sm-1 course-item">   Block2  </div>
-            <div className="col-sm-5 course-item">   Namn    </div>
+    } else {
+      return (
+        <div className="row row-eq-height course-row-header">
+          <div className="col-sm-2 course-item">
+            <a href="#">Kurskod</a>
           </div>
-        )
-      }
+          <div className="col-sm-1 course-item">   HP      </div>
+          <div className="col-sm-1 course-item">   Nivå    </div>
+          <div className="col-sm-1 course-item">   Termin  </div>
+          <div className="col-sm-1 course-item">   Block1  </div>
+          <div className="col-sm-1 course-item">   Block2  </div>
+          <div className="col-sm-5 course-item">   Namn    </div>
+        </div>
+      )
+    }
   }
 }
 
@@ -81,11 +81,13 @@ class CourseViewer extends React.Component {
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.handleCourseAdd = this.handleCourseAdd.bind(this);
     this.handleCourseDel = this.handleCourseDel.bind(this);
+    this.handleCourseLoad = this.handleCourseLoad.bind(this);
     this.handleBlockClick = this.handleBlockClick.bind(this);
 
     var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
     // Return everything after the equal sign, or an empty string if the cookie name not found
     var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
+
     var colors = ['blueviolet','brown','burlywood','yellowgreen','coral','dodgerblue','crimson','teal','seagreen','sandybrown','plum','peru'];
     var courseCount = 0;
 
@@ -121,7 +123,7 @@ class CourseViewer extends React.Component {
   }
 
   handleProfileClick(profileObj) {
-  //  this.setState({ profileList: [] });
+    //  this.setState({ profileList: [] });
     var id = profileObj.id;
     var checked = profileObj.checked;
     if (checked === true) {
@@ -191,6 +193,28 @@ class CourseViewer extends React.Component {
     })
   }
 
+  handleCourseLoad(cart){
+    var _this = this;
+    var newCourseList = [];
+    var newCourseCount = 0;
+
+    cart.forEach(function(course) {
+      if (course) {
+        var i = _this.props.schedule.map(function(e) { return e.code; }).indexOf(course);
+        _this.props.schedule[i].color = _this.state.colors[newCourseCount];
+        newCourseList.push(_this.props.schedule[i]);
+        newCourseCount++;
+      }
+    });
+
+    document.cookie = 'cart=' + cart;
+
+    this.setState({
+      courseList: newCourseList,
+      courseCount: newCourseCount
+    });
+  }
+
   handleBlockClick(blockObj) {
     var period = blockObj.period;
     var block = blockObj.block;
@@ -224,14 +248,14 @@ class CourseViewer extends React.Component {
 
     var _this = this;
     if(_this.props.schedule.length && _this.state.courseList && _this.state.courseList.length == 0){
-    _this.state.cart.forEach(function(c_cookie) {
-      if (c_cookie) {
-        var i = _this.props.schedule.map(function(e) { return e.code; }).indexOf(c_cookie);
-        _this.props.schedule[i].color = _this.state.colors[_this.state.courseCount];
-        _this.state.courseCount++;
-        _this.state.courseList.push(_this.props.schedule[i]);
-      }
-    });
+      _this.state.cart.forEach(function(c_cookie) {
+        if (c_cookie) {
+          var i = _this.props.schedule.map(function(e) { return e.code; }).indexOf(c_cookie);
+          _this.props.schedule[i].color = _this.state.colors[_this.state.courseCount];
+          _this.state.courseCount++;
+          _this.state.courseList.push(_this.props.schedule[i]);
+        }
+      });
     }
   }
   render() {
@@ -277,7 +301,7 @@ class CourseViewer extends React.Component {
     if (curSem !== 'Alla'){
       schedule = schedule.filter(function(row) {
         if (row.semester == curSem) {
-            return true;
+          return true;
         }
       });
     }
@@ -334,15 +358,9 @@ class CourseViewer extends React.Component {
         return (course.code + course.name).toLowerCase().match( searchString );
       });
     }
+
     // Create the actual course row objects
     var courseRows = [];
-    // The header for the courses
-    // courseRows.push(
-    //   <CourseRow
-    //     key={ 'header' }
-    //     header={ true } />
-    // );
-
     courses.forEach((course) => {
       var active = _this.state.courseList.map(function(e) { return e.code; }).indexOf(course.code) !== -1;
       courseRows.push(
@@ -352,7 +370,7 @@ class CourseViewer extends React.Component {
           onClick={ this.handleCourseAdd.bind(this) }
           active={ active }
           header={ false}
-        />
+          />
       );
     })
 
@@ -380,13 +398,13 @@ class CourseViewer extends React.Component {
               Termin:
               <Semester
                 onChange={ this.handleChangeSemester.bind(this) }
-              />
+                />
             </div>
             <div className="col-sm-3 select-box">
               Nivå:
               <Level
                 onChange={ this.handleChangeLevel.bind(this) }
-              />
+                />
             </div>
           </div>
 
@@ -394,41 +412,42 @@ class CourseViewer extends React.Component {
             field={ this.state.currentField }
             profileCheckbox={ this.handleProfileClick.bind(this) }
             profiles={ profiles }
-          />
+            />
 
 
-        <div className="row">
-          <div className="course-count select-row">
-            Antal kurser: { courses.length }
-          </div>
+          <div className="row">
+            <div className="course-count select-row">
+              Antal kurser: { courses.length }
+            </div>
 
-          <div className="row row-eq-height select-row">
-            <div className="col-sm-8 course-list" >
-              <input id="search" type="text"  className="form-control"
-                value={ this.state.searchString }
-                onChange={ this.handleChangeSearch }
-                placeholder="Vad får det lov att vara? 😋"
-              />
+            <div className="row row-eq-height select-row">
+              <div className="col-sm-8 course-list" >
+                <input id="search" type="text"  className="form-control"
+                  value={ this.state.searchString }
+                  onChange={ this.handleChangeSearch }
+                  placeholder="Vad får det lov att vara? 😋"
+                  />
 
-              <CourseRow
-                key={ 'header' }
-                header={ true } />
-              <div className="course-list-container">
-                <div className="course-list-inner">
-                  { courseRows }
+                <CourseRow
+                  key={ 'header' }
+                  header={ true } />
+                <div className="course-list-container">
+                  <div className="course-list-inner">
+                    { courseRows }
+                  </div>
                 </div>
               </div>
+              <div className="col-sm-4">
+                <Schedule
+                  handleCourseLoad={ this.handleCourseLoad }
+                  loggedInCart={ this.props.loggedInCart }
+                  courses={ this.state.courseList }
+                  handleCourseDel={ this.handleCourseDel }
+                  handleBlockClick={ this.handleBlockClick }
+                  />
+              </div>
             </div>
-          <div className="col-sm-4">
-            <Schedule
-              courses={ this.state.courseList }
-              handleCourseDel={ this.handleCourseDel }
-              handleBlockClick={ this.handleBlockClick }
-            />
           </div>
-        </div>
-      </div>
-
         </div>
       </div>
     )

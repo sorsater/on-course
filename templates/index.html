@@ -28,7 +28,9 @@ var program = {
 
 // Render the webpage
 ReactDOM.render(
-  <Loader />,
+  <Loader
+    loggedInCart={'{{ loggedInCart }}'}
+  />,
   document.getElementById('container')
 );
 </script>

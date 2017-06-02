@@ -57,12 +57,18 @@ class Schedule extends React.Component {
     });
   }
 
-  handleCartLoad() {
+  handleCartSave() {
     var name = 'Kundis';
-    var user_id = 1;
     var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
     var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "")
     const form = new FormData();
+
+    {% if current_user.is_authenticated %}
+      var user_id = {{ current_user.id }};
+    {% else %}
+      var user_id = 0;
+    {% endif %}
+
     form.append("user_id", user_id);
     form.append("name", name);
     form.append("cart", cart);
@@ -84,6 +90,13 @@ class Schedule extends React.Component {
       }).then(function(body) {
         console.log(body);
       });
+  }
+
+  handleCartLoad(){
+    if (this.props.loggedInCart.length > 1) {
+      var cart = this.props.loggedInCart.split(',');
+      this.props.handleCourseLoad(cart);
+    }
   }
 
   // Place the courses in the correct slot
@@ -135,10 +148,9 @@ class Schedule extends React.Component {
 
     return (
       <div className="schedule">
-        <input type='button'
-          value={'Ta bort alla'}
-          onClick={() => {this.handleCourseDel('all')}}
-        />
+        <button className='btn-danger' onClick={() => {this.handleCourseDel('all')}}>
+          Ta bort alla
+        </button>
         <div className="row my-row schedule-header">
           <div className="col-md-2 col-xs-3 light-grey noborder">
             <h5>Block</h5>
@@ -229,8 +241,12 @@ class Schedule extends React.Component {
           </div>
         </div>
 
-        <button onClick={() => {this.handleCartLoad()}}>
-          Kundkorg
+        <button className='btn-default' onClick={() => {this.handleCartSave()}}>
+          Spara kurser
+        </button>
+
+        <button className='btn-default' onClick={() => {this.handleCartLoad()}}>
+          Ladda kurser
         </button>
       </div>
     )

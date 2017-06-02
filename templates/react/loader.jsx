@@ -98,6 +98,7 @@ class Loader extends React.Component {
       return (
         <div>
           <CourseViewer
+            loggedInCart={ this.props.loggedInCart }
             activeProgram={ this.state.program_name }
             onChange={ this.onChange }
             fields={ this.state.fields }
