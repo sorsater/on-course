@@ -7,36 +7,37 @@
   * ~~Klicka i kurs, bocka ur block / eller header typ (michael)~~
 
 
-* ~~Filtrera kurser pa masterutbildningar
-Måste bestämma hur mycket data som ska hämtas in i js och vad som ska vara sql-anrop~~
-  * ~~Kunna filtrera på utbildning/huvudområde~~
-  * ~~Kunna välja flera masterutbildningar~~
+* ~~Filtrera kurser pa masterutbildningar~~
+* ~~Måste bestämma hur mycket data som ska hämtas in i js och vad som ska vara sql-anrop~~
+
+* ~~Kunna filtrera på utbildning/huvudområde~~
+* ~~Kunna välja flera masterutbildningar~~
 
 
 * ~~Visa kurser~~
   * ~~Klicka på kurs för att lägga till i varukorgen~~
 
 
-* Inlogg
+* ~~Inlogg~~
   * ~~Kunna logga in med facebook~~
   * ~~Spara kundkorgen cookies~~
   * ~~Spara kundkorgen i databas kopplat till facebook~~
-  * Läsa in från databasen och populera schedule
+  * ~~Läsa in från databasen och populera schedule~~
 
 
-* Kundkorgen
+* ~~Kundkorgen~~
   * ~~Följer med vid scroll~~
 
 
-* Design
-  * Bestämma färger för element
-  * Flytta element (mer bootstrap?)
+* ~~Design~~
+  * ~~Bestämma färger för element~~
+  * ~~Flytta element (mer bootstrap?)~~
 
 
-* Bestämma Header + Footer
+* ~~Bestämma Header + Footer~~
 
 
-* Utökningar
+* Eventuella utökningar
   * Klicka på kurs *info* för att expandera den och läsa mer.
   * Skrapa ner data om examinationsmoment
   * Adminsida för att uppdatera databasen. (ludde)

@@ -1,3 +1,8 @@
+'''
+Download content from studiehandboken and dump the data in the database.
+Use the file scrape.scraper to read Studiehandboken.
+'''
+
 import sqlite3
 from scrape.scraper import scrape_content
 import pickle
