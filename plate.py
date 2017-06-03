@@ -1,8 +1,13 @@
+'''
+Tables used in the database
+'''
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 import os.path
 db = SQLAlchemy()
 
+# The users in the db
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     social_id = db.Column(db.String(64), nullable=False, unique=True)
@@ -43,7 +48,7 @@ class Cart(db.Model):
     def __repr__(self):
         return self.codes
 
-# Kurser, ett entry per kurs, TANA09, TDDD27...
+# Courses, one entry for each course, TANA09, TDDD27...
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(20))
@@ -63,7 +68,8 @@ class Course(db.Model):
     def __repr__(self):
         return '(Course {} {} {} {} {})'.format(self.id, self.code, self.name, self.level, self.hp)
 
-# Utbildningsprogram, D, M, I...
+# The different programs, D, M, I, ...
+# The relationship between program and field is one to many
 class Program(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
@@ -81,7 +87,8 @@ class Program(db.Model):
         return '(Program {} {} {})'.format(self.id, self.name, os.path.basename(self.link))
 
 
-# Field
+# The fields for the programs
+# The relationship between field and profile is one to many
 class Field(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -97,7 +104,7 @@ class Field(db.Model):
     def __repr__(self):
         return 'id:{};program_id:{};name:{}'.format(self.id, self.program_id, self.name)
 
-# Profiles
+# The profiles for the fields
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -115,7 +122,8 @@ class Profile(db.Model):
     def __repr__(self):
         return 'Profile {} {} {}'.format(self.id, self.field_id, self.name)
 
-# Schema
+# Details about in which 'block' each course is available
+# One course can have multiple entries (e.g., both semester 7 and 8)
 class Schedule(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(20))
@@ -134,7 +142,6 @@ class Schedule(db.Model):
 
     def __repr__(self):
         return 'Schedule {1}, period: {2}{3}, blocks: {4}, {5}'.format(self.code, self.semester, self.period, self.block1, self.block2)
-
 
 # Courses and which profile they belong to
 class Course_profile(db.Model):
