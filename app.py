@@ -9,7 +9,7 @@ from oauth import OAuthSignIn
 
 import random
 
-from secrets import facebook_secret
+from res.secrets import facebook_secret
 
 app = Flask(__name__)
 
