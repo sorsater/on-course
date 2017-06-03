@@ -9,7 +9,7 @@ class User(UserMixin, db.Model):
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
 
-    courses = db.relationship("Cart", lazy='dynamic')
+    courses = db.relationship("Cart")
 
     @property
     def is_authenticated(self):
@@ -29,6 +29,7 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %s %s %s %s>' % (self.id, self.social_id, self.nickname, self.email)
 
+# Saved courses for a given user
 class Cart(db.Model):
     name = db.Column(db.String(256))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
@@ -100,7 +101,6 @@ class Field(db.Model):
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    #field_id = db.Column(db.Integer)
     field_id = db.Column(db.Integer, db.ForeignKey('field.id'))
     link = db.Column(db.String(500))
 
@@ -115,12 +115,9 @@ class Profile(db.Model):
     def __repr__(self):
         return 'Profile {} {} {}'.format(self.id, self.field_id, self.name)
 
-
 # Schema
 class Schedule(db.Model):
-    # Need primary key?
     id = db.Column(db.Integer, primary_key=True)
-
     code = db.Column(db.String(20))
     semester = db.Column(db.Integer)
     period = db.Column(db.Integer)
@@ -142,11 +139,10 @@ class Schedule(db.Model):
 # Courses and which profile they belong to
 class Course_profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    #code = db.Column(db.String(100))
-    #profile_id = db.Column(db.Integer)
     code = db.Column(db.String(100), db.ForeignKey('course.code'))
     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'))
     vof = db.Column(db.String(10))
+
     course = db.relationship("Course")
 
     def __init__(self, id, vof, profile_id, code):
@@ -161,11 +157,8 @@ class Course_profile(db.Model):
 # Courses and which program they belong to
 class Program_course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    #code = db.Column(db.String(100))
     code = db.Column(db.String(100), db.ForeignKey('course.code'))
-    #program_id = db.Column(db.Integer)
     program_id = db.Column(db.Integer, db.ForeignKey('program.id'))
-
 
     course = db.relationship("Course")
 

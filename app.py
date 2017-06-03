@@ -177,9 +177,7 @@ def get_profileCourses():
     return flask.json.jsonify(profileCourses)
 
 @app.route('/')
-def index(selected_program='Datateknik'):
-    program = Program.query.filter(Program.name == selected_program).one()
-
+def index():
     cart = ','
     if flask_login.current_user:
         try:
@@ -188,7 +186,7 @@ def index(selected_program='Datateknik'):
             print(e)
             pass
 
-    return render_template('index.html', program=program, loggedInCart=cart)
+    return render_template('index.html',  loggedInCart=cart)
 
 @app.errorhandler(404)
 def page_not_found(e):

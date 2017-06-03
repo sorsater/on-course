@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from res.w8m8 import progressbar
 
 url_utbildningar = 'http://www.lith.liu.se/sh/civing/'
-url_datateknik7 = 'http://kdb-5.liu.se/liu/lith/studiehandboken/action.lasso?&-response=lot_response.lasso&-op=eq&kp_budget_year=2017&-op=eq&kp_programkod=D&-op=eq&kp_programprofil=D&-op=gt&kp_termin=6'
 
 # Read all courses from the URL
 def get_courses(url, programID):

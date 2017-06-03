@@ -248,9 +248,7 @@ class Schedule extends React.Component {
         </div>
 
         <div className="row button-row">
-
-
-            <div className="col-xs-8">
+            <div className="col-md-8 col-sm-12">
 
               <fieldset disabled={"{{ '' if current_user.is_authenticated else 'disabled'}}"}>
               <button className='btn btn-default' onClick={() => {this.handleCartSave()}}>
@@ -262,7 +260,7 @@ class Schedule extends React.Component {
               </fieldset>
             </div>
 
-          <div className="col-xs-4">
+          <div className="col-md-4 col-sm-12">
             <button className='btn btn-danger' onClick={() => {this.handleCourseDel('all')}}>
               Ta bort alla
             </button>
