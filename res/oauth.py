@@ -1,3 +1,7 @@
+'''
+Used to handle the Facebook login.
+'''
+
 import json
 
 from flask import redirect, url_for, current_app, request
@@ -8,6 +12,7 @@ from rauth import *
 def json_decoder(payload):
     return json.loads(payload.decode('utf-8'))
 
+# The base class
 class OAuthSignIn(object):
     providers = None
 
@@ -36,6 +41,7 @@ class OAuthSignIn(object):
                 self.providers[provider.provider_name] = provider
         return self.providers[provider_name]
 
+# Is based on the OAuthSignIn class
 class FacebookSignIn(OAuthSignIn):
     def __init__(self):
         super(FacebookSignIn, self).__init__('facebook')

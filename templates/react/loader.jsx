@@ -27,7 +27,7 @@ class Loader extends React.Component {
   }
 
   onChange(event) {
-    this.setState({program_name: event})
+    this.setState({program_name: event});
     this.getFields(event);
     this.getProfiles(event);
     this.getSchedule(event);
@@ -106,7 +106,7 @@ class Loader extends React.Component {
             profiles={ this.state.profiles }
             schedule={ this.state.schedule }
             profileCourses= { this.state.profileCourses }
-          />;
+          />
        </div>
      )
   }

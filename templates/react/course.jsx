@@ -15,9 +15,7 @@ class CourseRow extends React.Component {
     // Return everything after the equal sign, or an empty string if the cookie name not found
     var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "").split(',');
 
-
-    cart.indexOf(c.code) === - 1 ? cart.push(c.code) : console.log('already in cart')
-    //console.log(cart);
+    cart.indexOf(c.code) === - 1 ? cart.push(c.code) : console.log('already in cart');
     document.cookie = 'cart=' + cart;
   }
 
@@ -30,7 +28,9 @@ class CourseRow extends React.Component {
       return (
         <div className={`row row-eq-height course-row ${activeStyle}`} onClick={ this.addCourse.bind(this) }>
           <div className="col-xs-2 course-item" onClick={ (e) => { e.stopPropagation(); }}>
-            <a href={ url }>{ this.props.course.code }</a>
+            <a href={ url }>
+              { this.props.course.code }
+            </a>
           </div>
           <div className="col-xs-1 course-item">
             { this.props.course.hp }

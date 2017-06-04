@@ -4,7 +4,7 @@ class ScheduleItem extends React.Component {
     this.props.handleCourseDel(courseCode);
   }
   render() {
-    var color = { backgroundColor: this.props.course.color }
+    var color = { backgroundColor: this.props.course.color };
     return (
       <div className='course-selected col-sm-6' style={ color }
         onClick={(e) => {
@@ -63,7 +63,7 @@ class Schedule extends React.Component {
     document.activeElement.blur();
     var name = 'Kundis';
     var cookiestring = RegExp("cart[^;]+").exec(document.cookie);
-    var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "")
+    var cart =  unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
     const form = new FormData();
 
     {% if current_user.is_authenticated %}
@@ -93,7 +93,7 @@ class Schedule extends React.Component {
       })
     })
     .then(function(response) {
-      console.log(response)
+      console.log(response);
     }).then(function(body) {
       console.log(body);
     });
@@ -123,7 +123,6 @@ class Schedule extends React.Component {
 
     var codes = [];
     var courseItem;
-    var c;
 
     var _this = this;
     this.props.courses.forEach(function(course) {
@@ -151,14 +150,14 @@ class Schedule extends React.Component {
       }
     });
 
-    var defaultClasses = "col-md-2 col-xs-2 light-grey noborder schedule-header"
-    var slotClasses = "col-md-5 col-xs-5 block-box-container"
+    var defaultClasses = "col-md-2 col-xs-2 light-grey noborder schedule-header";
+    var slotClasses = "col-md-5 col-xs-5 block-box-container";
 
 
     return (
       <div className="schedule">
         <div className="row my-row schedule-header">
-          <div className="col-md-2 col-xs-3 light-grey noborder">
+          <div className="col-md-2 col-xs-3 light-grey noborder block-corner">
             <h5>Block</h5>
           </div>
           <div className="col-md-5 col-xs-5 light-grey noborder">
@@ -184,7 +183,6 @@ class Schedule extends React.Component {
             </div>
           </div>
         </div>
-
 
         <div className="row my-row row-eq-height">
           <div className={ defaultClasses }>
@@ -266,7 +264,6 @@ class Schedule extends React.Component {
             </button>
           </div>
         </div>
-
       </div>
     )
   }

@@ -1,3 +1,5 @@
+// File used to initialize the facebook app
+
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '1489686947739416',

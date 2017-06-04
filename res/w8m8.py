@@ -1,3 +1,7 @@
+'''
+Show progress in scraper
+'''
+
 import time
 
 def progressbar(progress, *args, start='[', end=']', marker='', fill='█', bg=' ',

@@ -1,3 +1,10 @@
+'''
+Scrapes Studiehandboken.
+From the provided url, scraper finds all programs, fields, profiles and courses.
+
+Scraper is called from the program food.py
+'''
+
 import urllib.request
 from bs4 import BeautifulSoup
 
@@ -53,16 +60,13 @@ def get_courses(url, programID):
     program_courses = [list(c) for c in program_courses]
     program_courses = list(program_courses)
 
-    #schedule = [schedule[key] for key in schedule]
-    #schedule = [schedule[key] for key in schedule]
-
     return courses, schedule.values(), program_courses
 
-# For each masters profile
+# For each profile, read all courses
 def get_profile_courses(url):
-    #print(url)
-    # Ser inte längre folk i ögonen
+    # Can't handle åäö in url
     url = url.replace('ö', 'o').replace('ä', 'a').replace('å', 'a')
+
     x = urllib.request.urlopen(url)
     soup = BeautifulSoup(x.read(), 'html.parser')
     rows = soup.find_all('tr')
@@ -82,7 +86,7 @@ def get_profile_courses(url):
 
     return courses
 
-# Read all programs and their main subjects
+# Read all programs and their fields
 def get_utbildningar(url):
     x = urllib.request.urlopen(url)
     soup = BeautifulSoup(x.read(), 'html.parser')
@@ -125,7 +129,6 @@ def get_fields(url):
 
 # Read courses and schedule for datateknik, need to be extended to all programs
 def scrape_courses(urls):
-
     print("Reading all 7-9 courses")
     all_courses = []
     all_schedules = []
@@ -188,7 +191,8 @@ def scrape_programs():
     print()
     return programs, fields, profiles, course_profile, urls_all_courses
 
-# Get all content
+# This is the main method
+# Get all content.
 def scrape_content():
     programs, fields, profiles, course_profile, urls_all_courses = scrape_programs()
     courses, schedule, program_courses = scrape_courses(urls_all_courses)

@@ -3,7 +3,7 @@ class ProfileRow extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    var selected = 'unselected'
+    var selected = 'unselected';
     if (props.default === true){
       selected = 'selected';
     }
