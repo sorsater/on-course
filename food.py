@@ -1,21 +1,21 @@
 '''
-Download content from studiehandboken and dump the data in the database.
-Use the file scrape.scraper to read Studiehandboken.
+Download content from Studiehandboken and dump the data in the database.
+Use the file scraper in folder res to read Studiehandboken.
 '''
 
 import sqlite3
-from scrape.scraper import scrape_content
+from res.scraper import scrape_content
 import pickle
 import sys
 
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(100000)
 print("Scraping plates")
 
 if len(sys.argv) > 1 :
     data = scrape_content()
-    with open('pickled_food.pkl', 'wb') as f:
+    with open('res/pickled_food.pkl', 'wb') as f:
        pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
-with open('pickled_food.pkl', 'rb') as f:
+with open('res/pickled_food.pkl', 'rb') as f:
     data = pickle.load(f)
 
 courses, schedule, program_courses, programs, fields, profiles, course_profile = data

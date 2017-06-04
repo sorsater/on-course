@@ -5,7 +5,7 @@ from flask import Flask, redirect, render_template, url_for
 import flask_login
 
 from plate import *
-from oauth import OAuthSignIn
+from res.oauth import OAuthSignIn
 
 import random
 
