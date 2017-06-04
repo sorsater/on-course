@@ -3,6 +3,8 @@ Project in the course TDDD27 at Linköping University.
 
 Done by Ludvig Noring (ludno249) and Michael Sörsäter (micso554)
 
+[Youtube Screencast](https://www.youtube.com/watch?v=pPCqwqpn3tI)
+
 ## Description
 We have developed a system that help students when they are planing their semesters.
 Information about programs and courses are scraped from Studiehandboken and stored in a database.
